@@ -1,0 +1,132 @@
+<% title "Patient Dashboard" %>
+<style type="text/css">
+
+</style>
+<div id="header" style="height: 15vh; width:98vw;margin-top:1vh; margin-left: auto;margin-right: auto;">
+  <div style="display: table-row">
+    <div class="header-cell" style="display: table-cell; width:98vw;vertical-align: middle;height: 15vh;">
+      <div style="display: table;width: 98%;margin-left: auto;margin-right: auto;">
+        <div style="display: table-cell; width: 10%;margin-left: auto;margin-right: auto;">
+          <div class="<%=@patient.sex.downcase%>">
+            <img src="/assets/<%=@patient.sex.downcase%>.png">
+          </div>
+        </div>
+        <div style="display: table-cell; width: 90%;margin-left: auto;margin-right: auto;vertical-align: middle;">
+          <div style="display: table;width: 98%;margin-left: auto;margin-right: auto;">
+            <div style="display: table-row; ">
+              <div class="header-content-cell"><b>Name</b></div>
+              <div class="header-content-cell" style="width: 45%;"><%= @patient.full_name %></div>
+              <div class="header-content-cell"><b>Age</b></div>
+              <div class="header-content-cell"><%= @patient.person.age %></div>
+            </div>
+            <div style="display: table-row; ">
+              <div class="header-content-cell"><b>National ID</b></div>
+              <div class="header-content-cell"><%= @patient.national_id %></div>
+              <div class="header-content-cell"><b>Health insurance</b></div>
+              <div class="header-content-cell"><%= @patient.health_insurance %></div>
+            </div>
+            <div style="display: table-row; ">
+              <div class="header-content-cell"><b>Residence</b></div>
+              <div class="header-content-cell"><%= @patient.current_address %></div>
+              <div class="header-content-cell">&nbsp;</div>
+              <div class="header-content-cell">&nbsp;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="main" style="height: 70vh;">
+
+  <div style="display: table-row;width: 100%">
+    <div id="today" class="tab-active" style="display: table-cell" onmousedown="toggleTab(this)">Today</div>
+    <div id="pastVisits" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Past Transactions</div>
+    <div id="others" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Others</div>
+  </div>
+
+  <div id="todayTab" class="tab-content" >
+    <table class="dashboard-main" border="2">
+      <thead>
+      <tr>
+        <th>Item</th>
+        <th>Unit Price</th>
+        <th>Amount</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <th>Consultation</th>
+        <td style="">0</td>
+        <td>0</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <th>Total</th>
+        <th>&nbsp;</th>
+        <th>0</th>
+      </tr>
+      <tr>
+        <th>Amount Due</th>
+        <th>&nbsp;</th>
+        <th>0</th>
+      </tr>
+      <tr>
+        <th>Amount Paid</th>
+        <th>&nbsp;</th>
+        <th>0</th>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div id="pastVisitsTab" class="tab-content invisible">
+    <div style="display: table;margin: 3vh auto">
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="othersTab" class="tab-content invisible">
+    <div style="display: table;margin: 3vh auto">
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Add Medical Scheme
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Edit Demographics
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
+            Print National ID
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="green" style="float: right;" onmousedown="window.location='/'">Finish</button>
+  <button style="float: right;" >Add Transaction</button>
+
+</div>

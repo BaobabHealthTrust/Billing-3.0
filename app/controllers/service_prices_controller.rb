@@ -1,0 +1,2 @@
+class ServicePricesController < ApplicationController
+end

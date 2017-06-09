@@ -1,0 +1,2 @@
+class MedicalSchemeController < ApplicationController
+end

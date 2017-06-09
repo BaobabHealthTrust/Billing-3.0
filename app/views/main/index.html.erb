@@ -1,0 +1,184 @@
+<% title "Billing - Main" %>
+<style type="text/css">
+
+</style>
+<div id="header" style="height: 15vh; width:98vw;margin-top:1vh;margin-left: auto;margin-right: auto;">
+  <div style="display: table-row">
+    <div class="header-cell" style="display: table-cell; width:85vw;vertical-align: middle;">
+      <table style="width: 100%;">
+        <tr>
+          <td style="width: 40%;" >
+            <div style="display: table-row">
+              <div style="display: table-cell;vertical-align: top;">
+                <strong>Scan Patient Barcode</strong>
+              </div>
+              <div style="display: table-cell;float: right;">
+                <img style="display: block;height: 30px;" src="/assets/barcode.jpg">
+              </div>
+            </div>
+          </td>
+          <td style="border: 0em !important;">
+            <input type="text" id="barcode" class="scanner" style="width: 95%;" autofocus>
+          </td>
+        </tr>
+      </table>
+      <div style="display: table;width: 98%;margin-left: auto;margin-right: auto;">
+        <div style="display: table-row; ">
+          <div class="header-content-cell">Facility</div>
+          <div class="header-content-cell">User</div>
+        </div>
+        <div style="display: table-row; ">
+          <div class="header-content-cell">Location</div>
+          <div class="header-content-cell">Role</div>
+        </div>
+      </div>
+    </div>
+    <div class="header-cell" style="float: right;width:15vw;text-align: center;height: 15vh;vertical-align: middle">
+      <h2>eBilling</h2>
+      <p><%= Date.current.strftime('%d %b %Y') %></p>
+    </div>
+  </div>
+</div>
+
+<div id="main" style="height: 70vh;">
+
+  <div style="display: table-row;width: 100%">
+    <div id="summary" class="tab-active" style="display: table-cell" onmousedown="toggleTab(this)">Summary</div>
+    <div id="reports" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Reports</div>
+    <div id="settings" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Settings</div>
+  </div>
+
+  <div id="summaryTab" class="tab-content" >
+      <table class="dashboard-main" border="2">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Today</th>
+            <th>This Month</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Consultation</th>
+            <td style="">0</td>
+            <td>0</td>
+          </tr>
+          <tr class="odd">
+            <th>Prescriptions</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <th>Laboratory</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="odd">
+            <th>Radiology</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <th>Admissions</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr class="odd">
+            <th>Mortuary</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <th>Total</th>
+            <td>0</td>
+            <td>0</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  <div id="reportsTab" class="tab-content invisible">
+    <div style="display: table;margin: 3vh auto">
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Test
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="settingsTab" class="tab-content invisible">
+    <div style="display: table;margin: 3vh auto">
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Edit name
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Change password
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/'">
+            Keyboard preferences
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="red" style="float: left;">Logout</button>
+  <button class="green" style="float: right;" onmousedown="window.location='/patients/search'">Find or Register Patient</button>
+</div>
+
+<script type="text/javascript">
+    var timerHand;
+
+    function checkBarcode()
+    {
+        var barcodeTxt = document.getElementById("barcode");
+        if (barcodeTxt.value.trim().match(/[A-Z0-9]+\$/)) {
+
+            barcodeTxt.value = barcodeTxt.value.trim().replace(/\$/, "").replace(/\-/,"")
+            if (barcodeTxt.value.toUpperCase().length >= 7)
+            {
+                window.location = "/patients/patient_by_id/"+barcodeTxt.value.trim();
+            }
+            else
+            {
+                barcodeTxt.value = "";
+                initializeListener();
+            }
+
+        }
+        else
+        {
+            initializeListener();
+        }
+    }
+
+    function initializeListener()
+    {
+        document.getElementById("barcode").focus();
+        timerHand = setTimeout(function () {
+            checkBarcode();
+        }, 3000);
+
+    }
+
+    setTimeout(initializeListener(), 3000);
+</script>
