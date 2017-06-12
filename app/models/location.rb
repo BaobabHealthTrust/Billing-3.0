@@ -1,4 +1,5 @@
 class Location < ActiveRecord::Base
+  establish_connection Registration
   self.table_name = "location"
   self.primary_key = "location_id"
   include Openmrs

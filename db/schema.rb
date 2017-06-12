@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609110744) do
+ActiveRecord::Schema.define(version: 20170612114159) do
 
   create_table "medical_scheme_providers", primary_key: "scheme_provider_id", force: :cascade do |t|
     t.string   "company_name",    limit: 255
@@ -36,6 +36,33 @@ ActiveRecord::Schema.define(version: 20170609110744) do
     t.string   "retired_reason",          limit: 255
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+  end
+
+  create_table "order_entries", primary_key: "order_entry_id", force: :cascade do |t|
+    t.integer  "patient_id",    limit: 4,                   null: false
+    t.integer  "service_id",    limit: 4,                   null: false
+    t.datetime "order_date",                                null: false
+    t.float    "quantity",      limit: 24,  default: 0.0,   null: false
+    t.float    "full_price",    limit: 24,  default: 0.0,   null: false
+    t.integer  "cashier",       limit: 4,                   null: false
+    t.boolean  "voided",                    default: false
+    t.integer  "voided_by",     limit: 4
+    t.string   "voided_reason", limit: 255
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  create_table "order_payments", primary_key: "order_payment_id", force: :cascade do |t|
+    t.integer  "order_entry_id", limit: 4,                    null: false
+    t.float    "amount",         limit: 24,  default: 0.0
+    t.string   "payment_mode",   limit: 255, default: "cash", null: false
+    t.datetime "payment_stamp"
+    t.integer  "cashier",        limit: 4,                    null: false
+    t.boolean  "voided",                     default: false
+    t.integer  "voided_by",      limit: 4
+    t.string   "voided_reason",  limit: 255
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "patient_accounts", primary_key: "account_id", force: :cascade do |t|
@@ -71,18 +98,20 @@ ActiveRecord::Schema.define(version: 20170609110744) do
   end
 
   create_table "service_types", primary_key: "service_type_id", force: :cascade do |t|
-    t.string   "name",           limit: 255, null: false
-    t.integer  "creator",        limit: 4,   null: false
-    t.boolean  "retired",                    null: false
+    t.string   "name",           limit: 255,                 null: false
+    t.integer  "creator",        limit: 4,                   null: false
+    t.boolean  "retired",                    default: false, null: false
     t.integer  "retired_by",     limit: 4
     t.string   "retired_reason", limit: 255
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   create_table "services", primary_key: "service_id", force: :cascade do |t|
     t.string   "name",            limit: 255,                 null: false
     t.integer  "service_type_id", limit: 4,                   null: false
+    t.string   "unit",            limit: 255
+    t.integer  "creator",         limit: 4,                   null: false
     t.boolean  "voided",                      default: false
     t.integer  "voided_by",       limit: 4
     t.string   "voided_reason",   limit: 255

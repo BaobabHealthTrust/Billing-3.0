@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       @current_user = user
       flash[:errors] = nil
-      redirect_to root_path and return
+      redirect_to "/location" and return
     else
       flash[:errors] = "Invalid user credentials"
       redirect_to '/login' and return

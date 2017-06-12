@@ -2,7 +2,7 @@ class ServicePrice < ActiveRecord::Base
 
   belongs_to :service
 
-  before_update on_update
+  before_update :on_update
 
   def on_update
     ServicePriceHistory.create({:service_id => self.service_id, :price => self.price,

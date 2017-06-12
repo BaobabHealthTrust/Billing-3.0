@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   before_filter :authenticate, :except => ['login', 'create_session']
-  helper_method :current_user
+  helper_method :current_user, :current_location
 
   def print_and_redirect(print_url, redirect_url, message = "Printing label ...", show_next_button = false, patient_id = nil)
     #Function handles redirects when printing labels
@@ -18,6 +18,9 @@ class ApplicationController < ActionController::Base
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
 
+  def current_location
+      @current_location ||= Location.find(session[:location]) if session[:location]
+  end
 
   def authenticate
     if current_user.blank?
