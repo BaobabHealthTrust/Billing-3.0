@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root 'main#index'
 
+  get "login" => "sessions#login"
+  post "login" => "sessions#create_session"
+  get "/logout" => "sessions#destroy"
+
   resources :patients do
     collection do
       get 'search'
@@ -24,10 +28,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :users
   resources :services
   resources :service_prices
   resources :service_types
   resources :medical_scheme
+  resources :sessions
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

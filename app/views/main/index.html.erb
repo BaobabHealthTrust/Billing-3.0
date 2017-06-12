@@ -7,7 +7,7 @@
     <div class="header-cell" style="display: table-cell; width:85vw;vertical-align: middle;">
       <table style="width: 100%;">
         <tr>
-          <td style="width: 40%;" >
+          <td style="width: 20%;" >
             <div style="display: table-row">
               <div style="display: table-cell;vertical-align: top;">
                 <strong>Scan Patient Barcode</strong>
@@ -18,18 +18,22 @@
             </div>
           </td>
           <td style="border: 0em !important;">
-            <input type="text" id="barcode" class="scanner" style="width: 95%;" autofocus>
+            <input type="text" id="barcode" class="scanner" style="width: 70%;" autofocus>
           </td>
         </tr>
       </table>
       <div style="display: table;width: 98%;margin-left: auto;margin-right: auto;">
         <div style="display: table-row; ">
           <div class="header-content-cell">Facility</div>
+          <div class="header-content-cell"><%= facility_name %></div>
           <div class="header-content-cell">User</div>
+          <div class="header-content-cell"><%= current_user.name %></div>
         </div>
         <div style="display: table-row; ">
           <div class="header-content-cell">Location</div>
+          <div class="header-content-cell"><%= facility_name %></div>
           <div class="header-content-cell">Role</div>
+          <div class="header-content-cell"><%= facility_name %></div>
         </div>
       </div>
     </div>
@@ -141,7 +145,7 @@
 </div>
 
 <div class="footer">
-  <button class="red" style="float: left;">Logout</button>
+  <button class="red" style="float: left;" onmousedown="window.location='/logout'">Logout</button>
   <button class="green" style="float: right;" onmousedown="window.location='/patients/search'">Find or Register Patient</button>
 </div>
 

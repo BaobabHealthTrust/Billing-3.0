@@ -359,6 +359,14 @@ table.dashboard-main tbody td,th{
     letter-spacing: 1px;
 }
 
+.scanner:focus  {
+    outline: none;
+    border: 0px;
+    border-bottom: 1px solid black !important;
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
 a{
     text-decoration: none;
 }
