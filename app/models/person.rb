@@ -24,9 +24,10 @@ class Person < ActiveRecord::Base
   end
 
   def is_child?
+    max_age = YAML.load_file("#{Rails.root}/config/application.yml")['adult_age']
     age_in_days = (Date.current - self.birthdate).to_i
 
-    if age_in_days < 4380
+    if age_in_days < (max_age * 365)
       return true
     else
       return false
