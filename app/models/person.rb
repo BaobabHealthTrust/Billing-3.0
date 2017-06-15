@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   has_many :addresses, :class_name => 'PersonAddress', :foreign_key => :person_id, :dependent => :destroy
   has_many :person_attributes, :class_name => 'PersonAttribute', :foreign_key => :person_id
 
-  def age
+  def display_age
     age_in_days = (Date.current - self.birthdate).to_i
 
     if age_in_days < 31
@@ -23,7 +23,15 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def is_child?
+    age_in_days = (Date.current - self.birthdate).to_i
 
+    if age_in_days < 4380
+      return true
+    else
+      return false
+    end
+  end
   def after_void(reason = nil)
     self.patient.void(reason) rescue nil
     self.names.each{|row| row.void(reason) }

@@ -1,0 +1,211 @@
+Item,unit,price,type,category
+Albendazole 200mg,Tablet,25,General,Pharmacy
+Allopurinol 100mg,Tablet,50,General,Pharmacy
+Aminophylline 100mg,Tablet,15,General,Pharmacy
+Amitriptyline 25mg,Tablet,15,General,Pharmacy
+Amlodipine 10mg,Tablet,30,General,Pharmacy
+Amlodipine 5mg,Tablet,30,General,Pharmacy
+Amoxycillin 250mg,Tablet,25,General,Pharmacy
+Amoxyclavulin Acid 500mg (augmentin),Tablet,300,General,Pharmacy
+Aspirin 300mg,Tablet,15,General,Pharmacy
+Atenolol 50mg,Tablet,40,General,Pharmacy
+Atorvastatin 10mg,Tablet,30,General,Pharmacy
+Atorvastatin 20mg,Tablet,30,General,Pharmacy
+Azithromycin 500mg ,3,2500,General,Pharmacy
+Bisacodyl 5mg,Tablet,15,General,Pharmacy
+Captopril 25mg   ,Tablet,15,General,Pharmacy
+Carbamazepine 200mg,Tablet,15,General,Pharmacy
+Chloramphenicol 250mg,Tablet,25,General,Pharmacy
+Chlorpheniramine maleate 4mg,Tablet,15,General,Pharmacy
+Chlorpromazine 100mg,Tablet,15,General,Pharmacy
+cefuroxime  250mg tabs,Tablet,200,General,Pharmacy
+Cetrizine hydrochloride 10mg,Tablet,210,General,Pharmacy
+Ciprofloxacin 250mg,Tablet,40,General,Pharmacy
+Cimetidine 400mg,Tablet,15,General,Pharmacy
+Cloxacillin 250mg,Tablet,25,General,Pharmacy
+Cotrimoxazole 480mg,Tablet,15,General,Pharmacy
+Codeine phosphate 15mg,Tablet,30,General,Pharmacy
+Dexamethasone 0.5mg,Tablet,15,General,Pharmacy
+Diazepam 5mg ,Tablet,30,General,Pharmacy
+Diclofenac 50mg,Tablet,15,General,Pharmacy
+Diclofenac 100mg,Tablet,20,General,Pharmacy
+Digoxin 0.25mg,Tablet,40,General,Pharmacy
+Doxycycline 100mg,Tablet,20,General,Pharmacy
+Domperidone ,Tablet,25,General,Pharmacy
+Enalapril 5mg,Tablet,25,General,Pharmacy
+Enalapril 10mg,Tablet,30,General,Pharmacy
+Erythromycin 250mg,Tablet,45,General,Pharmacy
+Ferrous sulphate 200mg,Tablet,15,General,Pharmacy
+Fluconazole 200mg,Tablet,200,General,Pharmacy
+Folic Acid 5mg,Tablet,15,General,Pharmacy
+Frusemide 40mg,Tablet,15,General,Pharmacy
+Glibenclamide 5mg,Tablet,15,General,Pharmacy
+Griseofulvin 500mg,Tablet,40,General,Pharmacy
+Hydralazine hydrocloride 25mg,Tablet,40,General,Pharmacy
+Hydrochlorothiazide 25mg,Tablet,15,General,Pharmacy
+Hyoscine Butylbromide 10mg-Buscopan,Tablet,25,General,Pharmacy
+Ibuprofen 200mg,Tablet,15,General,Pharmacy
+Indomethacin 25mg,Tablet,15,General,Pharmacy
+Isosorbide dinitrate 10mg,Tablet,25,General,Pharmacy
+Ketoconazole 200mg,Tablet,15,General,Pharmacy
+Levofloxacin 250mg,Tablet,150,General,Pharmacy
+Simple extraction: Adult,each,1300,General,Dental
+Simple extraction :Children,each,1000,General,Dental
+Minor oral Surgery,each,2500,General,Dental
+Incision and drainage,each,2000,General,Dental
+Jaw Fracture wiring (IMF),each,5000,General,Dental
+TMJ Reduction,each,2500,General,Dental
+One/ two surface filling,each,4500,General,Dental
+Three or more Surface filling,each,4500,General,Dental
+Composite,each,7000,General,Dental
+Temporary Filling,each,2500,General,Dental
+First Canal,each,2000,General,Dental
+Each additional canal,each,3000,General,Dental
+Scaling and Polishing,each,5000,General,Dental
+Simple extraction: Adult,each,4000,Private,Dental
+Simple extraction :Children,each,3000,Private,Dental
+Surgical Extraction,each,5000,Private,Dental
+Minor oral Surgery,each,4000,Private,Dental
+Incision and drainage,each,3500,Private,Dental
+Jaw Fracture wiring (IMF),each,8000,Private,Dental
+TMJ Reduction,each,5000,Private,Dental
+One/ two surface filling,each,5500,Private,Dental
+Three or more Surface filling,each,5500,Private,Dental
+Composite,each,12500,Private,Dental
+Temporary Filling,each,3000,Private,Dental
+First Canal,each,8000,Private,Dental
+Each additional canal,each,5000,Private,Dental
+Scaling and Polishing,each,10000,Private,Dental
+Diagnostic,each,6500,General,Other procedures
+CLO test,each,4000,General,Other procedures
+Biopsy,each,4500,General,Other procedures
+Health passport,each,150,General,Documentation
+Health passport,each,150,Private,Documentation
+Medical Report,each,4000,General,Documentation
+Death Report,each,4000,General,Documentation
+Birth Report,each,3500,General,Documentation
+Consultation (peadiatric),each,300,General,Consultation
+Consultation,each,500,General,Consultation
+Consultation (peadiatric),each,6000,Private,Consultation
+Consultation,each,6000,Private,Consultation
+Storage,each,12500,Private,Mortuary
+Embalming,each,20000,Private,Mortuary
+Storage,each,2000,General,Mortuary
+Embalming,each,20000,General,Mortuary
+Albendazole 200mg,Tablet,25,Private,Pharmacy
+Allopurinol 100mg,Tablet,50,Private,Pharmacy
+Aminophylline 100mg,Tablet,15,Private,Pharmacy
+Amitriptyline 25mg,Tablet,15,Private,Pharmacy
+Amlodipine 10mg,Tablet,30,Private,Pharmacy
+Amlodipine 5mg,Tablet,30,Private,Pharmacy
+Amoxycillin 250mg,Tablet,25,Private,Pharmacy
+Amoxyclavulin Acid 500mg (augmentin),Tablet,300,Private,Pharmacy
+Aspirin 300mg,Tablet,15,Private,Pharmacy
+Atenolol 50mg,Tablet,40,Private,Pharmacy
+Atorvastatin 10mg,Tablet,30,Private,Pharmacy
+Atorvastatin 20mg,Tablet,30,Private,Pharmacy
+Azithromycin 500mg ,3,2500,Private,Pharmacy
+Bisacodyl 5mg,Tablet,15,Private,Pharmacy
+Captopril 25mg   ,Tablet,15,Private,Pharmacy
+Carbamazepine 200mg,Tablet,15,Private,Pharmacy
+Chloramphenicol 250mg,Tablet,25,Private,Pharmacy
+Chlorpheniramine maleate 4mg,Tablet,15,Private,Pharmacy
+Chlorpromazine 100mg,Tablet,15,Private,Pharmacy
+cefuroxime  250mg tabs,Tablet,200,Private,Pharmacy
+Cetrizine hydrochloride 10mg,Tablet,210,Private,Pharmacy
+Ciprofloxacin 250mg,Tablet,40,Private,Pharmacy
+Cimetidine 400mg,Tablet,15,Private,Pharmacy
+Cloxacillin 250mg,Tablet,25,Private,Pharmacy
+Cotrimoxazole 480mg,Tablet,15,Private,Pharmacy
+Codeine phosphate 15mg,Tablet,30,Private,Pharmacy
+Dexamethasone 0.5mg,Tablet,15,Private,Pharmacy
+Diazepam 5mg ,Tablet,30,Private,Pharmacy
+Diclofenac 50mg,Tablet,15,Private,Pharmacy
+Diclofenac 100mg,Tablet,20,Private,Pharmacy
+Digoxin 0.25mg,Tablet,40,Private,Pharmacy
+Doxycycline 100mg,Tablet,20,Private,Pharmacy
+Domperidone ,Tablet,25,Private,Pharmacy
+Enalapril 5mg,Tablet,25,Private,Pharmacy
+Enalapril 10mg,Tablet,30,Private,Pharmacy
+Erythromycin 250mg,Tablet,45,Private,Pharmacy
+Ferrous sulphate 200mg,Tablet,15,Private,Pharmacy
+Fluconazole 200mg,Tablet,200,Private,Pharmacy
+Folic Acid 5mg,Tablet,15,Private,Pharmacy
+Frusemide 40mg,Tablet,15,Private,Pharmacy
+Glibenclamide 5mg,Tablet,15,Private,Pharmacy
+Griseofulvin 500mg,Tablet,40,Private,Pharmacy
+Hydralazine hydrocloride 25mg,Tablet,40,Private,Pharmacy
+Hydrochlorothiazide 25mg,Tablet,15,Private,Pharmacy
+Hyoscine Butylbromide 10mg-Buscopan,Tablet,25,Private,Pharmacy
+Ibuprofen 200mg,Tablet,15,Private,Pharmacy
+Indomethacin 25mg,Tablet,15,Private,Pharmacy
+Isosorbide dinitrate 10mg,Tablet,25,Private,Pharmacy
+Ketoconazole 200mg,Tablet,15,Private,Pharmacy
+Levofloxacin 250mg,Tablet,150,Private,Pharmacy
+Abdomen Ultrasound,each,2500,General,Radiology
+Breast Ultrasound,each,2500,General,Radiology
+Cardiac Ultrasound,each,2500,General,Radiology
+Obsterics Ultrasound,each,2500,General,Radiology
+Pelvic Ultrasound,each,2500,General,Radiology
+KUB Ultrasound,each,2500,General,Radiology
+Abdomen Ultrasound,each,7500,Private,Radiology
+Breast Ultrasound,each,7500,Private,Radiology
+Cardiac Ultrasound,each,7500,Private,Radiology
+Obsterics Ultrasound,each,7500,Private,Radiology
+Pelvic Ultrasound,each,7500,Private,Radiology
+KUB Ultrasound,each,7500,Private,Radiology
+bleeding time,each,1400,Private,Laboratory
+full blood count and indices,each,1400,Private,Laboratory
+differential only,each,1400,Private,Laboratory
+eosinophil count,each,1000,Private,Laboratory
+haematocrit,each,1000,Private,Laboratory
+erythrocyte count,each,1000,Private,Laboratory
+erythrocyte sedimentaion rate (ESR),each,1400,Private,Laboratory
+Haemoglobin (HB),each,1000,Private,Laboratory
+lee white coagulation time,each,1000,Private,Laboratory
+lupus,each,1000,Private,Laboratory
+erythomatosus cells,each,1000,Private,Laboratory
+platelet count,each,1000,Private,Laboratory
+sickle cell test,each,1500,Private,Laboratory
+reticulocyte count ,each,1500,Private,Laboratory
+white cell count,each,1500,Private,Laboratory
+Peripheral Blood film,each,2000,Private,Laboratory
+bleeding time,each,700,General,Laboratory
+full blood count and indices,each,700,General,Laboratory
+differential only,each,700,General,Laboratory
+eosinophil count,each,500,General,Laboratory
+haematocrit,each,500,General,Laboratory
+erythrocyte count,each,500,General,Laboratory
+erythrocyte sedimentaion rate (ESR),each,700,General,Laboratory
+Haemoglobin (HB),each,500,General,Laboratory
+lee white coagulation time,each,500,General,Laboratory
+lupus,each,500,General,Laboratory
+erythomatosus cells,each,500,General,Laboratory
+platelet count,each,500,General,Laboratory
+sickle cell test,each,750,General,Laboratory
+reticulocyte count ,each,750,General,Laboratory
+white cell count,each,750,General,Laboratory
+Peripheral Blood film,each,1000,General,Laboratory
+Any Subsequent visit,each,1500,General,Maternity
+Normal Delivery (SVD),each,15000,General,Maternity
+Management of PPH,each,8000,General,Maternity
+Tear/Episiotopy,each,2500,General,Maternity
+Eclampsia,each,50000,General,Maternity
+Severe Anaemia,each,8000,General,Maternity
+PP Sepsis,each,15500,General,Maternity
+New born complications,each,12500,General,Maternity
+Laparatomy/Raptured Ectopic Pregnancy,each,35000,General,Maternity
+Evacuation,each,15500,General,Maternity
+Caesarian Section,each,25000,General,Maternity
+Manual Removal Placenta,each,8000,General,Maternity
+3rd Degree tear,each,8000,General,Maternity
+Severe Pneumonia,each,8000,General,Maternity
+Severe Malaria in Pregnancy,each,11000,General,Maternity
+Preterm labour,each,15500,General,Maternity
+Meningitis,each,25000,General,Maternity
+Postnatal checkup,each,700,General,Maternity
+Hydrocerectomy,each,15500,General,Maternity
+BTL,each,2000,General,Maternity
+Focal laser,each,10000,General,Ophthalmology
+Lid Split,each,2500,General,Ophthalmology
+Lid Repair,each,5000,General,Ophthalmology

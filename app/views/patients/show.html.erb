@@ -1,7 +1,68 @@
 <% title "Patient Dashboard" %>
 <style type="text/css">
-
+  .customButton {
+    padding: 5px;
+    font-size: 1.5em;
+    background: silver;
+    border: 2px outset grey;
+    margin: 5px;
+    min-width: 4vw;
+    height: 6vh;
+    text-align: center;
+  }
 </style>
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onmousedown="hideModal();">&times;</span>
+      <%= form_for :order_payments, :method => "POST", :url => new_order_payment_path do |f|%>
+        <%= hidden_field_tag "creator", current_user.id %>
+        <%= hidden_field_tag "order_payment[amount]", 0 %>
+        <%= hidden_field_tag "order_payment[patient_id]", @patient.id %>
+        <%= hidden_field_tag "order_payment[location]", current_location.name %>
+      <% end %>
+
+    <table style="width: 100%; border: 2px solid black; border-width: 0px 0px 2px 0px; font-size: 1.3em">
+      <tr>
+        <td>Entered Amount</td>
+        <th id="paying" style="text-align: left;width: 20%;">0.00</th>
+        <td>Amount Due</td>
+        <th  style="text-align: left;width: 20%;color: darkred;"><%= @amount_due%></th>
+        <td>Change</td>
+        <th id="change" style="text-align: left;width: 20%;color: darkgreen;">0.00</th>
+      </tr>
+    </table>
+
+    <div style="margin-top: 5px;">
+      <table width="100" cellspacing="15" >
+        <tr>
+          <td class="customButton" onmousedown="append(1);"><span>1</span></td>
+          <td class="customButton" onmousedown="append(2);"><span>2</span></td>
+          <td class="customButton" onmousedown="append(3);"><span>3</span></td>
+        </tr>
+        <tr>
+          <td class="customButton" onmousedown="append(4);"><span>4</span></td>
+          <td class="customButton" onmousedown="append(5);"><span>5</span></td>
+          <td class="customButton" onmousedown="append(6);"><span>6</span></td>
+        </tr>
+        <tr>
+          <td class="customButton" onmousedown="append(7);"><span>7</span></td>
+          <td class="customButton" onmousedown="append(8);"><span>8</span></td>
+          <td class="customButton" onmousedown="append(9);"><span>9</span></td>
+        </tr>
+        <tr>
+          <td class="customButton" onmousedown="append(0);"><span>0</span></td>
+          <td class="customButton" ><span>&nbsp;</span></td>
+          <td class="customButton" onmousedown="append('del');"><span>del</span></td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
 <div id="header" style="height: 15vh; width:98vw;margin-top:1vh; margin-left: auto;margin-right: auto;">
   <div style="display: table-row">
     <div class="header-cell" style="display: table-cell; width:98vw;vertical-align: middle;height: 15vh;">
@@ -17,7 +78,7 @@
               <div class="header-content-cell"><b>Name</b></div>
               <div class="header-content-cell" style="width: 45%;"><%= @patient.full_name %></div>
               <div class="header-content-cell"><b>Age</b></div>
-              <div class="header-content-cell"><%= @patient.person.age %></div>
+              <div class="header-content-cell"><%= @patient.person.display_age %></div>
             </div>
             <div style="display: table-row; ">
               <div class="header-content-cell"><b>National ID</b></div>
@@ -51,32 +112,34 @@
       <thead>
       <tr>
         <th>Item</th>
-        <th>Unit Price</th>
+        <th>Quantity</th>
         <th>Amount</th>
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <th>Consultation</th>
-        <td style="">0</td>
-        <td>0</td>
-      </tr>
+      <% (@today_orders || []).each do |order| %>
+          <tr>
+            <th><%= order.description %></th>
+            <th><%= order.quantity %></th>
+            <td style=""><%= order.full_price %></td>
+          </tr>
+      <% end %>
       </tbody>
       <tfoot>
       <tr>
+        <th>&nbsp;</th>
         <th>Total</th>
-        <th>&nbsp;</th>
-        <th>0</th>
+        <th><%= @total %></th>
       </tr>
       <tr>
-        <th>Amount Due</th>
         <th>&nbsp;</th>
-        <th>0</th>
+        <th style="color: green">Amount Paid</th>
+        <th style="color: green"><%= @today_payments %></th>
       </tr>
       <tr>
-        <th>Amount Paid</th>
         <th>&nbsp;</th>
-        <th>0</th>
+        <th style="color: darkred">Amount Due</th>
+        <th style="color: darkred"><%= @amount_due %></th>
       </tr>
       </tfoot>
     </table>
@@ -127,6 +190,48 @@
 
 <div class="footer">
   <button class="green" style="float: right;" onmousedown="window.location='/'">Finish</button>
-  <button style="float: right;" onmousedown="window.location='/order_entries/new'">Add Transaction</button>
-
+  <button style="float: right;" onmousedown="window.location='/patients/<%= @patient.id%>/order_entries/new'">Add Transaction</button>
+  <%if  @amount_due > 0 %>
+    <button id="myBtn" style="float: right;" onmousedown="showModal()">Pay Bill</button>
+  <% end %>
 </div>
+
+<script>
+    var bill = <%= @amount_due %>;
+    var modal = document.getElementById('myModal');
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function append(key){
+        var input = document.getElementById("paying");
+        var change = document.getElementById("change");
+
+        if(input.innerHTML.trim() == "0.00")
+        {
+            if (key != "del")
+            {
+                input.innerHTML = parseFloat(key).toFixed(2);
+            }
+        }
+        else
+        {
+            if (key != "del")
+            {
+                input.innerHTML = parseFloat(parseInt(input.innerHTML).toString().trim() + key).toFixed(2);
+            }
+            else
+            {
+                var temp = parseInt(input.innerHTML).toString().trim();
+                input.innerHTML = parseFloat(temp.substring(0,temp.length-1)).toFixed(2)
+            }
+        }
+
+        var actual_change = parseFloat(input.innerHTML) - parseFloat(bill);
+        change.innerHTML = (actual_change > 0 ? actual_change : "0.00")
+    }
+
+</script>

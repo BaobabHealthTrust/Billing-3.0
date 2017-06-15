@@ -5,6 +5,7 @@ class CreateServicePrices < ActiveRecord::Migration
       t.float :price, null: false, default: 0.0
       t.string :price_type, null: false
       t.integer :creator, null: false
+      t.integer :updated_by, null: false
       t.boolean :voided, default: false
       t.date :voided_date
       t.timestamps null: false

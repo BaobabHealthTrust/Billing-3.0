@@ -21,6 +21,25 @@ class SessionsController < ApplicationController
 
   end
 
+  def location
+    render :layout => 'touch'
+  end
+
+  def add_location
+
+    location = Location.find(params[:location]) rescue nil
+    location ||= Location.find_by_name(params[:location]) rescue nil
+
+    if location.blank?
+      flash[:error] = "Invalid workstation location"
+      redirect_to "/location"
+    else
+      session[:location] = location.id
+      redirect_to root_path
+    end
+
+  end
+
   def destroy
     session[:user_id] = nil
     @current_user = nil

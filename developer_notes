@@ -4,3 +4,5 @@ Notes on features, issues, wishes
   need to be de-linked in the future.
 * Fix birthdate estimated variations in patients helper
 * Fix confirmation when adding new patient
+* Improve is_child? code in person model
+* Foreign resident causes bug

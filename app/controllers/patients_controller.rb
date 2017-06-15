@@ -234,6 +234,16 @@ class PatientsController < ApplicationController
 
   def show
     @patient = Patient.find(params[:id])
+    @today_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity,
+                                      :full_price).where(patient_id: @patient.id,
+                                                         order_date: Date.current.beginning_of_day..Date.current.end_of_day)
+
+    @today_payments = OrderPayment.select("sum(amount) as amount").where(order_entry_id: @today_orders.collect{|x|x.order_entry_id},
+                                                               payment_stamp: Date.current.beginning_of_day..Date.current.end_of_day).first
+
+    @today_payments = (@today_payments.amount.blank? ? 0 : @today_payments.amount)
+    @total = @today_orders.inject(0){|sum, x|  sum + x.full_price}
+    @amount_due = @total - @today_payments
   end
 
   def patient_by_id

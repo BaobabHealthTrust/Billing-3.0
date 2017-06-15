@@ -7,7 +7,7 @@
     <div class="header-cell" style="display: table-cell; width:85vw;vertical-align: middle;">
       <table style="width: 100%;">
         <tr>
-          <td style="width: 20%;" >
+          <td style="width: 30%;" >
             <div style="display: table-row">
               <div style="display: table-cell;vertical-align: top;">
                 <strong>Scan Patient Barcode</strong>
@@ -31,7 +31,7 @@
         </div>
         <div style="display: table-row; ">
           <div class="header-content-cell">Location</div>
-          <div class="header-content-cell"><%= current_location %></div>
+          <div class="header-content-cell"><%= current_location.name.titleize %></div>
           <div class="header-content-cell">Role</div>
           <div class="header-content-cell"><%= facility_name %></div>
         </div>
@@ -178,18 +178,8 @@
     {
         var barcodeTxt = document.getElementById("barcode");
         if (barcodeTxt.value.trim().match(/[A-Z0-9]+\$/)) {
-
             barcodeTxt.value = barcodeTxt.value.trim().replace(/\$/, "").replace(/\-/,"")
-            if (barcodeTxt.value.toUpperCase().length >= 7)
-            {
-                window.location = "/patients/patient_by_id/"+barcodeTxt.value.trim();
-            }
-            else
-            {
-                barcodeTxt.value = "";
-                initializeListener();
-            }
-
+            window.location = "/patients/patient_by_id/"+barcodeTxt.value.trim();
         }
         else
         {

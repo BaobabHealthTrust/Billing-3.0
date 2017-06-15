@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get 'print_national_id'
       get 'patient_by_id(/:id)', action: :patient_by_id
     end
+    resources :order_entries
   end
 
   resources :users

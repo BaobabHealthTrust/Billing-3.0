@@ -1,0 +1,109 @@
+
+<%= form_for :order_entries, :method => "POST" ,:url => order_entries_path  do |f| %>
+    <%= select_tag 'order_entry[categories][]',
+                   options_for_select(@categories, nil),
+                   :id => "order_categories",
+                   :helpText => "Select service" ,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[documentation][]',
+                   options_for_select(entry_options('documentation'), nil),
+                   :id => "documentation",
+                   :helpText => "Select document type" ,
+                   :condition => "getSelected().match(/Documentation/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[dental][]',
+                   options_for_select(entry_options('dental'), nil),
+                   :id => "dental_procedures",
+                   :helpText => "Select dental service offered" ,
+                   :condition => "getSelected().match(/DENTAL/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[lab][]',
+                   options_for_select(entry_options('laboratory'), nil),
+                   :id => "lab_orders",
+                   :helpText => "Select laboratory test to be performed" ,
+                   :condition => "getSelected().match(/LABORATORY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[maternity][]',
+                   options_for_select(entry_options('maternity'), nil),
+                   :id => "maternity",
+                   :helpText => "Select maternity service(s)" ,
+                   :condition => "getSelected().match(/MATERNITY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[ophthalmology][]',
+                   options_for_select(entry_options('ophthalmology'), nil),
+                   :id => "ophthamology",
+                   :helpText => "Select eye service accessed" ,
+                   :condition => "getSelected().match(/OPHTHALMOLOGY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[other_procedures][]',
+                   options_for_select(entry_options('other procedures'), nil),
+                   :id => "other_procedures",
+                   :helpText => "Select procedure(s) to be performed" ,
+                   :condition => "getSelected().match(/OTHER PROCEDURES/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[pharmacy][]',
+                   options_for_select(entry_options('pharmacy'), nil),
+                   :id => "pharmacy",
+                   :helpText => "Select pharmaceuticals prescribed" ,
+                   :condition => "getSelected().match(/PHARMACY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[radiology][]',
+                   options_for_select(entry_options('radiology'), nil),
+                   :id => "radiology",
+                   :helpText => "Select radiological test(s) to be performed" ,
+                   :condition => "getSelected().match(/RADIOLOGY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[surgery][]',
+                   options_for_select(entry_options('surgery'), nil),
+                   :id => "surgery",
+                   :helpText => "Select surgical procedures" ,
+                   :condition => "getSelected().match(/SURGERY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[mortuary][]',
+                   options_for_select(entry_options('mortuary'), nil),
+                   :id => "mortuary",
+                   :helpText => "Select mortuary service" ,
+                   :condition => "getSelected().match(/MORTUARY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= hidden_field_tag "creator", current_user.id %>
+    <%= hidden_field_tag "order_entry[patient_id]", params[:patient_id] %>
+    <%= hidden_field_tag "order_entry[location]", current_location.name %>
+
+<% end %>
+
+<script type="text/javascript">
+    function getSelected(){
+        var choices = "";
+
+        for(var o = 0; o < __$('order_categories').options.length; o++){
+            if(__$('order_categories').options[o].selected == true){
+                choices += __$('order_categories').options[o].innerHTML + " ";
+            }
+        }
+
+        return choices;
+    }
+
+    tt_cancel_destination = "/patients/<%= params[:patient_id] %>"
+</script>

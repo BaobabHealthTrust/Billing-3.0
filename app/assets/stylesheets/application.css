@@ -15,7 +15,7 @@
 
 ::-webkit-scrollbar {
     height: 3vh;
-    width: 5vw;
+    width: 7vw;
     background: #C0C0C0;
 }
 
@@ -71,7 +71,7 @@ div.footer{
 #main{
     margin-right: auto;
     margin-left: auto;
-    margin-top: 2vh;
+    margin-top: 3vh;
     width: 98vw;
 }
 
@@ -79,10 +79,10 @@ div.tab{
     line-height: 2em;
     border: 3px solid #336699;
     background: #999999;
-    min-width: 15vw;
+    min-width: 20vw;
     display: table-cell;
-    color: #FFFFFF;
-    font-size: 1.3em;
+    color: #000000;
+    font-size: 1.2em;
     font-weight: bold;
     font-family: "Arial Black", Gadget, sans-serif;
     text-align: center;
@@ -93,10 +93,10 @@ div.tab-active{
     line-height: 3em;
     border: 3px outset silver;
     background: #666666;
-    min-width: 15vw;
+    min-width: 20vw;
     display: table-cell;
     color: #FFFFFF;
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: bold;
     font-family: "Arial Black", Gadget, sans-serif;
     text-align: center;
@@ -395,4 +395,41 @@ div.female{
     border-radius: 15px;
     display: table-cell;
     padding: 10px;
+}
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
