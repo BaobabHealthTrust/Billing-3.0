@@ -1,11 +1,11 @@
 class OrderEntry < ActiveRecord::Base
   default_scope {-> { where "#{self.table_name}.voided = false" }}
-
   belongs_to :service, :foreign_key => :service_id
   belongs_to :patient, :foreign_key => :patient_id
   belongs_to :user, :foreign_key => :cashier
   has_many :order_payments, :foreign_key => :order_entry_id
   attr_accessor :service_offered, :service_point
+
   before_create :complete_record
 
   def description
