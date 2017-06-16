@@ -33,4 +33,26 @@ module Misc
     end
   end
 
+  def self.print_receipt(ids)
+    payments = OrderPayment.where(order_payment_id: ids)
+    (payments || []).each do |payment|
+
+    end
+
+    patient_name = payments.first.order_entry.patient.full_name
+    cashier = payments.first.cashier.name
+
+    label = ZebraPrinter::StandardLabel.new
+    label.font_size = 2
+    label.font_horizontal_multiplier = 2
+    label.font_vertical_multiplier = 2
+    label.left_margin = 50
+    label.draw_multi_text("#{'Daeyang Luke Mission Hospital'.titleize}")
+    label.draw_multi_text("#{'P. O. Box 30330, LL3'.titleize}")
+    label.draw_multi_text("Date: #{Date.current.strftime('%d %b %Y')}")
+    label.draw_multi_text("Patient: #{patient_name.titleize}")
+
+    label.draw_multi_text("Issued By: #{cashier.titleize}")
+    label.print(1)
+  end
 end

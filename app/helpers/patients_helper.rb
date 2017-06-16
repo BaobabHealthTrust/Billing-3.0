@@ -40,4 +40,23 @@ module PatientsHelper
         }
     }.to_json
   end
+
+  def past_records(entries)
+    records = {}
+    (entries || []).each do |entry|
+      status = entry.status
+      date = entry.order_date.strftime("%d %b %Y")
+
+      records[date] = {"summary" => {},"details" => []} if records[date].blank?
+      records[date]["details"] << {service: entry.description, quantity: entry.quantity,
+                                                         price: entry.full_price, id: entry.id,
+                                                         status: status[:bill_status]}
+
+      (records[date]["summary"]["bill"].blank? ? records[date]["summary"]["bill"] = entry.full_price : records[date]["summary"]["bill"]+= entry.full_price)
+      (records[date]["summary"]["paid"].blank? ? records[date]["summary"]["paid"] = status[:amount] : records[date]["summary"]["paid"]+= status[:amount])
+
+    end
+
+    return records
+  end
 end

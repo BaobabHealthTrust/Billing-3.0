@@ -1,6 +1,7 @@
 class ServicePrice < ActiveRecord::Base
 
-  belongs_to :service
+  belongs_to :service, -> {where "voided = false"}
+  default_scope {-> { where "voided = false" }}
 
   before_update :price_updated
 
