@@ -21,7 +21,7 @@ class OrderPaymentsController < ApplicationController
           amount_due = (entry.full_price - order_status[:amount])
           pay_amount =  (amount_due <= amount ? amount_due : amount)
 
-          new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: params[:creator],
+          new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
                                             amount: pay_amount , payment_mode: "CASH")
           amount -= pay_amount
           new_payments << new_payment.id

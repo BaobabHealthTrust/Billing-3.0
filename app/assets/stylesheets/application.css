@@ -360,6 +360,7 @@ table.dashboard-main tbody tr:nth-child(odd){
     border: 5px outset #00CC00;
     padding-top: 2vh;
     padding-bottom: 2vh;
+    font-size: 2em;
 }
 
 .scanner{
@@ -430,12 +431,10 @@ div.female{
 
 /* The Close Button */
 .close {
-    color: #000000;
-    float: right;
     font-size: 4em;
     font-weight: bold;
-    margin-top: -5vh;
-    margin-right: 1vw;
+    float: right;
+    vertical-align: middle;
 }
 
 .close:hover,
@@ -449,7 +448,7 @@ div.female{
     font-size: 1.5em;
     background: silver;
     border: 2px outset grey;
-    margin: 5px;
+    margin: 8px;
     min-width: 6vw;
     height: 8vh;
     text-align: center;
@@ -484,7 +483,7 @@ div.collapsible-summary.active:after {
 }
 
 div.collapsible-content {
-    padding: 0 18px;
+    padding: 0 3px;
     background-color: white;
     max-height: 0;
     overflow: hidden;
