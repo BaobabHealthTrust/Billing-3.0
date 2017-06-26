@@ -19,9 +19,9 @@ class User < ActiveRecord::Base
 
 
     belongs_to :person, -> {where voided: false}, :foreign_key => :person_id
-    #has_many :user_properties, :foreign_key => :user_id # no default scope
-    #has_many :user_roles, :foreign_key => :user_id, :dependent => :delete_all # no default scope
-    #has_many :names, :class_name => 'PersonName', :foreign_key => :person_id, :dependent => :destroy, :order => 'person_name.preferred DESC', :conditions => {:voided =>  0}
+    has_many :user_properties, :foreign_key => :user_id
+    has_many :user_roles, :foreign_key => :user_id
+    has_many :names,-> { where "voided =  false"}, :class_name => 'PersonName', :foreign_key => :person_id
 
     def set_password
       # We expect that the default OpenMRS interface is used to create users
@@ -122,6 +122,15 @@ class User < ActiveRecord::Base
 
     def self.encrypt(password,salt)
       Digest::SHA1.hexdigest(password+salt)
+    end
+
+    def is_admin?
+      roles = self.user_roles.collect{|c| c.role}
+      roles.any? {|x| ["Informatics Manager","Program Manager", "Superuser", "Superuser,Superuser,", "System Developer"].include? x}
+    end
+
+    def role
+      self.user_roles.first.role
     end
 
 =begin

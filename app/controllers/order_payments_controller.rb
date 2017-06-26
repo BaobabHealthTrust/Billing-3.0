@@ -22,7 +22,7 @@ class OrderPaymentsController < ApplicationController
           pay_amount =  (amount_due <= amount ? amount_due : amount)
 
           new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
-                                            amount: pay_amount , payment_mode: "CASH")
+                                            amount: pay_amount , payment_mode: params[:order_payment][:mode])
           amount -= pay_amount
           new_payments << new_payment.id
         end
@@ -32,7 +32,7 @@ class OrderPaymentsController < ApplicationController
     end
 
     #if print barcode
-    print_and_redirect("/order_payments/print_receipt?ids=#{new_payments.join(',')}",
+    print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_payments.join(',')}",
                        "/patients/#{params[:order_payment][:patient_id]}")
 
 
@@ -40,7 +40,7 @@ class OrderPaymentsController < ApplicationController
 
   def print_receipt
     ids = params[:ids].split(',') rescue params[:id]
-    print_string = Misc.print_receipt(ids)
+    print_string = Misc.print_receipt(ids,params[:change].to_f)
 
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false,
               :filename=>"#{(0..8).map { (65 + rand(26)).chr }.join}.lbl", :disposition => "inline")

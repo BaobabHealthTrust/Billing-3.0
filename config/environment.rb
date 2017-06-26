@@ -7,3 +7,4 @@ require "zebra_printer"
 require "bantu_soundex"
 require "rest-client"
 require 'csv'
+require 'json'

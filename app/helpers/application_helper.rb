@@ -36,8 +36,10 @@ module ApplicationHelper
   end
 
   def preferred_user_keyboard
-    UserProperty.find(:first,
-                      :conditions =>["property = ? AND user_id = ?",'preferred.keyboard',
-                                     current_user.id]).property_value rescue 'qwerty'
+    UserProperty.where(property: 'preferred.keyboard',user_id: current_user.id).first.property_value rescue 'qwerty'
+  end
+
+  def local_currency(amount)
+    return number_to_currency(amount, unit: "MWK ")
   end
 end

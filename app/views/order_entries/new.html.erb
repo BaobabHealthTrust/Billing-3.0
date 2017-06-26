@@ -10,7 +10,7 @@
                    options_for_select(entry_options('documentation'), nil),
                    :id => "documentation",
                    :helpText => "Select document type" ,
-                   :condition => "getSelected().match(/Documentation/i)",
+                   :condition => "getSelected('order_categories').match(/Documentation/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -18,7 +18,7 @@
                    options_for_select(entry_options('dental'), nil),
                    :id => "dental_procedures",
                    :helpText => "Select dental service offered" ,
-                   :condition => "getSelected().match(/DENTAL/i)",
+                   :condition => "getSelected('order_categories').match(/DENTAL/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -26,7 +26,7 @@
                    options_for_select(entry_options('laboratory'), nil),
                    :id => "lab_orders",
                    :helpText => "Select laboratory test to be performed" ,
-                   :condition => "getSelected().match(/LABORATORY/i)",
+                   :condition => "getSelected('order_categories').match(/LABORATORY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -34,7 +34,7 @@
                    options_for_select(entry_options('maternity'), nil),
                    :id => "maternity",
                    :helpText => "Select maternity service(s)" ,
-                   :condition => "getSelected().match(/MATERNITY/i)",
+                   :condition => "getSelected('order_categories').match(/MATERNITY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -42,7 +42,7 @@
                    options_for_select(entry_options('ophthalmology'), nil),
                    :id => "ophthamology",
                    :helpText => "Select eye service accessed" ,
-                   :condition => "getSelected().match(/OPHTHALMOLOGY/i)",
+                   :condition => "getSelected('order_categories').match(/OPHTHALMOLOGY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -50,11 +50,50 @@
                    options_for_select(entry_options('other procedures'), nil),
                    :id => "other_procedures",
                    :helpText => "Select procedure(s) to be performed" ,
-                   :condition => "getSelected().match(/OTHER PROCEDURES/i)",
+                   :condition => "getSelected('order_categories').match(/OTHER PROCEDURES/i)",
                    :optional => false,
                    :multiple =>  true %>
 
-    <%= select_tag 'order_entry[pharmacy][]',
+    <%= select_tag 'order_entry[panels][pharmacy][]',
+                   options_for_select(panel_options('pharmacy'), nil),
+                   :id => "pharmacy_panels",
+                   :helpText => "Select from common regimen" ,
+                   :condition => "getSelected('order_categories').match(/PHARMACY/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <% counter = 0
+
+       4.times do %>
+        <% counter += 1%>
+
+        <%= text_field_tag "order_entry[pharmacy][order#{counter}]", nil,
+                           {:id => "additional_prescription_#{counter}",
+                            :ajaxURL => "",
+                            :allowFreeText => true,
+                            :condition => "getSelected('pharmacy_panels').match(/OTHER/i)",
+                            :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'pharmacy'); ",
+                            :helptext => "Additional prescription"}  %>
+
+
+        <%#= touch_select_tag "DETAILED ADDITIONAL DIAGNOSIS", @patient, nil,
+                             { :id => "additional_secondary_diagnosis_details_#{counter}",
+                               :parent_concept_name => "ADDITIONAL DIAGNOSIS",
+                               :condition => "diagnoses_requiring_details.contains($('additional_diagnosis_#{counter}').value.toUpperCase())",
+                               :ajaxURL => "/encounters/daignosis_details?search_string=",
+                               :tt_onLoad => "set_ajaxURL_for_suggestions(document.getElementById('additional_diagnosis_#{counter}').value);",
+                               :helpText => "Detailed additional diagnosis" } %>
+
+        <%#= touch_text_field_tag "SPECIFIC ADDITIONAL DIAGNOSIS", @patient, nil,
+                                 { :id => "additional_specific_diagnosis_#{counter}",
+                                   :parent_concept_name => "ADDITIONAL DIAGNOSIS",
+                                   :condition => "diagnoses_requiring_specification.contains($('additional_diagnosis_#{counter}').value.toUpperCase())",
+                                   :allowFreeText => 'true',
+                                   :textCase => "upper",
+                                   :helpText => "Additional specific secondary diagnosis" } %>
+    <% end %>
+
+    <%#= select_tag 'order_entry[pharmacy][]',
                    options_for_select(entry_options('pharmacy'), nil),
                    :id => "pharmacy",
                    :helpText => "Select pharmaceuticals prescribed" ,
@@ -66,7 +105,7 @@
                    options_for_select(entry_options('radiology'), nil),
                    :id => "radiology",
                    :helpText => "Select radiological test(s) to be performed" ,
-                   :condition => "getSelected().match(/RADIOLOGY/i)",
+                   :condition => "getSelected('order_categories').match(/RADIOLOGY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -74,7 +113,7 @@
                    options_for_select(entry_options('surgery'), nil),
                    :id => "surgery",
                    :helpText => "Select surgical procedures" ,
-                   :condition => "getSelected().match(/SURGERY/i)",
+                   :condition => "getSelected('order_categories').match(/SURGERY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
@@ -82,27 +121,33 @@
                    options_for_select(entry_options('mortuary'), nil),
                    :id => "mortuary",
                    :helpText => "Select mortuary service" ,
-                   :condition => "getSelected().match(/MORTUARY/i)",
+                   :condition => "getSelected('order_categories').match(/MORTUARY/i)",
                    :optional => false,
                    :multiple =>  true %>
 
     <%= hidden_field_tag "creator", current_user.id %>
     <%= hidden_field_tag "order_entry[patient_id]", params[:patient_id] %>
-    <%= hidden_field_tag "order_entry[location]", current_location.name %>
+    <%= hidden_field_tag "order_entry[location_name]", current_location.name %>
+    <%= hidden_field_tag "order_entry[location]", current_location.id %>
 
 <% end %>
 
 <script type="text/javascript">
-    function getSelected(){
+    function getSelected(element){
         var choices = "";
 
-        for(var o = 0; o < __$('order_categories').options.length; o++){
-            if(__$('order_categories').options[o].selected == true){
-                choices += __$('order_categories').options[o].innerHTML + " ";
+        for(var o = 0; o < __$(element).options.length; o++){
+            if(__$(element).options[o].selected == true){
+                choices += __$(element).options[o].innerHTML + " ";
             }
         }
 
         return choices;
+    }
+
+    function set_ajaxURL_for_suggestions(url, filter_value) {
+        $('touchscreenInput' + tstCurrentPage).setAttribute('ajaxURL', url + filter_value + "&search_string=");
+        listSuggestions(tstCurrentPage);
     }
 
     tt_cancel_destination = "/patients/<%= params[:patient_id] %>"

@@ -33,7 +33,7 @@
           <div class="header-content-cell">Location</div>
           <div class="header-content-cell"><%= current_location.name.titleize %></div>
           <div class="header-content-cell">Role</div>
-          <div class="header-content-cell"><%= facility_name %></div>
+          <div class="header-content-cell"><%= current_user.role %></div>
         </div>
       </div>
     </div>
@@ -63,31 +63,27 @@
         <tbody>
           <tr>
             <th>New Registrations</th>
-            <td style="">0</td>
+            <td><%= @registrations %></td>
           </tr>
           <tr>
-            <th>Number of bills</th>
-            <td style="">0</td>
-          </tr>
-          <tr>
-            <th>Number of payments</th>
-            <td style="">0</td>
+            <th>Cash Payments</th>
+            <td><%= @cash_payments %></td>
           </tr>
           <tr>
             <th>Amount billed</th>
-            <td>0</td>
-          </tr>
-          <tr>
-            <th>Amount pending</th>
-            <td>0</td>
+            <td><%= local_currency(@billed) %></td>
           </tr>
           <tr>
             <th>Amount collected</th>
-            <td>0</td>
+            <td><%= local_currency(@collected) %></td>
+          </tr>
+          <tr>
+            <th>Amount pending</th>
+            <td><%= local_currency(@pending) %></td>
           </tr>
           <tr>
             <th>Amount at hand</th>
-            <td>0</td>
+            <td><%= local_currency(@collected) %></td>
           </tr>
         </tbody>
       </table>
@@ -97,12 +93,12 @@
       <div style="display: table-row;">
         <div style="display: table-cell">
           <div class = "link-button" onmousedown="window.location='/'">
-            Test
+            Cash Collections
           </div>
         </div>
         <div style="display: table-cell">
           <div class = "link-button" onmousedown="window.location='/'">
-            Test
+            Income Summary
           </div>
         </div>
         <div style="display: table-cell">
@@ -117,18 +113,30 @@
     <div style="display: table;margin: 3vh auto">
       <div style="display: table-row;">
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/service_types'">
             Manage Service Categories
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/services'">
             Manage Services
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/users'">
             Manage Users
+          </div>
+        </div>
+      </div>
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/medical_schemes'">
+            Manage Medical Schemes
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/mdeical_scheme_providers'">
+            Manage Medical Insurers
           </div>
         </div>
       </div>
@@ -148,7 +156,7 @@
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/user_properties/<%= current_user.id %>/edit?property=preferred.keyboard'">
             Keyboard preferences
           </div>
         </div>

@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       post 'process_confirmation'
       post 'ajax_process_result'
       post 'confirm_demographics'
-      get 'ajax_process_data'
+      post 'ajax_process_data'
       get 'patient_not_found'
       get 'print_national_id'
       get 'patient_by_id(/:id)', action: :patient_by_id
@@ -32,12 +32,17 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  resources :services
+  resources :user_properties
   resources :service_prices
   resources :service_types
   resources :medical_scheme
   resources :sessions
   resources :order_entries
+  resources :services do
+    collection do
+      get 'suggestions'
+    end
+  end
   resources :order_payments do
     collection do
       get 'print_receipt'

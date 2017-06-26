@@ -1,0 +1,28 @@
+<div class="section-header">
+  <b>Services :</b> <%= @service.name %>
+  <div style="display: table-row; width: 100vw;">
+    <div style="display: table-cell;">Current Prices</div>
+    <div style="display: table-cell;">:</div>
+    <div style="display: table-cell;"><%= "#{local_currency(@service.get_price("General").price)} (General)" %></div>
+    <div style="display: table-cell;"><%= "#{local_currency(@service.get_price("Private").price) rescue 'N/A'} (Private)" %></div>
+  </div>
+</div>
+<div>
+  <table class="dashboard-main" >
+    <thead>
+    <tr>
+      <th colspan="3">Service Price History</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th>General</th>
+      <th>Private</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+<div class="footer">
+  <button class="button green" style="float: right;" onmousedown="window.location='/services'">Finish</button>
+</div>

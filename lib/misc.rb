@@ -33,26 +33,45 @@ module Misc
     end
   end
 
-  def self.print_receipt(ids)
+  def self.print_receipt(ids, change)
     payments = OrderPayment.where(order_payment_id: ids)
-    (payments || []).each do |payment|
-
-    end
-
     patient_name = payments.first.order_entry.patient.full_name
     cashier = payments.first.cashier.name
+    text = []
+    heading = ""
+    heading += "#{get_config('facility_name').titleize}\n"
+    heading += "#{get_config('facility_address')}\n"
+    heading += "Date: #{Date.current.strftime('%d %b %Y')}\n"
+    heading += "Patient: #{patient_name.titleize}\n"
+    heading += "Issued By: #{cashier.titleize}\n"
+    total = 0
+    (payments || []).each do |payment|
+      text << [payment.service.name, local_currency(payment.amount)]
+      total += payment.amount
+    end
 
-    label = ZebraPrinter::StandardLabel.new
-    label.font_size = 2
-    label.font_horizontal_multiplier = 2
-    label.font_vertical_multiplier = 2
-    label.left_margin = 50
-    label.draw_multi_text("#{'Daeyang Luke Mission Hospital'.titleize}")
-    label.draw_multi_text("#{'P. O. Box 30330, LL3'.titleize}")
-    label.draw_multi_text("Date: #{Date.current.strftime('%d %b %Y')}")
-    label.draw_multi_text("Patient: #{patient_name.titleize}")
-
-    label.draw_multi_text("Issued By: #{cashier.titleize}")
+    label = ZebraPrinter::Label.new(616,203,'056',true)
+    label.font_size = 3
+    label.font_horizontal_multiplier = 1
+    label.font_vertical_multiplier = 1
+    label.draw_multi_text(heading)
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table(text, [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table([['Total: ',local_currency(total)]], [[370, "left"], [200, "right"]])
+    label.draw_table([['Cash: ',local_currency((total+change))]], [[370, "left"], [200, "right"]])
+    label.draw_table([['Change: ',local_currency(change)]], [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,7,1)
     label.print(1)
+  end
+
+  def self.get_config(prop)
+    YAML.load_file("#{Rails.root}/config/application.yml")[prop]
+  end
+
+  def self.local_currency(amount)
+    return ActiveSupport::NumberHelper::number_to_currency(amount,{precision: 2,unit: 'MWK '})
   end
 end

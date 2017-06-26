@@ -15,8 +15,8 @@ class PatientsController < ApplicationController
       #DDE available
       json_params = view_context.patient_json(params[:person],params["CURRENT AREA OR T/A"],true)
 
-      @json = JSON.parse(json_params) rescue {}
-
+      @json = JSON.parse(json_params)
+      #raise @json.inspect
       @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] # rescue {}
 
       if secure?
@@ -435,7 +435,7 @@ class PatientsController < ApplicationController
 
     settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] rescue {}
 
-    person = JSON.parse(params[:person]) rescue {}
+    person = params[:person] rescue {}
 
     result = []
 

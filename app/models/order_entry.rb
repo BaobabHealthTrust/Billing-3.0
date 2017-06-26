@@ -13,7 +13,7 @@ class OrderEntry < ActiveRecord::Base
   end
 
   def complete_record
-    service = Service.find_by_name(self.service_offered)
+    service = (self.service_id.blank? ? Service.find_by_name(self.service_offered) : self.service)
     self.service_id = service.id
     self.full_price= (service.service_prices.select(:price).where(price_type: self.service_point).first.price * self.quantity) rescue 0
   end
@@ -22,7 +22,7 @@ class OrderEntry < ActiveRecord::Base
     amount_paid = self.order_payments.select("COALESCE(SUM(amount),0) as amount").first.amount
     if (amount_paid > 0 && amount_paid < self.full_price)
       return {bill_status: "PARTIAL PAYMENT", amount: amount_paid}
-    elsif (amount_paid > self.full_price)
+    elsif (amount_paid >= self.full_price)
       return {bill_status: "PAID", amount: amount_paid}
     else
       return {bill_status: "UNPAID", amount: amount_paid}

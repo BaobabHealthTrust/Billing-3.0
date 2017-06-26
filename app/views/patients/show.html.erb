@@ -2,7 +2,7 @@
 <div id="myModal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content" style="width: 65vw !important;">
+  <div class="modal-content" style="width: 70vw !important;">
     <div style="width: 100%; text-align: center;background-color: #CCCCCC;height: 10vh;padding-top: 3px;">
       <table width="100%">
         <tr>
@@ -12,6 +12,7 @@
       </table>
       <%= form_for :order_payments, :method => "POST", :url => order_payments_url do |f|%>
           <%= hidden_field_tag "creator", current_user.id %>
+          <%= hidden_field_tag "order_payment[mode]", "CASH" %>
           <%= hidden_field_tag "order_payment[amount]", 0 %>
           <%= hidden_field_tag "order_payment[patient_id]", @patient.id %>
           <%= hidden_field_tag "order_payment[location]", current_location.name %>
@@ -19,19 +20,19 @@
     </div>
     <div style="display: table;">
       <div style="display: table-row;">
-        <div style="display: table-cell;background-color:#eeeeee;width:35vw;padding: 10px;">
+        <div style="display: table-cell;background-color:#eeeeee;width:40vw;padding: 10px;">
           <table style="width: 100%; font-size: 1.5em; line-height: 2em" >
             <tr>
               <td>Entered Amount</td>
-              <th id="paying" style="text-align: left;width: 20%;">0.00</th>
+              <th id="paying" style="text-align: left;width: 40%;">MWK 0.00</th>
             </tr>
             <tr>
               <td>Amount Due</td>
-              <th  style="text-align: left;width: 20%;color: darkred;"><%= number_to_currency(@amount_due, precision: 2)%></th>
+              <th  style="text-align: left;width: 40%;color: darkred;"><%= local_currency(@amount_due)%></th>
             </tr>
             <tr>
               <td>Change</td>
-              <th id="change" style="text-align: left;width: 20%;color: darkgreen;">0.00</th>
+              <th id="change" style="text-align: left;width: 40%;color: darkgreen;">MWK 0.00</th>
             </tr>
           </table>
           <div class = "link-button submit-link" style="width: 12vw !important;margin-left: auto;margin-right: auto;margin-top: 15vh;" onmousedown="submitPayment();">
@@ -117,7 +118,7 @@
     <table class="dashboard-main" border="2">
       <thead>
       <tr>
-        <th style="text-align: left;">Item</th>
+        <th style="text-align: left;;padding-left: 5px;">Item</th>
         <th style="text-align:center;">Quantity</th>
         <th>Amount</th>
       </tr>
@@ -127,7 +128,7 @@
           <tr>
             <th><%= order.description %></th>
             <th style="text-align: center"><%= order.quantity %></th>
-            <td style=""><%= number_to_currency(order.full_price) %></td>
+            <td style=""><%= local_currency(order.full_price) %></td>
           </tr>
       <% end %>
       </tbody>
@@ -135,17 +136,17 @@
       <tr>
         <th>&nbsp;</th>
         <th>Total</th>
-        <th><%= number_to_currency(@total) %></th>
+        <th><%= local_currency(@total) %></th>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th style="color: green">Amount Paid</th>
-        <th style="color: green"><%= number_to_currency(@today_payments) %></th>
+        <th style="color: green"><%= local_currency(@today_payments) %></th>
       </tr>
       <tr>
         <th>&nbsp;</th>
         <th style="color: darkred">Amount Due</th>
-        <th style="color: darkred"><%= number_to_currency(@amount_due) %></th>
+        <th style="color: darkred"><%= local_currency(@amount_due) %></th>
       </tr>
       </tfoot>
     </table>
@@ -156,9 +157,9 @@
           <div style="border: 1px solid #000000; margin-bottom:8px;">
             <div class="collapsible-summary">
               <span style="width: 30%;"><b><%= day %></b></span>
-              [ <span style="width: 30%;">Total Bill: <%= number_to_currency @history[day]["summary"]["bill"]%></span>,
-                <span style="width: 30%;">Amount Paid: <%= number_to_currency @history[day]["summary"]["paid"]%></span>,
-                <span style="width: 30%;">Balance : <%= number_to_currency((@history[day]["summary"]["bill"] - @history[day]["summary"]["paid"])) %></span>]
+              [ <span style="width: 30%;">Total Bill: <%= local_currency @history[day]["summary"]["bill"]%></span>,
+                <span style="width: 30%;">Amount Paid: <%= local_currency @history[day]["summary"]["paid"]%></span>,
+                <span style="width: 30%;">Balance : <%= local_currency((@history[day]["summary"]["bill"] - @history[day]["summary"]["paid"])) %></span>]
             </div>
             <div class="collapsible-content">
               <% (@history[day]["details"].each_slice(2).to_a || []).each do |order| %>
@@ -170,7 +171,7 @@
                             <div style="display: table-cell;padding: 5px;">
                               <b>Item:</b> <%= order[0][:service] %><br/>
                               <b>QTY:</b> <%= order[0][:quantity] %><br/>
-                              <b>Amount:</b> <%= order[0][:price] %><br/>
+                              <b>Amount:</b> <%= local_currency(order[0][:price]) %><br/>
                               <b>Status:</b> <%= order[0][:status] %><br/>
                             </div>
                             <div style="display: table-cell;vertical-align: middle;padding: 5px;">
@@ -188,7 +189,7 @@
                                 <div style="display: table-cell;padding: 5px;">
                                   <b>Item:</b> <%= order[1][:service] %><br/>
                                   <b>QTY:</b> <%= order[1][:quantity] %><br/>
-                                  <b>Amount:</b> <%= order[1][:price] %><br/>
+                                  <b>Amount:</b> <%= local_currency(order[1][:price]) %><br/>
                                   <b>Status:</b> <%= order[0][:status] %><br/>
                                 </div>
                                 <div style="display: table-cell;vertical-align: middle;padding: 5px;">
@@ -256,34 +257,37 @@
         var change = document.getElementById("change");
         var amount = document.getElementById("order_payment_amount");
 
-        if(input.innerHTML.trim() == "0.00")
+        if(delocalize(input.innerHTML) == "0.00")
         {
             if (key != "del")
             {
-                input.innerHTML = parseFloat(key).toFixed(2);
+                input.innerHTML = localize(key)
+
             }
         }
         else
         {
             if (key != "del")
             {
-                input.innerHTML = parseFloat(parseInt(input.innerHTML).toString().trim() + key).toFixed(2);
+                input.innerHTML = localize(parseInt(delocalize(input.innerHTML)).toString().trim() + key)
+
             }
             else
             {
-                var temp = parseInt(input.innerHTML).toString().trim();
+                var temp = parseInt(delocalize(input.innerHTML)).toString().trim();
                 temp = parseFloat(temp.substring(0,temp.length-1)).toFixed(2)
-                input.innerHTML = (temp == "NaN" ? "0.00" : temp)
+                input.innerHTML = localize((temp == "NaN" ? "0.00" : temp))
             }
         }
 
-        var actual_change = parseFloat(input.innerHTML) - parseFloat(bill);
-        change.innerHTML = (actual_change > 0 ? actual_change : "0.00")
-        amount.value = input.innerHTML;
+        var actual_change = parseFloat((delocalize(input.innerHTML)) - parseFloat(bill));
+        change.innerHTML = localize((actual_change > 0 ? actual_change : "0.00"))
+        amount.value = delocalize(input.innerHTML);
     }
+
 
     function submitPayment(){
         document.forms[0].submit();
     }
-    initializeCollapsibles();
+    initializeCollapsible();
 </script>

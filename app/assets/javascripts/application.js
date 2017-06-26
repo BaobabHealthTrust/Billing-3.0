@@ -49,7 +49,7 @@ function hideModal(){
     modal.style.display = "none";
 }
 
-function initializeCollapsibles() {
+function initializeCollapsible() {
     var acc = document.getElementsByClassName("collapsible-summary");
     var i;
 
@@ -65,4 +65,90 @@ function initializeCollapsibles() {
         }
     }
 
+}
+
+function localize(amount)
+{
+    return "MWK " + parseFloat(amount).toFixed(2).toString();
+}
+
+function delocalize(value)
+{
+    return value.replace("MWK", "").trim();
+}
+function getCharButtonSetID(character,id){
+    return '<button onMouseDown="press(\''+character+'\');" class="keyboardButton" id="'+id+'">' +"<span style='width:32px'>"+character+"</span>"+ "</button>";
+}
+function getButtonString(id,string){
+    return "<button \
+                            onMouseDown='press(this.id);' \
+                            class='keyboardButton' \
+                            id='"+id+"'>"+
+        string +
+        "</button>";
+}
+
+function getButtons(chars){
+    var buttonLine = "";
+    for(var i=0; i<chars.length; i++){
+        character = chars.substring(i,i+1)
+        buttonLine += getCharButtonSetID(character,character)
+    }
+    return buttonLine;
+}
+
+function showAlphaKeypad(){
+    document.getElementById("keypad").style.height = "280";
+    keyboard.innerHTML= getButtons("0123456789") + "</br>"
+    keyboard.innerHTML+= getButtons("QWERTYUIOP") + "</br>"
+    keyboard.innerHTML+= getButtons("ASDFGHJKL:") + "</br>"
+    keyboard.innerHTML+= getButtons("ZXCVBNM,.?")
+    keyboard.innerHTML+= getButtonString('backspace','<span>Bksp</span>')
+    keyboard.innerHTML+= getButtonString('Space','<span>Space</span>')
+    keyboard.innerHTML+= getButtonString('clear','<span>Clear</span>')
+    keyboard.innerHTML+= getButtonString('cancel','<span>Cancel</span>')
+}
+
+function showKeyboard(){
+    key = document.getElementById("keypad")
+    if(key.style.display == 'none' || key.style.display == ""){
+        key.style.display = "inline";
+        return
+    }
+
+    key.style.display = "none";
+}
+
+function press(pressedChar){
+    switch (pressedChar) {
+        case 'backspace':
+            search.value = search.value.substring(0,search.value.length-1);
+            search_box.fnFilter(search.value)
+            return;
+        case 'Space':
+            search.value+= " "
+            search_box.fnFilter(search.value)
+            return
+        case 'clear':
+            search.value = ""
+            search_box.fnFilter(search.value)
+            return
+        case 'cancel':
+            search.value = ""
+            showKeyboard();
+            return
+        case 'slash':
+            search.value+= "/"
+            search_box.fnFilter(search.value)
+            return
+        case 'dash':
+            search.value+= "-"
+            search_box.fnFilter(search.value)
+            return
+        case 'abc':
+            showAlphaKeypad();
+            return
+    }
+    search.value+= pressedChar
+    search_box.fnFilter(search.value)
 }

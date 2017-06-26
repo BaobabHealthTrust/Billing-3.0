@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612114159) do
+ActiveRecord::Schema.define(version: 20170620133016) do
 
   create_table "medical_scheme_providers", primary_key: "scheme_provider_id", force: :cascade do |t|
     t.string   "company_name",    limit: 255
@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 20170612114159) do
     t.float    "quantity",      limit: 24,  default: 0.0,   null: false
     t.float    "full_price",    limit: 24,  default: 0.0,   null: false
     t.integer  "cashier",       limit: 4,                   null: false
+    t.integer  "location",      limit: 4
     t.boolean  "voided",                    default: false
     t.integer  "voided_by",     limit: 4
     t.string   "voided_reason", limit: 255
@@ -73,6 +74,26 @@ ActiveRecord::Schema.define(version: 20170612114159) do
     t.integer  "creator",           limit: 4,                null: false
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+  end
+
+  create_table "service_panel_details", primary_key: "panel_detail_id", force: :cascade do |t|
+    t.integer  "service_panel_id", limit: 4
+    t.integer  "service_id",       limit: 4
+    t.float    "quantity",         limit: 24
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
+  create_table "service_panels", primary_key: "service_panel_id", force: :cascade do |t|
+    t.string   "name",            limit: 255,                 null: false
+    t.integer  "service_type_id", limit: 4,                   null: false
+    t.integer  "creator",         limit: 4,                   null: false
+    t.boolean  "voided",                      default: false
+    t.integer  "voided_by",       limit: 4
+    t.string   "voided_reason",   limit: 255
+    t.date     "voided_date"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "service_price_histories", primary_key: "price_history_id", force: :cascade do |t|

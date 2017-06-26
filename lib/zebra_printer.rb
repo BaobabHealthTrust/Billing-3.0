@@ -21,10 +21,10 @@ module ZebraPrinter #:nodoc:
  
     # Initialize a new label with height weight and orientation. The orientation
     # can be 'T' for top, or 'B' for bottom
-    def initialize(width = (3*203), height = (2*203), orientation = 'T', number_of_labels = nil)
+    def initialize(width = (3*203), height = (2*203),gap='026', continuous=false, orientation = 'T', number_of_labels = nil)
       @width = width || (3*203)
       @height = height || (2*203)
-      @gap = '026'
+      @gap = gap || '026'
       @orientation = orientation || 'T'
       @number_of_labels = number_of_labels || nil
       @left_margin = 30
@@ -42,6 +42,7 @@ module ZebraPrinter #:nodoc:
       @font_horizontal_multiplier = 1
       @font_vertical_multiplier = 1
       @font_reverse = false
+      @continuous_media = continuous || false
       @output = ""
       header
     end
@@ -93,9 +94,13 @@ module ZebraPrinter #:nodoc:
       @x = @left_margin
       @y = @top_margin
       @column = 0
-      @output << "\nN\n"       
-      @output << "q#{@width}\n"      
-      @output << "Q#{@height}#{',' unless @gap.blank?}#{@gap}\n"
+      @output << "\nN\n"
+      @output << "q#{@width}\n"
+      if @continuous_media
+        @output << "Q#{@gap},0 \n"
+      else
+        @output << "Q#{@height}#{',' unless @gap.blank?}#{@gap}\n"
+      end
       @output << "Z#{@orientation}\n"        
     end
 
@@ -254,21 +259,84 @@ module ZebraPrinter #:nodoc:
       end
       return string
     end
+
+    def draw_table(data, column_properties = nil)
+      #function to print tabular data
+      cols = data.first.length
+      column_properties = Array.new(cols){|i| [@content_width/cols, "left"]} if column_properties.blank?
+
+      (data || []).each do |row|
+        #need to know how much to increase the height by
+        max_y = 0
+
+        #going through each cell
+        (row || []).each do |cell|
+          y = @y
+          cell_words = cell.split("\s")
+          word_size = 0
+          new_line = true
+          word_start_index = 0
+          cell_index = row.index(cell)
+          (cell_words || []).each do |word|
+            next_word_size = get_word_size(@char_width,word, !new_line)
+            if next_word_size + word_size >= column_properties[cell_index].first
+              #wrap text in cell
+              text = cell_words[word_start_index..(cell_words.index(word)-1)].join(" ")
+              if column_properties[cell_index].second.upcase == "LEFT"
+                x = (cell_index == 0 ? @left_margin : @left_margin + column_properties[0..(cell_index-1)].inject(0){|sum,x| sum + x.first })
+              else
+                col_start = (cell_index == 0 ? @left_margin : @left_margin + column_properties[0..(cell_index-1)].inject(0){|sum,x| sum + x.first })
+                col_end = col_start + column_properties[cell_index].first
+                text_len = get_word_size(@char_width,text,false)
+                x = col_end - text_len
+              end
+
+              draw_text(text, x, y, 0, @font_size, @font_horizontal_multiplier, @font_vertical_multiplier, @font_reverse)
+              y += @line_spacing + @char_height
+              word_start_index = cell_words.index(word)
+              word_size = 0
+              new_line = true
+            else
+              new_line = false
+              word_size += next_word_size
+            end
+          end
+
+          text = cell_words[word_start_index..(cell_words.length-1)].join(" ")
+          if column_properties[cell_index].second.upcase == "LEFT"
+            x = (cell_index == 0 ? @left_margin : @left_margin + column_properties[0..(cell_index-1)].inject(0){|sum,x| sum + x.first })
+          else
+            col_start = (cell_index == 0 ? @left_margin : @left_margin + column_properties[0..(cell_index-1)].inject(0){|sum,x| sum + x.first })
+            col_end = col_start + column_properties[cell_index].first
+            text_len = get_word_size(@char_width,text,false)
+            x = col_end - text_len
+          end
+
+          draw_text(text, x, y, 0, @font_size, @font_horizontal_multiplier, @font_vertical_multiplier, @font_reverse)
+          y += @line_spacing + @char_height
+          max_y = y if y > max_y
+        end
+        @y = max_y + @line_spacing
+      end
+
+    end
   private
     
     def check_bounds
       # If we have run out of room, move to the next column
-      if (@y + @char_height > @height - @bottom_margin)
-        @column += 1              
-        @y = @top_margin
-        # If we have run out of columns, move to the next label
-        if @column > @column_count - 1 
-          @column = 0 
-          print(1)
-          header
-        end  
-        @x = @left_margin + (@column * (@column_width + @column_spacing))
-      end                  
+      unless @continuous_media
+        if (@y + @char_height > @height - @bottom_margin)
+          @column += 1
+          @y = @top_margin
+          # If we have run out of columns, move to the next label
+          if @column > @column_count - 1
+            @column = 0
+            print(1)
+            header
+          end
+          @x = @left_margin + (@column * (@column_width + @column_spacing))
+        end
+      end
     end
     
     def get_char_sizes(font_selection, horizontal_multiplier, vertical_multiplier)

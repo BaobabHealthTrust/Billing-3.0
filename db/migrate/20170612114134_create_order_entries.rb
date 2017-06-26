@@ -7,6 +7,7 @@ class CreateOrderEntries < ActiveRecord::Migration
       t.float :quantity, null: false, default: 0
       t.float :full_price, null: false, default: 0
       t.integer :cashier, null: false
+      t.integer :location, nul: false
       t.boolean :voided, default: false
       t.integer :voided_by
       t.string :voided_reason
