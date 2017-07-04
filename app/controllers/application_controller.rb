@@ -30,6 +30,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def frequencies(frequency)
+    frequencies = {'BID' => 2, 'EOD' => 0.5, 'OD' => 1, 'TDS' => 3, 'q.h' => 24, 'q.2.h' => 12, 'q.3.h' => 8,
+                   'q.4.h' => 6, 'q.d.s' => 4}
+    return frequencies[frequency]
+  end
+
   private
   def name_of_app
     return "Billing"

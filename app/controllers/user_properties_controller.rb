@@ -9,6 +9,6 @@ class UserPropertiesController < ApplicationController
     property = UserProperty.where(property: params[:property],user_id: params[:id]).first_or_initialize
     property.property_value = params[params[:property]]
     property.save
-    redirect_to "/" and return
+    redirect_to root_path and return
   end
 end

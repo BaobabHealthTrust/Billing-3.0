@@ -109,26 +109,32 @@
 <div id="main" style="height: 70vh;">
 
   <div style="display: table-row;width: 100%">
-    <div id="today" class="tab-active" style="display: table-cell" onmousedown="toggleTab(this)">Today</div>
+    <div id="summary" class="tab-active" style="display: table-cell" onmousedown="toggleTab(this)">Summary</div>
+    <div id="today" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Today</div>
     <div id="pastVisits" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Past Transactions</div>
     <div id="others" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Others</div>
   </div>
 
-  <div id="todayTab" class="tab-content" >
+  <div id="summaryTab" class="tab-content" >
     <table class="dashboard-main" border="2">
       <thead>
       <tr>
         <th style="text-align: left;;padding-left: 5px;">Item</th>
         <th style="text-align:center;">Quantity</th>
         <th>Amount</th>
+        <th style="width: 7vw;">Action</th>
       </tr>
       </thead>
       <tbody>
-      <% (@today_orders || []).each do |order| %>
+      <% (@unpaid_orders || []).each do |service_id,order| %>
           <tr>
-            <th><%= order.description %></th>
-            <th style="text-align: center"><%= order.quantity %></th>
-            <td style=""><%= local_currency(order.full_price) %></td>
+            <th><%= order[:service_name] %></th>
+            <th style="text-align: center"><%= order[:quantity] %></th>
+            <td style="text-justify: auto;"><%= local_currency(order[:amount]) %></td>
+            <td style="vertical-align: middle !important;padding-top: 5px;">
+              <img src="/assets/delete.png" title="Void Item"
+                   onmousedown="window.location='/order_entries/void?id=<%= order[:id].join(',')%>'">
+            </td>
           </tr>
       <% end %>
       </tbody>
@@ -137,18 +143,55 @@
         <th>&nbsp;</th>
         <th>Total</th>
         <th><%= local_currency(@total) %></th>
+        <th>&nbsp;</th>
       </tr>
-      <tr>
+      <!--      <tr>
         <th>&nbsp;</th>
         <th style="color: green">Amount Paid</th>
         <th style="color: green"><%= local_currency(@today_payments) %></th>
-      </tr>
+      </tr> -->
       <tr>
         <th>&nbsp;</th>
         <th style="color: darkred">Amount Due</th>
         <th style="color: darkred"><%= local_currency(@amount_due) %></th>
+        <th>&nbsp;</th>
       </tr>
       </tfoot>
+    </table>
+  </div>
+  <div id="todayTab" class="tab-content invisible" >
+    <table class="dashboard-main" border="2">
+      <thead>
+      <tr>
+        <th style="text-align: left;;padding-left: 5px;">Item</th>
+        <th style="text-align:center;">Quantity</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% (@today_orders.keys || []).each do |date| %>
+          <% (@today_orders[date]["details"] || []).each do |order| %>
+              <tr>
+                <th><%= order[:service] %></th>
+                <th style="text-align: center"><%= order[:quantity] %></th>
+                <td style=""><%= local_currency(order[:price]) %></td>
+                <td style=""><%= order[:status] %></td>
+                <td style="vertical-align: middle !important;padding-top: 5px;">
+                  <% if order[:status] == 'UNPAID' %>
+                      <img src="/assets/delete.png" title="Void Item"
+                           onmousedown="window.location='/order_entries/void?id=<%= order[:id]%>'">
+                  <% else %>
+                      <img src="/assets/delete.png" title="Void Item"
+                           onmousedown="window.location='/order_payments/void?id=<%= order[:id]%>'">
+                  <% end %>
+                </td>
+              </tr>
+          <% end %>
+
+      <% end %>
+      </tbody>
     </table>
   </div>
   <div id="pastVisitsTab" class="tab-content invisible">
@@ -175,7 +218,11 @@
                               <b>Status:</b> <%= order[0][:status] %><br/>
                             </div>
                             <div style="display: table-cell;vertical-align: middle;padding: 5px;">
-                              <img style="float: right;" src="/assets/delete.png" title="Void Item">
+                              <% if order[0][:status] == "PAID" %>
+                                  &nbsp;
+                              <% else %>
+                                  <img style="float: right;" src="/assets/delete.png" title="Void Item">
+                              <% end %>
                             </div>
                           </div>
                         </div>
@@ -190,10 +237,14 @@
                                   <b>Item:</b> <%= order[1][:service] %><br/>
                                   <b>QTY:</b> <%= order[1][:quantity] %><br/>
                                   <b>Amount:</b> <%= local_currency(order[1][:price]) %><br/>
-                                  <b>Status:</b> <%= order[0][:status] %><br/>
+                                  <b>Status:</b> <%= order[1][:status] %><br/>
                                 </div>
                                 <div style="display: table-cell;vertical-align: middle;padding: 5px;">
-                                  <img style="float: right;" src="/assets/delete.png" title="Void Item">
+                                  <% if order[1][:status] == "PAID" %>
+                                      &nbsp;
+                                  <% else %>
+                                      <img style="float: right;" src="/assets/delete.png" title="Void Item">
+                                  <% end %>
                                 </div>
                               </div>
                             </div>

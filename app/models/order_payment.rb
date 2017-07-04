@@ -9,4 +9,18 @@ class OrderPayment < ActiveRecord::Base
   def complete_record
     self.payment_stamp= DateTime.current if self.payment_stamp.blank?
   end
+
+  def void(reason,user)
+    OrderPayment.transaction do
+      order_entry =  self.order_entry
+      order_entry.amount_paid -= self.amount
+      order_entry.save
+
+      self.voided = true
+      self.voided_by= user
+      self.voided_reason= reason
+      self.save
+    end
+
+  end
 end

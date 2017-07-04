@@ -59,4 +59,26 @@ module PatientsHelper
 
     return records
   end
+
+  def unpaid_records(orders)
+
+    @unpaid_orders = {}
+    @total = 0
+    @amount_due = 0
+
+    (orders || []).each do |record|
+      if @unpaid_orders[record.service_id].blank?
+        @unpaid_orders[record.service_id] = {service_name: record.description, amount: record.full_price ,
+                                      quantity: record.quantity, id: [record.order_entry_id] }
+      else
+        @unpaid_orders[record.service_id][:amount] += record.full_price
+        @unpaid_orders[record.service_id][:quantity] += record.quantity
+        @unpaid_orders[record.service_id][:id] << record.order_entry_id
+      end
+      @total += record.full_price
+      @amount_due += (record.full_price - record.amount_paid)
+    end
+
+    return [@unpaid_orders, @total, @amount_due]
+  end
 end

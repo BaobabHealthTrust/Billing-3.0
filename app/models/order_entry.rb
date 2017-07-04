@@ -19,19 +19,19 @@ class OrderEntry < ActiveRecord::Base
   end
 
   def status
-    amount_paid = self.order_payments.select("COALESCE(SUM(amount),0) as amount").first.amount
-    if (amount_paid > 0 && amount_paid < self.full_price)
-      return {bill_status: "PARTIAL PAYMENT", amount: amount_paid}
-    elsif (amount_paid >= self.full_price)
-      return {bill_status: "PAID", amount: amount_paid}
+
+    if (self.amount_paid > 0 && self.amount_paid < self.full_price)
+      return {bill_status: "PARTIAL PAYMENT", amount: self.amount_paid}
+    elsif (self.amount_paid >= self.full_price)
+      return {bill_status: "PAID", amount: self.amount_paid}
     else
-      return {bill_status: "UNPAID", amount: amount_paid}
+      return {bill_status: "UNPAID", amount: self.amount_paid}
     end
   end
 
-  def void(reason)
+  def void(reason,user)
     self.voided = true
-    self.voided_by= current_user
+    self.voided_by= user
     self.voided_reason= reason
     self.save
   end

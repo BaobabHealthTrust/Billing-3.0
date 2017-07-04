@@ -234,22 +234,22 @@ class PatientsController < ApplicationController
 
   def show
 
-    range = Date.current.beginning_of_day..Date.current.end_of_day
     @patient = Patient.find(params[:id])
-    @today_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price).where(patient_id: @patient.id,
-                                                         order_date: range)
 
-    @today_payments = OrderPayment.select("sum(amount) as amount").where(
-        order_entry_id: @today_orders.collect{|x|x.order_entry_id}, payment_stamp: range).first
+    range = Date.current.beginning_of_day..Date.current.end_of_day
 
-    @today_payments = (@today_payments.amount.blank? ? 0 : @today_payments.amount)
-    @total = @today_orders.inject(0){|sum, x|  sum + x.full_price}
-    @amount_due = @total - @today_payments
-    past_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price,
+    unpaid_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity,:amount_paid,
+                                      :full_price).where('patient_id = ? AND amount_paid < full_price', @patient.id)
+    past_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price,:amount_paid,
                                     :order_date).where("patient_id = ? and order_date < ?",
                                                        @patient.id, Date.current.beginning_of_day)
 
+    today_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price,:amount_paid,
+                                    :order_date).where(patient_id: @patient.id,order_date: range)
+
+    @unpaid_orders, @total, @amount_due = view_context.unpaid_records(unpaid_orders)
     @history = view_context.past_records(past_orders)
+    @today_orders = view_context.past_records(today_orders)
 
   end
 
