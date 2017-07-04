@@ -33,7 +33,7 @@ module Misc
     end
   end
 
-  def self.print_receipt(ids, change)
+  def self.print_receipt(ids, change = 0)
     payments = OrderPayment.where(order_payment_id: ids)
     patient_name = payments.first.order_entry.patient.full_name
     cashier = payments.first.cashier.name

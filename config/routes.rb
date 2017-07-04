@@ -37,7 +37,11 @@ Rails.application.routes.draw do
   resources :service_types
   resources :medical_scheme
   resources :sessions
-  resources :order_entries
+  resources :order_entries do
+    collection do
+      get 'void'
+    end
+  end
   resources :services do
     collection do
       get 'suggestions'
@@ -46,6 +50,7 @@ Rails.application.routes.draw do
   resources :order_payments do
     collection do
       get 'print_receipt'
+      get 'void'
     end
   end
 

@@ -7,18 +7,19 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 creator = User.first
-service_types = %w[Radiology Pharmacy Laboratory Surgery Mortuary Maternity Consultation Documentation Dental Ophthalmology Other\ Procedures]
-
+service_types = %w[Radiology Pharmacy Laboratory Surgery Mortuary Maternity Admission Consultation Documentation Dental Ophthalmology Other\ Procedures]
+puts 'Loading Service types'
 (service_types || []).each do |type|
   service_type = ServiceType.where(name: type).first_or_initialize
   service_type.creator = creator.id
   service_type.save
 end
 
-
+puts 'Loading services and their prices'
 CSV.foreach("#{Rails.root}/db/prices_seed.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
   type = ServiceType.where(name: row[4]).first.id
   service = Service.where({name: row[0], unit: row[1], service_type_id: type}).first_or_initialize
+  service.rank = row[5]
   service.creator = creator.id
   service.save
 
@@ -27,4 +28,21 @@ CSV.foreach("#{Rails.root}/db/prices_seed.csv",{:headers=>:first_row, :col_sep =
   service_price.creator = creator.id
   service_price.updated_by = creator.id
   service_price.save
+end
+
+puts 'Loading service panels'
+CSV.foreach("#{Rails.root}/db/panel_seed.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
+  type = ServiceType.where(name: row[3]).first.id
+  service_panel = ServicePanel.where({name: row[0], service_type_id: type}).first_or_initialize
+  service_panel.creator = creator.id
+  service_panel.save
+
+  service = Service.where({name: row[1], service_type_id: type}).first
+
+  next if service.blank?
+
+  panel_detail = ServicePanelDetail.where(service_panel_id: service_panel.id).first_or_initialize
+  panel_detail.service_id = service.id
+  panel_detail.quantity = row[2]
+  panel_detail.save
 end

@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 20170620133016) do
     t.datetime "order_date",                                null: false
     t.float    "quantity",      limit: 24,  default: 0.0,   null: false
     t.float    "full_price",    limit: 24,  default: 0.0,   null: false
+    t.float    "amount_paid",   limit: 24,  default: 0.0,   null: false
     t.integer  "cashier",       limit: 4,                   null: false
     t.integer  "location",      limit: 4
     t.boolean  "voided",                    default: false
@@ -133,6 +134,7 @@ ActiveRecord::Schema.define(version: 20170620133016) do
     t.string   "name",            limit: 255,                 null: false
     t.integer  "service_type_id", limit: 4,                   null: false
     t.string   "unit",            limit: 255
+    t.integer  "rank",            limit: 4,   default: 999
     t.integer  "creator",         limit: 4,                   null: false
     t.boolean  "voided",                      default: false
     t.integer  "voided_by",       limit: 4

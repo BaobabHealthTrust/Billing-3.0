@@ -4,6 +4,7 @@ class CreateServices < ActiveRecord::Migration
       t.string :name, null: false
       t.integer :service_type_id, null: false
       t.string :unit
+      t.integer :rank, default: 999
       t.integer :creator, null: false
       t.boolean :voided, default: false
       t.integer :voided_by

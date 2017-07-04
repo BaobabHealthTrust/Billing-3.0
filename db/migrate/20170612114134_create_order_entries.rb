@@ -6,6 +6,7 @@ class CreateOrderEntries < ActiveRecord::Migration
       t.datetime :order_date, null: false
       t.float :quantity, null: false, default: 0
       t.float :full_price, null: false, default: 0
+      t.float :amount_paid, null: false, default: 0
       t.integer :cashier, null: false
       t.integer :location, nul: false
       t.boolean :voided, default: false
