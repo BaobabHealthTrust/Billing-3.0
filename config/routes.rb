@@ -7,6 +7,10 @@ Rails.application.routes.draw do
   post "login" => "sessions#create_session"
   get "/logout" => "sessions#destroy"
 
+  get "/main/report_select"
+  post "/main/income_summary"
+  post "/main/cashier_summary"
+
   resources :patients do
     collection do
       get 'search'

@@ -47,7 +47,8 @@ class OrderPaymentsController < ApplicationController
 
   def print_receipt
     ids = params[:ids].split(',') rescue params[:id]
-    print_string = Misc.print_receipt(ids)
+    change = (params[:change].to_f || 0)
+    print_string = Misc.print_receipt(ids, change)
 
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false,
               :filename=>"#{(0..8).map { (65 + rand(26)).chr }.join}.lbl", :disposition => "inline")

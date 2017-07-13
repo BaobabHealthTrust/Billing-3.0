@@ -10,6 +10,7 @@ class SessionsController < ApplicationController
 
     if state
       user = User.find_by_username(params['login'])
+      User.current = user
       session[:user_id] = user.id
       @current_user = user
       flash[:errors] = nil
@@ -43,6 +44,7 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     @current_user = nil
+    User.current = nil
     redirect_to '/login' and return
   end
 end

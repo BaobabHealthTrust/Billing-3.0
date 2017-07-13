@@ -6,13 +6,29 @@
                    :helpText => "Select service" ,
                    :multiple =>  true %>
 
-    <%= select_tag 'order_entry[admission][]',
+    <%= select_tag 'order_entry[consultation][]',
+                   options_for_select(entry_options('consultation'), nil),
+                   :id => "consultation",
+                   :helpText => "Select consultation type" ,
+                   :condition => "getSelected('order_categories').match(/Consultation/i)",
+                   :optional => false,
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[admission][stay][service]',
                    options_for_select(entry_options('admission'), nil),
                    :id => "admission",
-                   :helpText => "Select document type" ,
+                   :helpText => "Select admission type" ,
                    :condition => "getSelected('order_categories').match(/Admission/i)",
                    :optional => false,
                    :multiple =>  true %>
+
+    <%= text_field_tag "order_entry[admission][stay][quantity]", nil,
+                       {:id => "addmission_stay",
+                        :ajaxURL => "",
+                        :field_type => "number",
+                        :tt_pageStyleClass => "NumbersOnly",
+                        :condition => "getSelected('order_categories').match(/Admission/i)",
+                        :helptext => "Enter number of days"}  %>
 
     <%= select_tag 'order_entry[documentation][]',
                    options_for_select(entry_options('documentation'), nil),
@@ -30,7 +46,7 @@
                    :optional => false,
                    :multiple =>  true %>
 
-    <%= select_tag 'order_entry[lab][]',
+    <%= select_tag 'order_entry[laboratory][]',
                    options_for_select(entry_options('laboratory'), nil),
                    :id => "lab_orders",
                    :helpText => "Select laboratory test to be performed" ,

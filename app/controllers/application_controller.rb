@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_location
-      @current_location ||= Location.find(session[:location]) if session[:location]
+    @current_location ||= Location.find(session[:location]) if session[:location]
   end
 
   def authenticate

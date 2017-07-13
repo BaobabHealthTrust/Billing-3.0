@@ -13,6 +13,8 @@ class OrderEntriesController < ApplicationController
 
     patient = Patient.find(params[:order_entry][:patient_id])
     (params[:order_entry][:categories] || []).each do |category|
+=begin
+
       if %w[admission consultation].include?(category.downcase)
         if patient.person.is_child?
           service = "#{category.downcase.strip} (paediatric)"
@@ -26,7 +28,7 @@ class OrderEntriesController < ApplicationController
                             :service_point =>params[:order_entry][:location_name], :cashier => params[:creator])
         end
       else
-
+=end
         if (params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Array)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |item|
             OrderEntry.create(:patient_id => patient.id,:order_date => DateTime.current, :quantity => 1,
@@ -61,7 +63,7 @@ class OrderEntriesController < ApplicationController
                               :cashier => params[:creator])
           end
         end
-      end
+      #end
     end
 
     redirect_to patient

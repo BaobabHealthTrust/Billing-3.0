@@ -5,5 +5,4 @@ Notes on features, issues, wishes
 * Fix birthdate estimated variations in patients helper
 * Fix confirmation when adding new patient
 * Foreign resident causes bug
-* prescription has 6 clicks maximum
-* add cancellation of receipts 
+* add location for payment

@@ -6,6 +6,10 @@ class PersonAddress < ActiveRecord::Base
   default_scope {-> {order('person_address.preferred DESC')}}
   include Openmrs
 
+  before_create :before_create
+  before_update :before_save
+  before_save :before_save
+
   belongs_to :person, -> {where "voided = false"}, :foreign_key => :person_id
 
   # Looks for the most commonly used element in the database and sorts the results based on the first part of the string

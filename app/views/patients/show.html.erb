@@ -24,15 +24,15 @@
           <table style="width: 100%; font-size: 1.5em; line-height: 2em" >
             <tr>
               <td>Entered Amount</td>
-              <th id="paying" style="text-align: left;width: 40%;">MWK 0.00</th>
+              <th id="paying" style="text-align: left;width: 60% !important;">MWK 0.00</th>
             </tr>
             <tr>
               <td>Amount Due</td>
-              <th  style="text-align: left;width: 40%;color: darkred;"><%= local_currency(@amount_due)%></th>
+              <th  style="text-align: left;color: darkred;"><%= local_currency(@amount_due)%></th>
             </tr>
             <tr>
               <td>Change</td>
-              <th id="change" style="text-align: left;width: 40%;color: darkgreen;">MWK 0.00</th>
+              <th id="change" style="text-align: left;color: darkgreen;">MWK 0.00</th>
             </tr>
           </table>
           <div class = "link-button submit-link" style="width: 12vw !important;margin-left: auto;margin-right: auto;margin-top: 15vh;" onmousedown="submitPayment();">

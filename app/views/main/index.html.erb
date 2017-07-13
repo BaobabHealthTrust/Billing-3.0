@@ -49,7 +49,9 @@
   <div style="display: table-row;width: 100%">
     <div id="summary" class="tab-active" style="display: table-cell" onmousedown="toggleTab(this)">Summary</div>
     <div id="reports" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Reports</div>
-<!--    <div id="admin" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Administration</div> -->
+    <% if current_user.is_admin? %>
+    <div id="admin" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">Administration</div>
+    <% end %>
     <div id="settings" class="tab" style="display: table-cell" onmousedown="toggleTab(this)">User Settings</div>
   </div>
 
@@ -97,13 +99,14 @@
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button"
+               onmousedown="window.location='/main/report_select?report_type=income_summary'">
             Income Summary
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
-            Test
+          <div class = "link-button" onmousedown="window.location='/main/report_select?report_type=cashier_summary'">
+            Cashier Summary
           </div>
         </div>
       </div>
@@ -146,12 +149,12 @@
     <div style="display: table;margin: 3vh auto">
       <div style="display: table-row;">
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/users/<%= current_user.id%>/edit?attribute=name'">
             Edit name
           </div>
         </div>
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/users/<%= current_user.id%>/edit?attribute=password'">
             Change password
           </div>
         </div>

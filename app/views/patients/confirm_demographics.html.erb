@@ -390,7 +390,7 @@
         try {
             httpRequest.open("POST", url, true);
             httpRequest.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-            httpRequest.send(JSON.stringify({"person": json, "target": target}));
+            httpRequest.send(JSON.stringify({"person": json, "target": target, authenticity_token: '<%= form_authenticity_token %>'}));
         } catch (e) {
         }
     }
@@ -414,7 +414,7 @@
     }
 
     function ajaxRequest(page) {
-        console.log("testing")
+
         var url = "/patients/ajax_process_data";
 
         var httpRequest = new XMLHttpRequest();
