@@ -7,6 +7,24 @@ class ServicesController < ApplicationController
     @service = Service.find(params[:id])
   end
 
+  def new
+    render :layout => 'touch'
+  end
+
+  def create
+    @new_service = Service.create(service_params)
+    (params[:service_price] || []).each do |type, price|
+      service_price = ServicePrice.new()
+      service_price.price_type = type
+      service_price.service_id = @new_service.id
+      service_price.price = price[:price]
+      service_price.creator = params[:service][:creator]
+      service_price.updated_by = params[:service][:creator]
+      service_price.save
+    end
+    redirect_to @new_service
+  end
+
   def update
 
   end
@@ -27,5 +45,10 @@ class ServicesController < ApplicationController
     end
 
     render :text => services.join('') and return
+  end
+
+  private
+  def service_params
+    params.require(:service).permit(:category,:name, :creator)
   end
 end

@@ -17,6 +17,8 @@ class MainController < ApplicationController
       when 'cashier_summary'
         @report_path = "/main/cashier_summary"
         @cashier_options = User.all.collect{ |x| [x.id, x.name]}
+      when 'daily_cash_summary'
+        @report_path = "/main/daily_cash_summary"
     end
     render :layout => 'touch'
   end
@@ -66,4 +68,7 @@ class MainController < ApplicationController
     @records = view_context.income_summary(data)
   end
 
+  def daily_cash_summary
+
+  end
 end

@@ -6,3 +6,4 @@ Notes on features, issues, wishes
 * Fix confirmation when adding new patient
 * Foreign resident causes bug
 * add location for payment
+* optimize laboratory list to make it load faster

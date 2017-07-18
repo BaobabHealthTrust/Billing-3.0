@@ -31,6 +31,7 @@ class OrderEntriesController < ApplicationController
 =end
         if (params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Array)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |item|
+            next if item.blank?
             OrderEntry.create(:patient_id => patient.id,:order_date => DateTime.current, :quantity => 1,
                               :service_offered => item, :location =>params[:order_entry][:location],
                               :service_point =>params[:order_entry][:location_name],

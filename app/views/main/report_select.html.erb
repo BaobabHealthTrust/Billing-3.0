@@ -14,13 +14,14 @@
         </select>
     <% end %>
 
+    <% if params[:report_type] != 'daily_cash_summary' %>
     <select id="reportDuration" name="report_duration" helpText="Select report duration">
       <option></option>
       <% (report_options).each do |w| %>
           <option value="<%= w %>"><%= w%></option>
       <% end %>
     </select>
-
+    <% end %>
     <%= text_field_tag 'start_date', Date.current.strftime("%Y-%m-%d"),
                        {:id => 'startDate',
                         :field_type => 'date',
@@ -35,6 +36,6 @@
                         :helpText => t('forms.labels.end_date'),
                         :maxDate =>  Date.today.strftime("%Y-%m-%d"),
                         :minDate => (Date.today - 20.year).strftime("%Y-%m-%d"),
-                        :condition => "$('reportDuration').value == 'Range'",
+                        :condition => "$('reportDuration') && $('reportDuration').value == 'Range'",
                         :tt_pageStyleClass => "Date DatesOnly"} %>
 <% end %>

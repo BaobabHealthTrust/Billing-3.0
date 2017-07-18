@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "/main/report_select"
   post "/main/income_summary"
   post "/main/cashier_summary"
+  post "/main/daily_cash_summary"
 
   resources :patients do
     collection do
@@ -37,9 +38,9 @@ Rails.application.routes.draw do
 
   resources :users
   resources :user_properties
-  resources :service_prices
   resources :service_types
   resources :medical_scheme
+  resources :medical_scheme_providers
   resources :sessions
   resources :order_entries do
     collection do
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     collection do
       get 'suggestions'
     end
+    resources :service_prices
   end
   resources :order_payments do
     collection do
