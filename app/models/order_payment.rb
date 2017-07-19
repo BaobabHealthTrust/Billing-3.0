@@ -10,6 +10,14 @@ class OrderPayment < ActiveRecord::Base
     self.payment_stamp= DateTime.current if self.payment_stamp.blank?
   end
 
+  def clinic_type
+      self.order_entry.location == 788 ? "general" : "private"
+  end
+
+  def service_category
+    self.order_entry.service.service_type_id
+  end
+
   def void(reason,user)
     OrderPayment.transaction do
       order_entry =  self.order_entry

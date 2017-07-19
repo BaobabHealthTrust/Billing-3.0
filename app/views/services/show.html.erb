@@ -22,30 +22,28 @@
   </div>
 </div>
 <div style="height: 70vh;">
-
-    <table class="dashboard-main" id="serviceTypes" >
-      <thead>
+  <table class="dashboard-main" id="serviceTypes" >
+    <thead>
+      <tr>
+        <th style="text-align: left;padding-left: 5px;">Price Type</th>
+        <th>Price</th>
+        <th>Active From</th>
+        <th>Active To</th>
+        <th>Updated By</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% (@service.service_price_histories || []).each do |history| %>
         <tr>
-          <th style="text-align: left;padding-left: 5px;">Price Type</th>
-          <th>Price</th>
-          <th>Active From</th>
-          <th>Active To</th>
-          <th>Updated By</th>
+          <td style="text-align: left;padding-left: 5px;"><%= history.price_type%></td>
+          <td><%= local_currency(history.price) %></td>
+          <td><%= history.active_from.strftime('%d %b, %Y') %></td>
+          <td><%= history.active_to.strftime('%d %b, %Y') %></td>
+          <td><%= history.user.name %></td>
         </tr>
-      </thead>
-      <tbody>
-      <% (@service.service_price_histories || []).each do |history| %>
-          <tr>
-            <td style="text-align: left;padding-left: 5px;"><%= history.price_type%></td>
-            <td><%= local_currency(history.price) %></td>
-            <td><%= history.active_from.strftime('%d %b, %Y') %></td>
-            <td><%= history.active_to.strftime('%d %b, %Y') %></td>
-            <td><%= history.user.name %></td>
-          </tr>
-      <% end %>
-      </tbody>
-    </table>
-
+    <% end %>
+    </tbody>
+  </table>
 </div>
 <div class="footer">
   <button class="button green" style="float: right;" onmousedown="window.location='/services'">Finish</button>

@@ -28,8 +28,8 @@
           <td><%= insurer.schemes.length %></td>
           <td><%= insurer.phone_numbers  %></td>
           <td>
-            <%= link_to 'View', "/users/#{user.id}" %>
-            <%= link_to 'Delete', "/users/#{user.id}" %>
+            <%= link_to 'View', "/medical_scheme_providers/#{insurer.id}" %>
+            <%= link_to 'Delete', "/medical_scheme_providers/#{insurer.id}/delete"  %>
           </td>
         </tr>
     <% end %>
@@ -41,6 +41,7 @@
 </div>
 <div class="footer">
   <button class="green" style="float: right;" onmousedown="window.location='/'">Finish</button>
+  <button style="float: right;" onmousedown="window.location='/medical_scheme_providers/new'">Add New Insurer</button>
 </div>
 
 

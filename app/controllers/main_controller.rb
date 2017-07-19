@@ -69,6 +69,14 @@ class MainController < ApplicationController
   end
 
   def daily_cash_summary
+    @headers = [%w[Consultation 0011 0071], %w[Book 0012 0072],%w[Drugs 0011 0071], %w[Laboratory 0012 0072],
+                %w[Radiology 0011 0071], %w[Book 0012 0072],%w[Consultation 0011 0071], %w[Book 0012 0072],
+                %w[Consultation 0011 0071], %w[Book 0012 0072],%w[Consultation 0011 0071], %w[Book 0012 0072]]
 
+    range = params[:start_date].to_date.beginning_of_day..params[:start_date].to_date.end_of_day rescue ''
+    data = OrderPayment.find_by_sql("Select * from order_payments where payment_stamp between '#{range.first}'
+                                         and '#{range.last}' and payment_mode='CASH'") rescue ''
+
+    @records = view_context.cash_summary(data)
   end
 end

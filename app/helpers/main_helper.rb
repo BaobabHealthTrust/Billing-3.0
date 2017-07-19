@@ -16,4 +16,13 @@ module MainHelper
 
     return records
   end
+
+  def cash_summary(data)
+    records = Hash[*ServiceType.all.collect{|x| [x.id,{name: x.name, private: 0, general: 0}]}.flatten(1)]
+    (data || []).each do |payment|
+      entry = payment.order_entry
+      records[entry.service.service_type_id][entry.clinic_type.to_sym] +=payment.amount
+    end
+    return records
+  end
 end

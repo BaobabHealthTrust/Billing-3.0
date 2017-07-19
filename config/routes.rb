@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   post "/main/income_summary"
   post "/main/cashier_summary"
   post "/main/daily_cash_summary"
+  get "/main/daily_cash_summary"
 
   resources :patients do
     collection do

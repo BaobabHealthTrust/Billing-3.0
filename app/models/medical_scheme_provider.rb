@@ -1,5 +1,5 @@
 class MedicalSchemeProvider < ActiveRecord::Base
-  has_many :medical_schemes, -> {"retired = false"}
+  has_many :medical_schemes, :foreign_key => :medical_scheme_provider
   has_one :user, :foreign_key => :creator
 
   def schemes
