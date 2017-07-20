@@ -4,8 +4,7 @@ class OrderEntriesController < ApplicationController
   end
 
   def new
-    @categories = ServiceType.select(:name,:service_type_id).collect{|x|x.name}.sort
-    #@categories = ServiceType.select(:name,:service_type_id).collect{|x|[x.name, x.services.count]}.sort
+    @categories = ServiceType.select(:name,:service_type_id).collect{|x|x.name}
     render :layout => 'touch'
   end
 

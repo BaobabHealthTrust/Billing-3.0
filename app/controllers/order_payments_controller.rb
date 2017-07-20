@@ -7,35 +7,37 @@ class OrderPaymentsController < ApplicationController
 
     if params[:order_entries].blank?
       range = Date.current.beginning_of_day..Date.current.end_of_day
+      orders = OrderEntry.select(:order_entry_id, :full_price,:amount_paid).where(
+                                "patient_id = ? and amount_paid < full_price", params[:order_payment][:patient_id])
+
+    else
       orders = OrderEntry.select(:order_entry_id, :full_price,:amount_paid).where(patient_id: params[:order_payment][:patient_id],
-                                                                     order_date: range)
+                                                                                  order_entry_id: params[:order_entries].split(','))
+    end
 
-      amount = params[:order_payment][:amount].to_f
+    amount = params[:order_payment][:amount].to_f
 
-      (orders || []).each do |entry|
-        break if amount == 0
-        order_status = entry.status
-        if order_status[:bill_status] == "PAID"
-          next
-        else
-          amount_due = (entry.full_price - order_status[:amount])
-          pay_amount =  (amount_due <= amount ? amount_due : amount)
+    (orders || []).each do |entry|
+      break if amount == 0
+      order_status = entry.status
+      if order_status[:bill_status] == "PAID"
+        next
+      else
+        amount_due = (entry.full_price - order_status[:amount])
+        pay_amount =  (amount_due <= amount ? amount_due : amount)
 
-          OrderEntry.transaction do
-            entry.amount_paid += pay_amount
-            entry.save
+        OrderEntry.transaction do
+          entry.amount_paid += pay_amount
+          entry.save
 
-            new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
-                                              amount: pay_amount , payment_mode: params[:order_payment][:mode])
+          new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
+                                            amount: pay_amount , payment_mode: params[:order_payment][:mode])
 
 
-            amount -= pay_amount
-            new_payments << new_payment.id
-          end
+          amount -= pay_amount
+          new_payments << new_payment.id
         end
       end
-    else
-
     end
 
     #if print barcode

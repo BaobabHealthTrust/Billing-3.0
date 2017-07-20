@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 creator = User.first
-service_types = %w[Radiology Pharmacy Laboratory Surgery Mortuary Maternity Admission Consultation Documentation Dental Ophthalmology Other\ Procedures]
+service_types = %w[Consultation Radiology Pharmacy Laboratory Admission Documentation Surgery Mortuary Maternity Dental Ophthalmology Other\ Procedures]
 puts 'Loading Service types'
 (service_types || []).each do |type|
   service_type = ServiceType.where(name: type).first_or_initialize

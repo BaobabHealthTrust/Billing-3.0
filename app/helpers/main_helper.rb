@@ -21,6 +21,7 @@ module MainHelper
     records = Hash[*ServiceType.all.collect{|x| [x.id,{name: x.name, private: 0, general: 0}]}.flatten(1)]
     (data || []).each do |payment|
       entry = payment.order_entry
+      next if entry.blank?
       records[entry.service.service_type_id][entry.clinic_type.to_sym] +=payment.amount
     end
     return records
