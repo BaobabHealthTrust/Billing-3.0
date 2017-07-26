@@ -30,19 +30,24 @@ Rails.application.routes.draw do
       post 'ajax_process_result'
       post 'confirm_demographics'
       post 'ajax_process_data'
-      get 'patient_not_found'
+      get 'patient_not_found(/:id)', action: :patient_not_found
+      post 'patient_not_found(/:id)', action: :patient_not_found
       get 'print_national_id'
       get 'patient_by_id(/:id)', action: :patient_by_id
     end
     resources :order_entries
   end
 
-  resources :users
   resources :user_properties
   resources :service_types
   resources :medical_scheme
   resources :medical_scheme_providers
   resources :sessions
+  resources :users do
+    collection do
+      get 'roles'
+    end
+  end
   resources :order_entries do
     collection do
       get 'void'

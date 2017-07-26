@@ -1,17 +1,45 @@
 module PatientsHelper
-  def patient_json(params,current_ta='Unknown',print_barcode=false)
+  def patient_json(params,current_ta='Unknown',identifier=[],print_barcode=false)
+    if params["age_estimate"].blank?
+
+      year = params["birth_year"]
+      month = params["birth_month"]
+      day = params["birth_day"]
+
+      month_i = (month || 0).to_i
+      month_i = Date::MONTHNAMES.index(month) if month_i == 0 || month_i.blank?
+      month_i = Date::ABBR_MONTHNAMES.index(month) if month_i == 0 || month_i.blank?
+
+      if month_i == 0 || month == "Unknown"
+        dob = Date.new(year.to_i,7,1)
+        dob_estimate = true
+      elsif day.blank? || day == "Unknown" || day == 0
+        dob = Date.new(year.to_i,month_i,15)
+        dob_estimate = true
+      else
+        dob = Date.new(year.to_i,month_i,day.to_i)
+        dob_estimate = false
+      end
+    else
+      dob_estimate = true
+      yr = (Date.current.year - params["age_estimate"].to_i);
+
+      dob =  "#{yr}-07-05";
+    end
+
    json = {
         'national_id' => nil,
         'application' => "#{name_of_app}",
         'site_code' => "#{facility_code}",
-        'return_path' => '"http://#{request.host_with_port}/process_result',
+        'return_path' => params[:return_path],
         'print_barcode' => print_barcode,
         'names' =>
             {
                 'family_name' => params[:names][:family_name],
                 'given_name' => params[:names][:given_name],
                 'middle_name' => params[:names][:middle_name],
-                'maiden_name' => (params[:names][:family_name2].blank? ? nil : params[:names][:family_name2])
+                'maiden_name' => (params[:names][:family_name2].blank? ? nil : params[:names][:family_name2]),
+                'gender' => (params[:gender])
             },
         'gender' => (params[:gender] == 'F' ? 'Female' : 'Male'),
         'person_attributes' => {
@@ -23,20 +51,20 @@ module PatientsHelper
             'office_phone_number' => params["office_phone_number"],
             'race' => params["race"]
         },
-        'birthdate' => nil,
+        'birthdate' => dob,
         'patient' => {
-            'identifiers' => []
+            'identifiers' => (identifier.blank? ? [] : [identifier])
         },
-        'birthdate_estimated' => nil,
+        'birthdate_estimated' => dob_estimate,
         'addresses' => {
-            'current_residence' => params["addresses"]["address1"],
-            'current_village' => params["addresses"]["city_village"],
+            'current_residence' => (params["addresses"]["address1"] rescue nil),
+            'current_village' => (params["addresses"]["city_village"] rescue nil),
             'current_ta' => current_ta,
-            'current_district' => params["addresses"]["state_province"],
-            'home_village' => params["addresses"]["neighborhood_cell"],
-            'home_ta' => params["addresses"]["county_district"],
-            'home_district' => params["addresses"]["address2"],
-            'landmark' => params["addresses"]["address1"]
+            'current_district' => (params["addresses"]["state_province"] rescue nil),
+            'home_village' => (params["addresses"]["neighborhood_cell"] rescue nil),
+            'home_ta' => (params["addresses"]["county_district"] rescue nil),
+            'home_district' => (params["addresses"]["address2"] rescue nil),
+            'landmark' => (params["addresses"]["address1"] rescue nil)
         }
     }.to_json
   end

@@ -3,10 +3,39 @@ class UsersController < ApplicationController
     @users = User.all
   end
   def new
+    @user = User.new
     render :layout => 'touch'
   end
   def create
+    existing_user = User.where(username: params[:user][:username]) rescue nil
 
+    if !existing_user.blank?
+      flash[:notice] = 'Username already in use'
+      redirect_to "/users/new" and return
+    end
+    if (params[:password] != params[:confirm_password])
+      flash[:notice] = 'Password Mismatch'
+      redirect_to :action => 'new' and return
+    end
+
+    User.transaction do
+      person = Person.create()
+      person.names.create(given_name: params[:user][:given_name], family_name: params[:user][:family_name])
+
+      user = User.create(username: params[:user][:username], plain_password: params[:user][:password],
+                       creator: params[:creator], person_id: person.id)
+
+      user.user_roles.create(role: Role.find_by_role( params[:user_role][:role_id]).role)
+
+    end
+
+    if @user.errors.blank?
+      flash[:notice] = 'User was successfully created.'
+    else
+      flash[:notice] = 'Oops! User was not created!.'
+      redirect_to "/users/new" and return
+    end
+    redirect_to "/users"
   end
   def edit
     @field = (params[:attribute] == 'name' ? 'NAME' : 'PASSWORD')
@@ -44,5 +73,14 @@ class UsersController < ApplicationController
   end
   def destroy
 
+  end
+
+  def roles
+    role_conditions = ["role LIKE (?)", "%#{params[:value]}%"]
+    roles = Role.where( role_conditions)
+    roles = roles.map do |r|
+      "<li value='#{r.role}'>#{r.role.gsub('_',' ').capitalize}</li>"
+    end
+    render :text => roles.join('') and return
   end
 end

@@ -8,10 +8,9 @@ module MainHelper
     records = []
 
     (data || []).each do |y|
-      order = OrderEntry.find_by_sql("SELECT service_id, full_price FROM order_entries where order_entry_id = #{y.order_entry_id}").first rescue nil
-      next if order.blank?
-      records << {service: order.description, received_by: y.cashier.username, paid: y.amount,
-                  bill: order.full_price, voided: y.voided}
+
+      records << {receipt: y.receipt_number, received_by: y.cashier.name, paid: y.total,
+                  bill: y.total_bill, voided: y.voided}
     end
 
     return records

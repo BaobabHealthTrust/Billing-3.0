@@ -5,7 +5,7 @@
   <div style="display: table; width: 100%;font-size: 1.4em;">
     <div style="display: table-row; background-color: silver; font-size: 1.5em;font-weight:bold;color: #000000;line-height: 2em;">
       <div style="display: table-cell;padding-left: 1vw;">
-          Service
+          Receipt Number
       </div>
       <div style="display: table-cell; text-align: center;">
         Received by
@@ -20,7 +20,7 @@
     <% (@records || []).each do |e| %>
         <div style="display: table-row;line-height: 1.8em;background-color: <%= cycle('#FFFFFF','#DADADA')%>;">
           <div style="display: table-cell; padding-left: 0.5vw; color: <%= e[:voided] ? '#FF0000' : '#000000'%>;">
-            <%= e[:service]%>
+            <%= e[:receipt]%>
           </div>
           <div style="display: table-cell; text-align: center;color: <%= e[:voided] ? '#FF0000' : '#000000'%>;">
             <%= e[:received_by]%>

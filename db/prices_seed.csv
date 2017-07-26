@@ -1,13 +1,13 @@
 Item,unit,price,type,category,Rank
 Admission (adult),Day,1300,General,Admission,1
 Admission (paediatric),Day,500,General,Admission,1
-Consultation (adult – night),each,700,General,Consultation,
-Consultation (paediatric – night),each,500,General,Consultation,
-Consultation (adult),each,500,General,Consultation,
-Consultation (paediatric),each,300,General,Consultation,
-ART Consultation (Catchment),Each,200,General,Consultation,
-ART Consultation (Other),Each,500,General,Consultation,
-Review,each,300,General,Consultation,
+Consultation (adult – night),each,700,General,Consultation,4
+Consultation (paediatric – night),each,500,General,Consultation,5
+Consultation (adult),each,500,General,Consultation,1
+Consultation (paediatric),each,300,General,Consultation,2
+ART Consultation (Catchment),Each,200,General,Consultation,6
+ART Consultation (Other),Each,500,General,Consultation,7
+Review,each,300,General,Consultation,3
 Health Passport Book,each,150,General,Documentation,
 Medical Report,each,4000,General,Documentation,
 Death Report,each,4000,General,Documentation,
@@ -235,12 +235,12 @@ Temporary Filling,Each,2500,General,Dental,4
 First Canal,Each,2000,General,Dental,
 Each additional canal,Each,3000,General,Dental,
 Scaling and polishing,Each,5000,General,Dental,6
-Abdomen ultrasound scan,Each,2500,General,Radiology,
+Abdomen ultrasound scan,Each,2500,General,Radiology,8
 Breast ultrasound scan,Each,2500,General,Radiology,
 Cardiac ultrasound scan,Each,2500,General,Radiology,
-Obsterics ultrasound scan,Each,2500,General,Radiology,
-Pelvic ultrasound scan,Each,2500,General,Radiology,
-KUB ultrasound scan,Each,2500,General,Radiology,
+Obsterics ultrasound scan,Each,2500,General,Radiology,10
+Pelvic ultrasound scan,Each,2500,General,Radiology,7
+KUB ultrasound scan,Each,2500,General,Radiology,9
 CT Brain/Skull/Head,Each,24000,General,Radiology,
 CT Sinuses,Each,24000,General,Radiology,
 CT Neck (Soft tissue),Each,30000,General,Radiology,
@@ -248,28 +248,28 @@ CT Chest,Each,30000,General,Radiology,
 CT Abdomen (Plain),Each,30000,General,Radiology,
 CT Abdomen + Oral +IV Contrast,Each,42000,General,Radiology,
 CT Pelvis,Each,30000,General,Radiology,
-Barium swallow contrast study,Each,8000,General,Radiology,
+Barium swallow contrast study,Each,8000,General,Radiology,4
 Barium meal contrast study,Each,8000,General,Radiology,
 Barium follow through contrast study,Each,10000,General,Radiology,
 Barium enema contrast study,Each,20000,General,Radiology,
-Abdomen (KUB),Each,3000,General,Radiology,
-Abdomen (Erect & Spine),Each,3000,General,Radiology,
+Abdomen (KUB),Each,3000,General,Radiology,2
+Abdomen (Erect & Spine),Each,3000,General,Radiology,2
 Cervical Spine (AP & LAT View),Each,3000,General,Radiology,
-Chest (PA & PA Views),Each,3000,General,Radiology,
-Chest (Lateral views),Each,3000,General,Radiology,
-Chest (Portable),Each,3000,General,Radiology,
+Chest (PA & PA Views),Each,3000,General,Radiology,1
+Chest (Lateral views),Each,3000,General,Radiology,1
+Chest (Portable),Each,3000,General,Radiology,1
 Elbow (AP & LAT View),Each,3000,General,Radiology,
-Facial Bones radiography,Each,3000,General,Radiology,
+Facial Bones radiography,Each,3000,General,Radiology,6
 Femur (AP & LAT Views),Each,3000,General,Radiology,
 Forearm (AP & LAT Views),Each,3000,General,Radiology,
 Hand (AP & LAT Views),Each,3000,General,Radiology,
 Knee (AP & LAT Views),Each,3000,General,Radiology,
-Lumbar Spine (AP & LAT Views),Each,3000,General,Radiology,
+Lumbar Spine (AP & LAT Views),Each,3000,General,Radiology,3
 Mandible (AP & Oblique Views),Each,3000,General,Radiology,
 Orbits radiography,Each,3000,General,Radiology,
 Pelvis radiography,Each,3000,General,Radiology,
 Scapula radiography,Each,3000,General,Radiology,
-Shoulder radiography,Each,3000,General,Radiology,
+Shoulder radiography,Each,3000,General,Radiology,5
 Skull (AP + LAT Views),Each,3000,General,Radiology,
 Skull (LAT Views),Each,3000,General,Radiology,
 Skull (Townes Views),Each,3000,General,Radiology,
@@ -405,12 +405,12 @@ albumin,each,1000,General,Laboratory,
 alkaline phosphate,each,1000,General,Laboratory,
 amylase,each,1000,General,Laboratory,
 biriribin (total and direct),each,1000,General,Laboratory,
-blood urea notrogen,each,1000,General,Laboratory,
+blood urea notrogen,each,1000,General,Laboratory,5
 calcium,each,1000,General,Laboratory,
 carbon dioxide,each,1000,General,Laboratory,
 chloride,each,1000,General,Laboratory,
 cholesterol,each,1000,General,Laboratory,
-creatinine,each,1000,General,Laboratory,
+creatinine,each,1000,General,Laboratory,6
 gamma glutamyl transferase,each,1000,General,Laboratory,
 glucose,each,1000,General,Laboratory,
 glucose tolerance test,each,1000,General,Laboratory,
@@ -427,18 +427,18 @@ triglycerides,each,1000,General,Laboratory,
 uric acid,each,1000,General,Laboratory,
 LDH,each,1000,General,Laboratory,
 bleeding time,each,1000,General,Laboratory,
-full blood count and indices,each,1000,General,Laboratory,
+full blood count and indices,each,1000,General,Laboratory,1
 differential only,each,1000,General,Laboratory,
 eosinophil count,each,800,General,Laboratory,
 haematocrit,each,800,General,Laboratory,
 erythrocyte count,each,800,General,Laboratory,
-erythrocyte sedimentaion rate (ESR),each,1000,General,Laboratory,
+erythrocyte sedimentaion rate (ESR),each,1000,General,Laboratory,4
 Haemoglobin (HB),each,800,General,Laboratory,
 lee white coagulation time,each,800,General,Laboratory,
 lupus,each,800,General,Laboratory,
 erythomatosus cells,each,800,General,Laboratory,
 platelet count,each,800,General,Laboratory,
-sickle cell test,each,1000,General,Laboratory,
+sickle cell test,each,1000,General,Laboratory,7
 reticulocyte count ,each,1000,General,Laboratory,
 white cell count,each,1000,General,Laboratory,
 Peripheral Blood film,each,1000,General,Laboratory,
@@ -457,7 +457,7 @@ haematuria,each,1000,General,Laboratory,
 glucossuria,each,1000,General,Laboratory,
 pregnancy test,each,1000,General,Laboratory,
 specific gravity,each,1000,General,Laboratory,
-urinalysis ( full report),each,1000,General,Laboratory,
+urinalysis ( full report),each,1000,General,Laboratory,3
 urobilinogen,each,1000,General,Laboratory,
 24 hr VMA assay,each,1000,General,Laboratory,
 antistreptolysin – O,each,1000,General,Laboratory,
@@ -474,7 +474,7 @@ schistosoma igG,each,1000,General,Laboratory,
 schistosoma igM,each,1000,General,Laboratory,
 VDRL,each,1000,General,Laboratory,
 widal,each,1000,General,Laboratory,
-blood group and rhesus status,each,1000,General,Laboratory,
+blood group and rhesus status,each,1000,General,Laboratory,2
 coombs-direct and indirect,each,1000,General,Laboratory,
 blood cross-mach,each,2000,General,Laboratory,
 hepatitis A,each,1000,General,Laboratory,
@@ -510,7 +510,6 @@ ALT/SGOT/100,each,1000,General,Laboratory,
 Creatinine/100,each,1000,General,Laboratory,
 Urea/100,each,1000,General,Laboratory,
 Bilirubin T&D,each,1000,General,Laboratory,
-Urea/100,each,1000,General,Laboratory,
 T. Protein,each,1000,General,Laboratory,
 Sodium,each,1000,General,Laboratory,
 Potassium,each,1000,General,Laboratory,

@@ -178,6 +178,7 @@ display: none !important;
 
     <%= text_field_tag "person[names][family_name2]", nil,
                        {:id => "maiden_name",
+                        :optional => true,
                         :condition => "__$('gender').value == 'F'",
                         :helptext => "Maiden Name"} if @show_maiden_name %>
 
@@ -361,6 +362,8 @@ display: none !important;
     <!-- Make sure patient is created -->
 
     <%= hidden_field_tag "person[patient]", "" %>
+    <%= hidden_field_tag "person[return_path]", "http://#{request.host_with_port}/process_result" %>
+    <%= hidden_field_tag :identifier, params[:identifier] %>
 
     <input type='hidden' name='user_id' value='<%= params[:user_id] %>'/>
     <input type='hidden' name='location_id' value='<%= params[:location_id] %>'/>

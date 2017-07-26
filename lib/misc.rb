@@ -12,12 +12,12 @@ module Misc
       address += ", " + patient.current_residence unless patient.current_residence.blank?
     end
 
-    label = ZebraPrinter::StandardLabel.new
+    label = ZebraPrinter::Label.new(801,329,'026',false)
     label.font_size = 2
     label.font_horizontal_multiplier = 2
     label.font_vertical_multiplier = 2
     label.left_margin = 50
-    label.draw_barcode(50,180,0,1,5,15,120,false,"#{patient.national_id}")
+    label.draw_barcode(50,180,0,1,4,12,120,false,"#{patient.national_id}")
     label.draw_multi_text("#{patient.full_name.titleize}")
     label.draw_multi_text("#{dash_formatter(patient.national_id)} #{patient.presentable_dob}#{sex}")
     label.draw_multi_text("#{address}" ) unless address.blank?
@@ -37,6 +37,7 @@ module Misc
     payments = OrderPayment.where(order_payment_id: ids)
     patient_name = payments.first.order_entry.patient.full_name
     cashier = payments.first.cashier.name
+    receipt_number = payments.first.receipt_number
     text = []
     heading = ""
     heading += "#{get_config('facility_name').titleize}\n"
@@ -54,6 +55,9 @@ module Misc
     label.font_size = 3
     label.font_horizontal_multiplier = 1
     label.font_vertical_multiplier = 1
+    label.draw_text("Receipt",250,0,0,2,1,2,false)
+    label.draw_text(receipt_number,450,0,0,3,1,1,false)
+    label.y+=10
     label.draw_multi_text(heading)
     label.draw_line(label.x,label.y,566,2)
     label.y+=10

@@ -123,7 +123,7 @@ class User < ActiveRecord::Base
     end
 
     def role
-      self.user_roles.first.role
+      self.user_roles.first.role rescue ''
     end
 
     def self.current

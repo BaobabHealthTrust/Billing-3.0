@@ -147,7 +147,7 @@
       <% (@unpaid_orders || []).each do |service_id,order| %>
           <tr>
             <th style="padding: 0px;">
-              <input type="checkbox" class="custom-checkbox" data-id=<%= order[:id].join(',')%> data-qty=<%= order[:amount]%>>
+              <input type="checkbox" class="custom-checkbox pay" data-id=<%= order[:id].join(',')%> data-qty=<%= order[:amount]%>>
             </th>
             <th><%= order[:service_name] %></th>
             <th style="text-align: center"><%= order[:quantity] %></th>
@@ -184,6 +184,7 @@
     <table class="dashboard-main" border="2">
       <thead>
       <tr>
+        <th style="width: 5vw;">&nbsp;</th>
         <th style="text-align: left;;padding-left: 5px;">Item</th>
         <th style="text-align:center;">Quantity</th>
         <th>Price</th>
@@ -195,17 +196,19 @@
       <% (@today_orders.keys || []).each do |date| %>
           <% (@today_orders[date]["details"] || []).each do |order| %>
               <tr>
+                <th style="padding: 0px;">
+                  <input type="checkbox" class="custom-checkbox delete" data-id=<%= order[:id]%> data-qty=<%= order[:amount]%>>
+                </th>
                 <th><%= order[:service] %></th>
                 <th style="text-align: center"><%= order[:quantity] %></th>
                 <td style=""><%= local_currency(order[:price]) %></td>
                 <td style=""><%= order[:status] %></td>
                 <td style="vertical-align: middle !important;padding-top: 5px;">
                   <% if order[:status] == 'UNPAID' %>
-                      <img src="/assets/delete.png" title="Void Item"
-                           onmousedown="window.location='/order_entries/void?id=<%= order[:id]%>'">
+                     &nbsp;
                   <% else %>
                       <img src="/assets/delete.png" title="Void Item"
-                           onmousedown="window.location='/order_payments/void?id=<%= order[:id]%>'">
+                           onmousedown="voidPayments(<%= order[:id]%>)">
                   <% end %>
                 </td>
               </tr>
@@ -360,7 +363,7 @@
 
     function getSelectedTrans(){
         var choices = [];
-        var transactions = document.getElementsByClassName('custom-checkbox');
+        var transactions = document.getElementsByClassName('custom-checkbox pay');
         var cost = 0;
 
         for(var o = 0; o < transactions.length; o++){
@@ -392,5 +395,32 @@
     function submitPayment(){
         document.forms[0].submit();
     }
+
+    function voidPayments(id)
+    {
+        var choices = [];
+        var transactions = document.getElementsByClassName('custom-checkbox delete');
+        var cost = 0;
+
+        for(var o = 0; o < transactions.length; o++){
+            if(transactions[o].checked == true){
+                choices.push(transactions[o].getAttribute('data-id'));
+                cost += parseFloat(transactions[o].getAttribute('data-qty'))
+
+            }
+        }
+        if(choices.length > 0)
+        {
+            window.location='/order_payments/void?id='+ choices.join(',') +"," +id;
+            document.getElementById("due").innerHTML = localize(cost);
+        }
+        else
+        {
+
+            window.location='/order_payments/void?id='+id;
+        }
+        return choices;
+    }
+
     initializeCollapsible();
 </script>

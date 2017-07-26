@@ -1,7 +1,7 @@
 
 <%= form_for :order_entries, :method => "POST" ,:url => order_entries_path  do |f| %>
     <%= select_tag 'order_entry[categories][]',
-                   options_for_select(@categories, nil),
+                   options_for_select(@categories.keys, nil),
                    :id => "order_categories",
                    :helpText => "Select service" ,
                    :multiple =>  true %>
@@ -36,30 +36,58 @@
                    :multiple =>  true %>
 
     <%= select_tag 'order_entry[dental][]',
-                   options_for_select(entry_options('dental'), nil),
+                   options_for_select(@categories['Dental'], nil),
                    :id => "dental_procedures",
                    :helpText => "Select dental service offered" ,
                    :condition => "getSelected('order_categories').match(/DENTAL/i)",
                    :multiple =>  true %>
 
+    <%= select_tag 'order_entry[dental][]',
+                   options_for_select((entry_options('dental')-@categories['Dental']), nil),
+                   :id => "other_dental_procedures",
+                   :helpText => "Select dental service offered" ,
+                   :condition => "getSelected('dental_procedures').match(/OTHER/i)",
+                   :multiple =>  true %>
+
     <%= select_tag 'order_entry[laboratory][]',
-                   options_for_select(entry_options('laboratory'), nil),
+                   options_for_select(@categories['Laboratory'], nil),
                    :id => "lab_orders",
                    :helpText => "Select laboratory test to be performed" ,
                    :condition => "getSelected('order_categories').match(/LABORATORY/i)",
                    :multiple =>  true %>
 
+    <%= select_tag 'order_entry[laboratory][]',
+                   options_for_select((entry_options('laboratory')-@categories['Laboratory']), nil),
+                   :id => "other_lab_orders",
+                   :helpText => "Select laboratory test to be performed" ,
+                   :condition => "getSelected('lab_orders').match(/OTHER/i)",
+                   :multiple =>  true %>
+
     <%= select_tag 'order_entry[maternity][]',
-                   options_for_select(entry_options('maternity'), nil),
+                   options_for_select(@categories['Maternity'], nil),
                    :id => "maternity",
                    :helpText => "Select maternity service(s)" ,
                    :condition => "getSelected('order_categories').match(/MATERNITY/i)",
                    :multiple =>  true %>
 
+    <%= select_tag 'order_entry[maternity][]',
+                   options_for_select((entry_options('maternity') - @categories['Maternity']), nil),
+                   :id => "other_maternity",
+                   :helpText => "Select additional maternity service(s)" ,
+                   :condition => "getSelected('maternity').match(/OTHER/i)",
+                   :multiple =>  true %>
+
     <%= select_tag 'order_entry[ophthalmology][]',
-                   options_for_select(entry_options('ophthalmology'), nil),
+                   options_for_select(@categories['Ophthalmology'], nil),
                    :id => "ophthamology",
                    :helpText => "Select eye service accessed" ,
+                   :condition => "getSelected('order_categories').match(/OPHTHALMOLOGY/i)",
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[ophthalmology][]',
+                   options_for_select((entry_options('ophthalmology')-@categories['Ophthalmology']), nil),
+                   :id => "ophthamology",
+                   :helpText => "Select other eye service accessed" ,
                    :condition => "getSelected('order_categories').match(/OPHTHALMOLOGY/i)",
                    :multiple =>  true %>
 

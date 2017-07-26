@@ -16,34 +16,39 @@ class OrderPaymentsController < ApplicationController
     end
 
     amount = params[:order_payment][:amount].to_f
+    if amount > 0
+      Receipt.transaction do
+        new_receipt = Receipt.create(payment_mode: params[:order_payment][:mode],
+                                     cashier: User.find(params[:creator]))
 
-    (orders || []).each do |entry|
-      break if amount == 0
-      order_status = entry.status
-      if order_status[:bill_status] == "PAID"
-        next
-      else
-        amount_due = (entry.full_price - order_status[:amount])
-        pay_amount =  (amount_due <= amount ? amount_due : amount)
+        (orders || []).each do |entry|
+          break if amount == 0
+          order_status = entry.status
+          if order_status[:bill_status] == "PAID"
+            next
+          else
+            amount_due = (entry.full_price - order_status[:amount])
+            pay_amount =  (amount_due <= amount ? amount_due : amount)
 
-        OrderEntry.transaction do
-          entry.amount_paid += pay_amount
-          entry.save
+            entry.amount_paid += pay_amount
+            entry.save
 
-          new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
-                                            amount: pay_amount , payment_mode: params[:order_payment][:mode])
+            new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
+                                              amount: pay_amount, receipt_number: new_receipt.receipt_number )
 
+            amount -= pay_amount
+            new_payments << new_payment.id
 
-          amount -= pay_amount
-          new_payments << new_payment.id
+          end
         end
       end
+
+      #if print barcode
+      print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_payments.join(',')}",
+                         "/patients/#{params[:order_payment][:patient_id]}")
+    else
+      redirect_to "/patients/#{params[:order_payment][:patient_id]}" and return
     end
-
-    #if print barcode
-    print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_payments.join(',')}",
-                       "/patients/#{params[:order_payment][:patient_id]}")
-
 
   end
 
@@ -53,7 +58,7 @@ class OrderPaymentsController < ApplicationController
     print_string = Misc.print_receipt(ids, change)
 
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false,
-              :filename=>"#{(0..8).map { (65 + rand(26)).chr }.join}.lbl", :disposition => "inline")
+              :filename=>"#{(0..8).map { (65 + rand(26)).chr }.join}.lbs", :disposition => "inline")
 
   end
 
@@ -64,25 +69,32 @@ class OrderPaymentsController < ApplicationController
     if entries.blank?
       redirect_to "/"
     else
-      date = ""
+      receipt = []
+
       (entries || []).each do |entry|
         (entry.order_payments || []).each do |payment|
           payment.void("Wrong entry", current_user.id)
-          date = payment.payment_stamp
+          receipt << payment.receipt_number
         end
+        entry.void("Wrong entry", current_user.id)
       end
 
-      if date.blank?
+      if receipt.blank?
         redirect_to entries.first.patient
       else
-        range = date.beginning_of_day..date.end_of_day
-        payments_on_day = OrderEntry.select(:order_entry_id).where(patient_id: entries.first.patient_id,
-                                                                       order_date: range).inject([]){|collection,x| collection + x.order_payments.collect{|r| r.order_payment_id}}
+        other_payments = OrderPayment.where(receipt_number: receipt)
+        Receipt.where(receipt_number: receipt).update_all(voided: true, voided_by: current_user.id)
 
-        if payments_on_day.blank?
-          redirect_to entries.first.patient
+        if other_payments.blank?
+          redirect_to entries.first.patient and return
         else
-          print_and_redirect("/order_payments/print_receipt?ids=#{payments_on_day.join(',')}",
+          Receipt.transaction do
+            new_receipt = Receipt.create(payment_mode: "CASH",
+                                         cashier: current_user.id)
+            OrderPayment.where(receipt_number: receipt).update_all(receipt_number: new_receipt.receipt_number)
+          end
+
+          print_and_redirect("/order_payments/print_receipt?ids=#{other_payments.collect{|x| x.order_payment_id}.join(',')}",
                              "/patients/#{entries.first.patient_id}")
         end
       end

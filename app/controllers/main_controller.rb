@@ -39,9 +39,12 @@ class MainController < ApplicationController
         @title = "Income Summary from #{params[:start_date].to_date.strftime('%d %B, %Y')} to #{params[:end_date].to_date.strftime('%d %B, %Y')}"
         range = params[:start_date].to_date.beginning_of_day..params[:end_date].to_date.end_of_day
     end
-    data = OrderPayment.find_by_sql("Select * from order_payments where payment_stamp between '#{range.first}'
-                                         and '#{range.last}'")
+
+    data = Receipt.find_by_sql("Select * from receipts where payment_stamp between '#{range.first.strftime('%Y-%m-%d 00:00:00')}'
+                                         and '#{range.last.strftime('%Y-%m-%d 23:59:59')}'")
+
     @records = view_context.income_summary(data)
+
   end
 
   def cashier_summary
@@ -63,8 +66,9 @@ class MainController < ApplicationController
         range = params[:start_date].to_date.beginning_of_day..params[:end_date].to_date.end_of_day
     end
 
-    data = OrderPayment.find_by_sql("Select * from order_payments where payment_stamp between '#{range.first}'
-                                         and '#{range.last}' and cashier = #{params[:cashier]}")
+    data = Receipt.find_by_sql("Select * from receipts where payment_stamp between '#{range.first.strftime('%Y-%m-%d 00:00:00')}'
+                                         and '#{range.last.strftime('%Y-%m-%d 23:59:59')}' and cashier = #{params[:cashier]}")
+
     @records = view_context.income_summary(data)
   end
 
