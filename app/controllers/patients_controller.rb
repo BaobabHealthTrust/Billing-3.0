@@ -245,7 +245,8 @@ class PatientsController < ApplicationController
                                                        @patient.id, Date.current.beginning_of_day)
 
     today_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price,:amount_paid,
-                                    :order_date).where(patient_id: @patient.id,order_date: range)
+                                    :order_date).where("patient_id = ? AND order_date BETWEEN ? AND ? AND amount_paid > ?",
+                                                       @patient.id,range.first, range.last, 0)
 
     @unpaid_orders, @total, @amount_due = view_context.unpaid_records(unpaid_orders)
     @history = view_context.past_records(past_orders)

@@ -13,7 +13,7 @@
         <td colspan='5' style="font-weight: bold; text-align: left;padding-left: 5px;"> Working Hour: </td>
       </tr>
       <tr>
-        <td colspan='5' style="font-weight: bold; text-align: left;padding-left: 5px;"> Total: </td>
+        <td colspan='5' style="font-weight: bold; text-align: left;padding-left: 5px;"> Total:  <%= local_currency(@totals[:general] + @totals[:private]) %></td>
       </tr>
       <tr>
         <td style="font-weight: bold;">Reception</td>
@@ -58,8 +58,8 @@
       <% end %>
       <tr>
         <td style="font-weight: bold;">TOTAL</td>
-        <td colspan='2'>&nbsp;</td>
-        <td colspan='2'>&nbsp;</td>
+        <td colspan='2' style="text-align: right;padding-right: 5px;"><%= local_currency(@totals[:general]) %></td>
+        <td colspan='2' style="text-align: right;padding-right: 5px;"><%= local_currency(@totals[:private]) %></td>
       </tr>
     </table>
   </div>
@@ -67,6 +67,6 @@
 
 <div class="footer">
   <button class="green" style="float: right;" onmousedown="window.location='/'">Finish</button>
-  <button style="float: right;" onmousedown="window.location='/'">Send</button>
+  <button style="float: right;" onmousedown="window.location='/main/print_daily_cash_summary?start_date=<%= @start_date %>&end_date=<%= @end_date %>'">Print</button>
 
 </div>

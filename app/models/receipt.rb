@@ -6,16 +6,30 @@ class Receipt < ActiveRecord::Base
   validates_uniqueness_of :receipt_number
   before_create :complete_record
 
-  def total
-   self.order_payments.select("SUM(amount) as amount").first.amount rescue 0
+  def total(include_voided=false)
+
+    if include_voided
+      output = OrderPayment.find_by_sql("SELECT SUM(amount) as amount FROM order_payments where receipt_number='#{self.receipt_number}'").first.amount rescue 0
+    else
+      output = self.order_payments.select("SUM(amount) as amount").first.amount rescue 0
+    end
+   return output
   end
 
-  def total_bill
-    payments = self.order_payments.select(:order_entry_id)
+  def total_bill(include_voided=false)
+
     total = 0
-    (payments || []).each do |payment|
-      total += payment.order_entry.full_price
+    if include_voided
+      total = OrderEntry.find_by_sql("SELECT SUM(full_price) as full_price FROM order_entries where
+                                          order_entry_id in (SELECT order_entry_id FROM order_payments
+                                          where receipt_number='#{self.receipt_number}')").first.full_price rescue 0
+    else
+      payments = self.order_payments.select(:order_entry_id)
+      (payments || []).each do |payment|
+        total += payment.order_entry.full_price
+      end
     end
+
     return total
   end
 
@@ -27,7 +41,7 @@ class Receipt < ActiveRecord::Base
   def next_number
     last_number = Receipt.find_by_sql("SELECT count(receipt_number) as count FROM receipts WHERE payment_stamp BETWEEN
                                      '#{Date.current.beginning_of_year.strftime('%Y-%m-%d 00:00:00')}' AND '#{DateTime.current.end_of_year}'").first
-    new_number =  "#{(last_number.count.to_i + 1).to_s.rjust(6, '0')}/#{Date.current.strftime('%y')}"
+    new_number =  "#{(last_number.count.to_i + 1).to_s.rjust(6, '0')}-#{Date.current.strftime('%y')}"
     return new_number
   end
 

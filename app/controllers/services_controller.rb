@@ -26,11 +26,23 @@ class ServicesController < ApplicationController
   end
 
   def update
-
+    @new_service = Service.find(params[:id])
+    @new_service.update(service_params)
+    (params[:service_price] || []).each do |type, price|
+      service_price = ServicePrice.new()
+      service_price.price_type = type
+      service_price.service_id = @new_service.id
+      service_price.price = price[:price]
+      service_price.creator = params[:creator]
+      service_price.updated_by = params[:creator]
+      service_price.save
+    end
+    redirect_to @new_service
   end
 
   def edit
-
+    @service = Service.find(params[:id])
+    render :layout => 'touch'
   end
 
   def destroy

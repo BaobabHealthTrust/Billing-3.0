@@ -30,7 +30,7 @@ class OrderEntriesController < ApplicationController
 =end
         if (params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Array)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |item|
-            next if item.blank?
+            next if (item.blank? || item == 'Other')
             OrderEntry.create(:patient_id => patient.id,:order_date => DateTime.current, :quantity => 1,
                               :service_offered => item, :location =>params[:order_entry][:location],
                               :service_point =>params[:order_entry][:location_name],
@@ -38,7 +38,7 @@ class OrderEntriesController < ApplicationController
           end
         elsif(params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Hash)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |order,item|
-            next if item[:service].blank?
+            next if (item[:service].blank? || item[:service] == 'Other')
 
             qty = (item[:quantity].blank? ? 1 : item[:quantity].to_f) * (item[:dose].blank? ? 1 : item[:dose].to_f)
             qty = qty*(item[:frequency].blank? ? 1 : frequencies(item[:frequency]))*(item[:duration].blank? ? 1 : item[:duration].to_f)

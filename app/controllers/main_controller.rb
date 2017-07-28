@@ -78,9 +78,22 @@ class MainController < ApplicationController
                 %w[Consultation 0011 0071], %w[Book 0012 0072],%w[Consultation 0011 0071], %w[Book 0012 0072]]
 
     range = params[:start_date].to_date.beginning_of_day..params[:start_date].to_date.end_of_day rescue ''
-    data = OrderPayment.find_by_sql("Select * from order_payments where payment_stamp between '#{range.first}'
-                                         and '#{range.last}' and payment_mode='CASH'") rescue ''
+    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{range.first.strftime('%Y-%m-%d 00:00:00')}'
+                                         and '#{range.last.strftime('%Y-%m-%d 23:59:59')}' ") rescue []
 
-    @records = view_context.cash_summary(data)
+    @start_date = range.first.to_date
+    @end_date = range.last.to_date
+    @records,@totals = view_context.cash_summary(data)
+  end
+
+  def print_daily_cash_summary
+
+    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{params[:start_date].to_date.strftime('%Y-%m-%d 00:00:00')}'
+                                         and '#{params[:end_date].to_date.strftime('%Y-%m-%d 23:59:59')}' ") rescue []
+
+    date = params[:start_date].to_date.strftime('%d %B, %Y')
+    data,totals = view_context.cash_summary(data)
+    print_string = Misc.print_summary(data,totals,date, current_user.name)
+    send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{params[:patient_id]}#{rand(10000)}.lbs", :disposition => "inline")
   end
 end

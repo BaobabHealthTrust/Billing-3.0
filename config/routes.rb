@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root 'main#index'
 
   get "login" => "sessions#login"
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   post "/main/cashier_summary"
   post "/main/daily_cash_summary"
   get "/main/daily_cash_summary"
+  get "/main/print_daily_cash_summary"
 
   resources :patients do
     collection do
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
       get 'patient_by_id(/:id)', action: :patient_by_id
     end
     resources :order_entries
+    resources :patient_accounts
   end
 
   resources :user_properties
