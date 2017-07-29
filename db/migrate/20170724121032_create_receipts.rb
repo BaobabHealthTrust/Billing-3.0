@@ -1,6 +1,7 @@
 class CreateReceipts < ActiveRecord::Migration
   def change
     create_table :receipts do |t|
+      t.integer :patient_id
       t.string :receipt_number, null: false
       t.datetime :payment_stamp
       t.string :payment_mode, null: false, default: "CASH"

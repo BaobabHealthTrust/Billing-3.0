@@ -2,6 +2,7 @@ class Receipt < ActiveRecord::Base
   self.primary_key = :receipt_number
   has_many :order_payments, :foreign_key => :receipt_number
   belongs_to :cashier, class_name: "User", :foreign_key => :cashier
+  belongs_to :patient, :foreign_key => :patient_id
 
   validates_uniqueness_of :receipt_number
   before_create :complete_record

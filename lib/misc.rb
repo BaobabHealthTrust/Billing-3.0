@@ -34,10 +34,12 @@ module Misc
   end
 
   def self.print_receipt(ids, change = 0)
-    payments = OrderPayment.where(order_payment_id: ids)
-    patient_name = payments.first.order_entry.patient.full_name
-    cashier = payments.first.cashier.name
-    receipt_number = payments.first.receipt_number
+    receipt = Receipt.where(receipt_number: ids).first
+
+    payments = receipt.order_payments
+    patient_name = receipt.patient.full_name
+    cashier = receipt.cashier.name
+    receipt_number = receipt.receipt_number
     text = []
     heading = ""
     heading += "#{get_config('facility_name').titleize}\n"

@@ -3,7 +3,6 @@ class OrderPaymentsController < ApplicationController
 
   end
   def create
-    new_payments = []
 
     if params[:order_entries].blank?
       range = Date.current.beginning_of_day..Date.current.end_of_day
@@ -19,7 +18,8 @@ class OrderPaymentsController < ApplicationController
     if amount > 0
       Receipt.transaction do
         new_receipt = Receipt.create(payment_mode: params[:order_payment][:mode],
-                                     cashier: User.find(params[:creator]))
+                                     cashier: User.find(params[:creator]),
+                                     patient_id: params[:order_payment][:patient_id])
 
         (orders || []).each do |entry|
           break if amount == 0
@@ -33,19 +33,18 @@ class OrderPaymentsController < ApplicationController
             entry.amount_paid += pay_amount
             entry.save
 
-            new_payment = OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
+            OrderPayment.create(order_entry_id: entry.id, cashier: User.find(params[:creator]),
                                               amount: pay_amount, receipt_number: new_receipt.receipt_number )
 
             amount -= pay_amount
-            new_payments << new_payment.id
 
           end
         end
+        #Print receipt of transaction
+        print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_receipt.receipt_number}",
+                           "/patients/#{params[:order_payment][:patient_id]}")
       end
 
-      #if print barcode
-      print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_payments.join(',')}",
-                         "/patients/#{params[:order_payment][:patient_id]}")
     else
       redirect_to "/patients/#{params[:order_payment][:patient_id]}" and return
     end
@@ -55,7 +54,15 @@ class OrderPaymentsController < ApplicationController
   def print_receipt
     ids = params[:ids].split(',') rescue params[:id]
     change = (params[:change].to_f || 0)
-    print_string = Misc.print_receipt(ids, change)
+    if ids.length > 1
+      print_string = ""
+      (ids || []).each do |receipt|
+        print_string += "#{Misc.print_receipt(receipt, change)}\n"
+      end
+    else
+      print_string = Misc.print_receipt(ids, change)
+    end
+
 
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false,
               :filename=>"#{(0..8).map { (65 + rand(26)).chr }.join}.lbs", :disposition => "inline")

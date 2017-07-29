@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20170724121032) do
   end
 
   create_table "receipts", force: :cascade do |t|
+    t.integer  "patient_id",     limit: 4
     t.string   "receipt_number", limit: 255,                  null: false
     t.datetime "payment_stamp"
     t.string   "payment_mode",   limit: 255, default: "CASH", null: false
