@@ -212,7 +212,8 @@
                 <span style="width: 30%;">Balance : <%= local_currency((@history[day]["summary"]["bill"] - @history[day]["summary"]["paid"])) %></span>]
             </div>
             <div class="collapsible-content">
-              <% (@history[day]["details"].each_slice(2).to_a || []).each do |order| %>
+              <% records = @history[day]["details"].each_slice(2).to_a
+                 (records || []).each do |order| %>
                   <div style="display: table-row;">
                     <div style="display: table-cell;width:44vw;float: left;">
                       <div style="border: 1px solid gray; padding: 3px;margin: 3px;">
@@ -235,7 +236,13 @@
                         </div>
                       </div>
                     </div>
-                    <% unless order[1].blank? %>
+                    <% if order[1].blank? %>
+                        <div style="display: table-cell;width:44vw;float: right;">
+                          <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
+                            Print Receipt
+                          </div>
+                        </div>
+                    <% else %>
                         <div style="display: table-cell;width:44vw;float: right;">
                           <div style="border: 1px solid gray; padding: 3px;margin: 3px;">
                             <div style="display: table;width: 100%;">
@@ -257,6 +264,16 @@
                             </div>
                           </div>
                         </div>
+
+                        <% if records.last == order %>
+                            <div style="display: table-row;">
+                              <div style="display: table-cell;width:44vw;float: left;">
+                                <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
+                                  Print Receipt
+                                </div>
+                              </div>
+                            </div>
+                        <% end %>
                     <% end %>
                   </div>
               <% end %>
