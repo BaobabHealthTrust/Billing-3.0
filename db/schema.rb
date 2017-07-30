@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20170724121032) do
     t.float    "price",       limit: 24,  default: 0.0, null: false
     t.string   "price_type",  limit: 255,               null: false
     t.date     "active_from",                           null: false
-    t.date     "active_to",                             null: false
+    t.date     "active_to"
     t.integer  "creator",     limit: 4,                 null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false

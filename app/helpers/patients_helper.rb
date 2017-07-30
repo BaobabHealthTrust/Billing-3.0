@@ -75,7 +75,7 @@ module PatientsHelper
       status = entry.status
       date = entry.order_date.strftime("%d %b %Y")
 
-      records[date] = {"summary" => {},"details" => []} if records[date].blank?
+      records[date] = {"summary" => {},"details" => [], "receipts" => []} if records[date].blank?
       records[date]["details"] << {service: entry.description, quantity: entry.quantity,
                                                          price: entry.full_price, id: entry.id,
                                                          status: status[:bill_status]}

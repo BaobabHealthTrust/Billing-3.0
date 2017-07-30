@@ -1,8 +1,9 @@
 Notes on features, issues, wishes
-
 * country, nationality, region, district, traditional_authority models currently are linked to dde tables. This will
   need to be de-linked in the future.
-* Fix confirmation when adding new patient
-* Add reason for voiding and printing new receipt
+* Add reason for voiding receipt
+* Add deposits
+* Add receipt reprinting
+* Add flash notification for the application layout
 
 

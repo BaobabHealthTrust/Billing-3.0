@@ -18,16 +18,13 @@ class UsersController < ApplicationController
       redirect_to :action => 'new' and return
     end
 
-    User.transaction do
-      person = Person.create()
-      person.names.create(given_name: params[:user][:given_name], family_name: params[:user][:family_name])
+    person = Person.create()
+    person.names.create(given_name: params[:user][:given_name], family_name: params[:user][:family_name])
 
-      user = User.create(username: params[:user][:username], plain_password: params[:user][:password],
-                       creator: params[:creator], person_id: person.id)
+    @user = User.create(username: params[:user][:username], plain_password: params[:user][:password],
+                     creator: params[:creator], person_id: person.id)
 
-      user.user_roles.create(role: Role.find_by_role( params[:user_role][:role_id]).role)
-
-    end
+    @user.user_roles.create(role: Role.find_by_role( params[:user_role][:role_id]).role)
 
     if @user.errors.blank?
       flash[:notice] = 'User was successfully created.'
