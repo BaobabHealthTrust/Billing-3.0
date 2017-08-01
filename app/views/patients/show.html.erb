@@ -238,7 +238,7 @@
                     </div>
                     <% if order[1].blank? %>
                         <div style="display: table-cell;width:44vw;float: right;">
-                          <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
+                          <div class = "link-button" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
                             Print Receipt
                           </div>
                         </div>
@@ -268,7 +268,7 @@
                         <% if records.last == order %>
                             <div style="display: table-row;">
                               <div style="display: table-cell;width:44vw;float: left;">
-                                <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
+                                <div class = "link-button" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
                                   Print Receipt
                                 </div>
                               </div>

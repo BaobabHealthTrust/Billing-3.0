@@ -79,7 +79,7 @@ module PatientsHelper
       records[date]["details"] << {service: entry.description, quantity: entry.quantity,
                                                          price: entry.full_price, id: entry.id,
                                                          status: status[:bill_status]}
-
+      records[date]["receipts"] += entry.receipts
       (records[date]["summary"]["bill"].blank? ? records[date]["summary"]["bill"] = entry.full_price : records[date]["summary"]["bill"]+= entry.full_price)
       (records[date]["summary"]["paid"].blank? ? records[date]["summary"]["paid"] = status[:amount] : records[date]["summary"]["paid"]+= status[:amount])
 

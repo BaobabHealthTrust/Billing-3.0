@@ -1,4 +1,5 @@
 class Receipt < ActiveRecord::Base
+  default_scope {-> { where "#{self.table_name}.voided = false" }}
   self.primary_key = :receipt_number
   has_many :order_payments, :foreign_key => :receipt_number
   belongs_to :cashier, class_name: "User", :foreign_key => :cashier

@@ -22,6 +22,10 @@ class OrderEntry < ActiveRecord::Base
     self.full_price= (service.service_prices.select(:price).where(price_type: self.service_point).first.price * self.quantity) rescue 0
   end
 
+  def receipts
+    self.order_payments.collect{|x| x.receipt_number}
+  end
+
   def status
     if (self.amount_paid > 0 && self.amount_paid < self.full_price)
       return {bill_status: "PARTIAL PAYMENT", amount: self.amount_paid}
