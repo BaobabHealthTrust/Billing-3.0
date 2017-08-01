@@ -41,7 +41,7 @@ module PatientsHelper
                 'maiden_name' => (params[:names][:family_name2].blank? ? nil : params[:names][:family_name2]),
                 'gender' => (params[:gender])
             },
-        'gender' => (params[:gender] == 'F' ? 'Female' : 'Male'),
+        'gender' => params[:gender],
         'person_attributes' => {
             'country_of_residence' => nil,
             'citizenship' => params["citizenship"],

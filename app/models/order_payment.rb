@@ -7,7 +7,7 @@ class OrderPayment < ActiveRecord::Base
   belongs_to :cashier, class_name: "User", :foreign_key => :cashier
 
   def clinic_type
-      self.order_entry.location == 788 ? "general" : "private"
+    self.location == Location.find_by_name("General").id ? "general" : "private"
   end
 
   def service_category

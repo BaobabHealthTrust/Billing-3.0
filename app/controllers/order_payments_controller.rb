@@ -77,7 +77,7 @@ class OrderPaymentsController < ApplicationController
       redirect_to "/"
     else
       receipt = []
-
+      #voiding selected entries
       (entries || []).each do |entry|
         (entry.order_payments || []).each do |payment|
           payment.void("Wrong entry", current_user)
@@ -90,19 +90,20 @@ class OrderPaymentsController < ApplicationController
         redirect_to entries.first.patient
       else
         other_payments = OrderPayment.where(receipt_number: receipt)
-        Receipt.where(receipt_number: receipt).update_all(voided: true, voided_by: current_user)
+        old_receipt = Receipt.where(receipt_number: receipt)
+        old_receipt.update_all(voided: true, voided_by: current_user)
 
         if other_payments.blank?
           redirect_to entries.first.patient and return
         else
           Receipt.transaction do
-            new_receipt = Receipt.create(payment_mode: "CASH",
-                                         cashier: current_user)
+            new_receipt = Receipt.create(payment_mode: old_receipt.first.payment_mode,
+                                         patient_id: other_payments.first.order_entry.patient_id, cashier: current_user)
             OrderPayment.where(receipt_number: receipt).update_all(receipt_number: new_receipt.receipt_number)
-          end
 
-          print_and_redirect("/order_payments/print_receipt?ids=#{other_payments.collect{|x| x.order_payment_id}.join(',')}",
-                             "/patients/#{entries.first.patient_id}")
+            print_and_redirect("/order_payments/print_receipt?ids=#{new_receipt.receipt_number}",
+                               "/patients/#{entries.first.patient_id}")
+          end
         end
       end
 

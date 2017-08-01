@@ -13,7 +13,7 @@ class OrderEntry < ActiveRecord::Base
   end
 
   def clinic_type
-    self.location == 788 ? "general" : "private"
+    self.location == Location.find_by_name("General").id ? "general" : "private"
   end
 
   def complete_record
