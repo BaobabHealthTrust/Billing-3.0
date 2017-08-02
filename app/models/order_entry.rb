@@ -12,14 +12,21 @@ class OrderEntry < ActiveRecord::Base
     self.service.name
   end
 
+  def clinic_type
+    self.location == Location.find_by_name("General").id ? "general" : "private"
+  end
+
   def complete_record
     service = (self.service_id.blank? ? Service.find_by_name(self.service_offered) : self.service)
     self.service_id = service.id
     self.full_price= (service.service_prices.select(:price).where(price_type: self.service_point).first.price * self.quantity) rescue 0
   end
 
-  def status
+  def receipts
+    self.order_payments.collect{|x| x.receipt_number}
+  end
 
+  def status
     if (self.amount_paid > 0 && self.amount_paid < self.full_price)
       return {bill_status: "PARTIAL PAYMENT", amount: self.amount_paid}
     elsif (self.amount_paid >= self.full_price)

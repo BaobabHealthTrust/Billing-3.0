@@ -26,7 +26,7 @@
         <tr>
           <td style="text-align: left;padding-left: 5px;"><%= service.name%></td>
           <td><%= service.service_type.name %></td>
-          <td> <%= link_to 'View', "/services/#{service.id}" %></td>
+          <td> <%= link_to 'View', "/services/#{service.id}" %> <%= link_to 'Edit', "/services/#{service.id}/edit" %></td>
         </tr>
     <% end %>
     </tbody>
@@ -39,7 +39,7 @@
 
 <div class="footer">
   <button class="button green" style="float: right;" onmousedown="window.location='/'">Finish</button>
-  <button class="button blue" style="float: right;">Add Service</button>
+  <button class="button blue" style="float: right;" onmousedown="window.location='/services/new'">Add Service</button>
 </div>
 
 <%= javascript_include_tag 'jquery.dataTables.min.js' %>

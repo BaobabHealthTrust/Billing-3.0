@@ -12,12 +12,12 @@ module Misc
       address += ", " + patient.current_residence unless patient.current_residence.blank?
     end
 
-    label = ZebraPrinter::StandardLabel.new
+    label = ZebraPrinter::Label.new(801,329,'026',false)
     label.font_size = 2
     label.font_horizontal_multiplier = 2
     label.font_vertical_multiplier = 2
     label.left_margin = 50
-    label.draw_barcode(50,180,0,1,5,15,120,false,"#{patient.national_id}")
+    label.draw_barcode(50,180,0,1,4,12,120,false,"#{patient.national_id}")
     label.draw_multi_text("#{patient.full_name.titleize}")
     label.draw_multi_text("#{dash_formatter(patient.national_id)} #{patient.presentable_dob}#{sex}")
     label.draw_multi_text("#{address}" ) unless address.blank?
@@ -34,9 +34,12 @@ module Misc
   end
 
   def self.print_receipt(ids, change = 0)
-    payments = OrderPayment.where(order_payment_id: ids)
-    patient_name = payments.first.order_entry.patient.full_name
-    cashier = payments.first.cashier.name
+    receipt = Receipt.where(receipt_number: ids).first
+
+    payments = receipt.order_payments
+    patient_name = receipt.patient.full_name
+    cashier = receipt.cashier.name
+    receipt_number = receipt.receipt_number
     text = []
     heading = ""
     heading += "#{get_config('facility_name').titleize}\n"
@@ -54,6 +57,9 @@ module Misc
     label.font_size = 3
     label.font_horizontal_multiplier = 1
     label.font_vertical_multiplier = 1
+    label.draw_text("Receipt",250,0,0,2,1,2,false)
+    label.draw_text(receipt_number,450,0,0,3,1,1,false)
+    label.y+=10
     label.draw_multi_text(heading)
     label.draw_line(label.x,label.y,566,2)
     label.y+=10
@@ -73,5 +79,43 @@ module Misc
 
   def self.local_currency(amount)
     return ActiveSupport::NumberHelper::number_to_currency(amount,{precision: 2,unit: 'MWK '})
+  end
+
+  def self.print_summary(data,totals,date,cashier)
+    heading = ""
+    heading += "Date: #{date}\n"
+    heading += "Working Hour: \n"
+    heading += "Total:#{local_currency(totals[:general] + totals[:private])}\n"
+    heading += "Cashier Name:#{cashier.titleize}\n"
+    heading += "Checked By: \n Banked By:\n Dept Head: \n Account G.M: \n"
+
+    label = ZebraPrinter::Label.new(616,203,'056',true)
+    label.font_size = 3
+    label.font_horizontal_multiplier = 1
+    label.font_vertical_multiplier = 1
+    label.draw_text("#{get_config('facility_name').titleize}",200,0,0,2,1,2,false)
+    label.y+=20
+    label.draw_text("Daily Cash Summary",200,label.y,0,3,1,1,false)
+    label.y+=30
+    label.draw_multi_text(heading)
+    label.y+=20
+    label.draw_text("General",200,label.y,0,2,1,2,false)
+    label.y+=30
+    (data || []).each do |id,record|
+      label.draw_table([[record[:name].upcase,local_currency(record[:general])]], [[370, "left"], [200, "right"]])
+    end
+    label.y+=10
+    label.draw_table([['Total',local_currency(totals[:general])]], [[370, "left"], [200, "right"]])
+    label.y+=10
+    label.draw_text("Private",200,label.y,0,2,1,2,false)
+    label.y+=30
+    (data || []).each do |id,record|
+      label.draw_table([[record[:name].upcase,local_currency(record[:private])]], [[370, "left"], [200, "right"]])
+      label.y+=10
+    end
+    label.y+=20
+    label.draw_table([['Total',local_currency(totals[:private])]], [[370, "left"], [200, "right"]])
+
+    label.print(1)
   end
 end

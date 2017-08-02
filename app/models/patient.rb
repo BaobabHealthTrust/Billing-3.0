@@ -3,6 +3,10 @@ class Patient < ActiveRecord::Base
   self.table_name = "patient"
   include Openmrs
 
+  before_create :before_create
+  before_update :before_save
+  before_save :before_save
+
   has_one :person, -> { where "voided = 0" }, :foreign_key => :person_id
   has_many :patient_identifiers,-> { where "voided = 0" }, :foreign_key => :patient_id, :dependent => :destroy
   has_many :names,-> { where "voided = false"}, :class_name => 'PersonName', :foreign_key => :person_id, :dependent => :destroy
@@ -13,7 +17,7 @@ class Patient < ActiveRecord::Base
   #Accessor methods. These methods are used to access values of various attributes
   def full_name
     names = self.names.first
-    return names.given_name + " " + names.family_name
+    return (names.given_name || '') + " " + (names.family_name || '')
   end
 
   def sex

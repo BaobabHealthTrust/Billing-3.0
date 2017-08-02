@@ -4,5 +4,9 @@ class UserRole < ActiveRecord::Base
   self.primary_keys = :role, :user_id
   include Openmrs
 
+  before_create :before_create
+  before_update :before_save
+  before_save :before_save
+
   belongs_to :user, -> {where "retired = false"}, :foreign_key => :user_id
 end

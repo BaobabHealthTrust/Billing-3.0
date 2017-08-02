@@ -26,7 +26,10 @@ input{
       <tr>
         <td style="text-align: left;padding-left: 5px;"><%= category.name%></td>
         <td><%= category.number_of_services %></td>
-        <td> <%= link_to 'View', "/service_types/#{category.id}" %></td>
+        <td style="text-align: center;">
+          <img  src="/assets/edit.png" onmousedown="window.location='/service_types/<%= category.id %>/edit'" title="Edit Category">
+          <img  src="/assets/delete.png" onmousedown="window.location='/service_types/<%= category.id %>/edit'" title="Edit Category">
+        </td>
       </tr>
     <% end %>
     </tbody>
@@ -39,7 +42,7 @@ input{
 
 <div class="footer">
   <button class="button green" style="float: right;" onmousedown="window.location='/'">Finish</button>
-  <button class="button blue" style="float: right;">Add Category</button>
+  <!--<button class="button blue" style="float: right;" onmousedown="window.location='/service_types/new'">Add Category</button> //-->
 </div>
 
 <%= javascript_include_tag 'jquery.dataTables.min.js' %>

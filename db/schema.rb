@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620133016) do
+ActiveRecord::Schema.define(version: 20170724121032) do
 
   create_table "medical_scheme_providers", primary_key: "scheme_provider_id", force: :cascade do |t|
     t.string   "company_name",    limit: 255
@@ -55,16 +55,15 @@ ActiveRecord::Schema.define(version: 20170620133016) do
   end
 
   create_table "order_payments", primary_key: "order_payment_id", force: :cascade do |t|
-    t.integer  "order_entry_id", limit: 4,                    null: false
+    t.string   "receipt_number", limit: 255,                 null: false
+    t.integer  "order_entry_id", limit: 4,                   null: false
     t.float    "amount",         limit: 24,  default: 0.0
-    t.string   "payment_mode",   limit: 255, default: "cash", null: false
-    t.datetime "payment_stamp"
-    t.integer  "cashier",        limit: 4,                    null: false
+    t.integer  "cashier",        limit: 4,                   null: false
     t.boolean  "voided",                     default: false
     t.integer  "voided_by",      limit: 4
     t.string   "voided_reason",  limit: 255
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
   end
 
   create_table "patient_accounts", primary_key: "account_id", force: :cascade do |t|
@@ -75,6 +74,18 @@ ActiveRecord::Schema.define(version: 20170620133016) do
     t.integer  "creator",           limit: 4,                null: false
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
+  end
+
+  create_table "receipts", force: :cascade do |t|
+    t.integer  "patient_id",     limit: 4
+    t.string   "receipt_number", limit: 255,                  null: false
+    t.datetime "payment_stamp"
+    t.string   "payment_mode",   limit: 255, default: "CASH", null: false
+    t.integer  "cashier",        limit: 4,                    null: false
+    t.boolean  "voided",                     default: false
+    t.integer  "voided_by",      limit: 4
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
   create_table "service_panel_details", primary_key: "panel_detail_id", force: :cascade do |t|
@@ -102,7 +113,7 @@ ActiveRecord::Schema.define(version: 20170620133016) do
     t.float    "price",       limit: 24,  default: 0.0, null: false
     t.string   "price_type",  limit: 255,               null: false
     t.date     "active_from",                           null: false
-    t.date     "active_to",                             null: false
+    t.date     "active_to"
     t.integer  "creator",     limit: 4,                 null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
@@ -134,7 +145,7 @@ ActiveRecord::Schema.define(version: 20170620133016) do
     t.string   "name",            limit: 255,                 null: false
     t.integer  "service_type_id", limit: 4,                   null: false
     t.string   "unit",            limit: 255
-    t.integer  "rank",            limit: 4,   default: 999
+    t.integer  "rank",            limit: 4,   default: 999,   null: false
     t.integer  "creator",         limit: 4,                   null: false
     t.boolean  "voided",                      default: false
     t.integer  "voided_by",       limit: 4

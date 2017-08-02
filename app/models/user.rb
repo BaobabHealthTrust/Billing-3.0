@@ -87,13 +87,6 @@ class User < ActiveRecord::Base
       self.password
     end
 
-=begin
-    def admin?
-      admin = user_roles.map{|user_role| user_role.role }.include? 'Informatics Manager'
-      admin = user_roles.map{|user_role| user_role.role }.include? 'System Developer' unless admin
-      admin = user_roles.map{|user_role| user_role.role }.include? 'Superuser' unless admin
-      admin
-=end
 
     # Encrypts plain data with the salt.
     # Digest::SHA1.hexdigest("#{plain}#{salt}") would be equivalent to
@@ -130,9 +123,16 @@ class User < ActiveRecord::Base
     end
 
     def role
-      self.user_roles.first.role
+      self.user_roles.first.role rescue ''
     end
 
+    def self.current
+      Thread.current[:user]
+    end
+
+    def self.current=(user)
+      Thread.current[:user] = user
+    end
 =begin
     def activities
       a = activities_property
@@ -149,13 +149,6 @@ class User < ActiveRecord::Base
       prop.user_id = self.id
       prop.save
     end
-
-    def self.current
-      Thread.current[:user]
-    end
-
-    def self.current=(user)
-      Thread.current[:user] = user
-    end
 =end
+
 end

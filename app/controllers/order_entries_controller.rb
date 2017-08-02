@@ -4,8 +4,7 @@ class OrderEntriesController < ApplicationController
   end
 
   def new
-    @categories = ServiceType.select(:name,:service_type_id).collect{|x|x.name}.sort
-    #@categories = ServiceType.select(:name,:service_type_id).collect{|x|[x.name, x.services.count]}.sort
+    @categories = Hash[*ServiceType.select(:name,:service_type_id).collect{|x|[x.name,(x.top_ten_services + ['Other'])]}.flatten(1)]
     render :layout => 'touch'
   end
 
@@ -13,6 +12,8 @@ class OrderEntriesController < ApplicationController
 
     patient = Patient.find(params[:order_entry][:patient_id])
     (params[:order_entry][:categories] || []).each do |category|
+=begin
+
       if %w[admission consultation].include?(category.downcase)
         if patient.person.is_child?
           service = "#{category.downcase.strip} (paediatric)"
@@ -26,9 +27,10 @@ class OrderEntriesController < ApplicationController
                             :service_point =>params[:order_entry][:location_name], :cashier => params[:creator])
         end
       else
-
+=end
         if (params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Array)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |item|
+            next if (item.blank? || item == 'Other')
             OrderEntry.create(:patient_id => patient.id,:order_date => DateTime.current, :quantity => 1,
                               :service_offered => item, :location =>params[:order_entry][:location],
                               :service_point =>params[:order_entry][:location_name],
@@ -36,7 +38,7 @@ class OrderEntriesController < ApplicationController
           end
         elsif(params[:order_entry][category.downcase.gsub(' ','_')] || []).is_a?(Hash)
           (params[:order_entry][category.downcase.gsub(' ','_')] || []).each do |order,item|
-            next if item[:service].blank?
+            next if (item[:service].blank? || item[:service] == 'Other')
 
             qty = (item[:quantity].blank? ? 1 : item[:quantity].to_f) * (item[:dose].blank? ? 1 : item[:dose].to_f)
             qty = qty*(item[:frequency].blank? ? 1 : frequencies(item[:frequency]))*(item[:duration].blank? ? 1 : item[:duration].to_f)
@@ -61,7 +63,7 @@ class OrderEntriesController < ApplicationController
                               :cashier => params[:creator])
           end
         end
-      end
+      #end
     end
 
     redirect_to patient

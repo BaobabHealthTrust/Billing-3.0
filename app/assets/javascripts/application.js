@@ -34,12 +34,7 @@ function showModal() {
     // Get the modal
     var modal = document.getElementById('myModal');
 
-    // Get the button that opens the modal
-
-
-    // When the user clicks the button, open the modal
-
-        modal.style.display = "block";
+    modal.style.display = "block";
 
 
 }

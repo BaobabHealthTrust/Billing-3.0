@@ -1,6 +1,6 @@
 module DDE
 
-  def self.search_and_or_create(json)
+  def self.search_and_or_create(json, location=nil)
 
     raise "Argument expected to be a JSON Object" if (JSON.parse(json) rescue nil).nil?
 
@@ -82,7 +82,7 @@ module DDE
         
       elsif person["patient_id"].blank?
 
-        self.create_from_form(passed["person"])
+        self.create_from_form(passed["person"], location)
 
         result = PatientIdentifier.find_by_identifier((person["national_id"] || person["_id"]))
 
@@ -266,13 +266,14 @@ module DDE
 
     end
 
+
     return result.patient_id rescue nil
 
   end
 
   def self.get_full_identifier(identifier, patient_id)
-    PatientIdentifier.find(:first, :conditions => ["voided = 0 AND identifier_type = ? AND patient_id = ?",
-                                                   PatientIdentifierType.find_by_name(identifier).id, patient_id]) rescue nil
+    PatientIdentifier.where("voided = 0 AND identifier_type = ? AND patient_id = ?",
+                            PatientIdentifierType.find_by_name(identifier).id, patient_id).first rescue nil
   end
 
   def self.set_identifier(identifier, value, patient_id)
@@ -280,7 +281,7 @@ module DDE
                              :identifier_type => (PatientIdentifierType.find_by_name(identifier).id))
   end
 
-  def self.create_from_form(params)
+  def self.create_from_form(params, location =nil)
 
     address_params = params["addresses"]
     names_params = params["names"]
@@ -295,59 +296,67 @@ module DDE
       person_params["gender"] = 'M'
     end
 
-    person = Person.create(person_params)
 
-    unless birthday_params.empty?
-      if birthday_params["birth_year"] == "Unknown"
-        self.set_birthdate_by_age(person, birthday_params["age_estimate"], person.session_datetime || Date.today)
-      else
-        self.set_birthdate(person, birthday_params["birth_year"], birthday_params["birth_month"], birthday_params["birth_day"], birthday_params["age_estimate"])
+      person = Person.create(person_params)
+
+      unless birthday_params.empty?
+        if birthday_params["birth_year"] == "Unknown"
+          self.set_birthdate_by_age(person, birthday_params["age_estimate"], Date.current)
+        else
+          self.set_birthdate(person, birthday_params["birth_year"], birthday_params["birth_month"], birthday_params["birth_day"], birthday_params["age_estimate"])
+        end
       end
-    end
 
-    person.save
+      person.save
 
-    person.names.create(names_params)
-    person.addresses.create(address_params) unless address_params.empty? rescue nil
+      person.names.create(names_params)
+      person.addresses.create(address_params) unless address_params.empty? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Occupation").person_attribute_type_id,
-        :value => params["person_attributes"]["occupation"]) unless params["person_attributes"]["occupation"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Occupation").person_attribute_type_id,
+          :value => params["person_attributes"]["occupation"]) unless params["person_attributes"]["occupation"].blank? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Cell Phone Number").person_attribute_type_id,
-        :value => params["person_attributes"]["cell_phone_number"]) unless params["person_attributes"]["cell_phone_number"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Cell Phone Number").person_attribute_type_id,
+          :value => params["person_attributes"]["cell_phone_number"]) unless params["person_attributes"]["cell_phone_number"].blank? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Office Phone Number").person_attribute_type_id,
-        :value => params["person_attributes"]["office_phone_number"]) unless params["person_attributes"]["office_phone_number"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Office Phone Number").person_attribute_type_id,
+          :value => params["person_attributes"]["office_phone_number"]) unless params["person_attributes"]["office_phone_number"].blank? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Home Phone Number").person_attribute_type_id,
-        :value => params["person_attributes"]["home_phone_number"]) unless params["person_attributes"]["home_phone_number"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Home Phone Number").person_attribute_type_id,
+          :value => params["person_attributes"]["home_phone_number"]) unless params["person_attributes"]["home_phone_number"].blank? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Citizenship").person_attribute_type_id,
-        :value => params["person_attributes"]["citizenship"]) unless params["person_attributes"]["citizenship"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Citizenship").person_attribute_type_id,
+          :value => params["person_attributes"]["citizenship"]) unless params["person_attributes"]["citizenship"].blank? rescue nil
 
-    person.person_attributes.create(
-        :person_attribute_type_id => PersonAttributeType.find_by_name("Country of Residence").person_attribute_type_id,
-        :value => params["person_attributes"]["country_of_residence"]) unless params["person_attributes"]["country_of_residence"].blank? rescue nil
+      person.person_attributes.create(
+          :person_attribute_type_id => PersonAttributeType.find_by_name("Country of Residence").person_attribute_type_id,
+          :value => params["person_attributes"]["country_of_residence"]) unless params["person_attributes"]["country_of_residence"].blank? rescue nil
 
-    # TODO handle the birthplace attribute
+      # TODO handle the birthplace attribute
 
-    if (!patient_params.nil?)
-      patient = person.create_patient
+      if (!patient_params.nil?)
 
-      patient_params["identifiers"].each { |identifier_type_name, identifier|
-        next if identifier.blank?
-        identifier_type = PatientIdentifierType.find_by_name(identifier_type_name) || PatientIdentifierType.find_by_name("Unknown id")
-        patient.patient_identifiers.create("identifier" => identifier, "identifier_type" => identifier_type.patient_identifier_type_id)
-      } if patient_params["identifiers"]
+        patient = Patient.create(patient_id: person.person_id, creator: person.creator)
+        new_patient = Patient.find(patient.id)
 
-      # This might actually be a national id, but currently we wouldn't know
-      #patient.patient_identifiers.create("identifier" => patient_params["identifier"], "identifier_type" => PatientIdentifierType.find_by_name("Unknown id")) unless params["identifier"].blank?
-    end
+        patient_params["identifiers"].each { |identifier_type_name, identifier|
+          next if identifier.blank?
+          identifier_type = PatientIdentifierType.find_by_name(identifier_type_name) || PatientIdentifierType.find_by_name("Unknown id")
+          patient.patient_identifiers.create("identifier" => identifier, "identifier_type" => identifier_type.patient_identifier_type_id,
+                                             "location_id" => location.id)
+        } if patient_params["identifiers"]
+
+
+
+        # This might actually be a national id, but currently we wouldn't know
+        #patient.patient_identifiers.create("identifier" => patient_params["identifier"], "identifier_type" => PatientIdentifierType.find_by_name("Unknown id")) unless params["identifier"].blank?
+      end
+
+
 
     return person
   end

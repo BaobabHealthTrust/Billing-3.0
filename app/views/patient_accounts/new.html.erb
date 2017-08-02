@@ -1,0 +1,34 @@
+<script type="text/javascript">
+    tt_cancel_destination = "/medical_scheme_providers %>"
+</script>
+
+<%= form_for :patient_account, :method => "POST" ,:url => patient_patient_account_path  do |f| %>
+
+    <%= select_tag 'patient_account[insurer]',
+                   options_for_select(@providers, nil),
+                   :id => "company",
+                   :helpText => "Select name of insurance company" ,
+                   :multiple =>  true %>
+
+    <%= text_field_tag "patient_account[scheme]", nil,
+                       {
+                        :ajaxURL => "",
+                        :allowFreeText => false,
+                        :condition => "getSelected('pharmacy_panels').match(/OTHER/i)",
+                        :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'pharmacy'); ",
+                        :helptext => "Additional prescription"}  %>
+
+
+    <%= hidden_field_tag "medical_scheme_provider[creator]", current_user.id %>
+
+<% end %>
+
+<script type="text/javascript">
+    function set_ajaxURL_for_suggestions(url, filter_value) {
+        $('touchscreenInput' + tstCurrentPage).setAttribute('ajaxURL', url + filter_value + "&search_string=");
+        listSuggestions(tstCurrentPage);
+    }
+
+    tt_cancel_destination = "/patients/<%= params[:patient_id] %>"
+
+</script>

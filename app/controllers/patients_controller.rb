@@ -13,10 +13,10 @@ class PatientsController < ApplicationController
 
     else
       #DDE available
-      json_params = view_context.patient_json(params[:person],params["CURRENT AREA OR T/A"],true)
+
+      json_params = view_context.patient_json(params[:person],params["CURRENT AREA OR T/A"],params["identifier"],true)
 
       @json = JSON.parse(json_params)
-      #raise @json.inspect
       @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] # rescue {}
 
       if secure?
@@ -245,7 +245,8 @@ class PatientsController < ApplicationController
                                                        @patient.id, Date.current.beginning_of_day)
 
     today_orders = OrderEntry.select(:order_entry_id,:service_id,:quantity, :full_price,:amount_paid,
-                                    :order_date).where(patient_id: @patient.id,order_date: range)
+                                    :order_date).where("patient_id = ? AND order_date BETWEEN ? AND ? AND amount_paid > ?",
+                                                       @patient.id,range.first, range.last, 0)
 
     @unpaid_orders, @total, @amount_due = view_context.unpaid_records(unpaid_orders)
     @history = view_context.past_records(past_orders)
@@ -380,7 +381,7 @@ class PatientsController < ApplicationController
         patient = PatientIdentifier.find_by_identifier(@json["national_id"]).patient rescue nil
 
         if patient.blank?
-          redirect_to "/patient_not_found/#{params[:id]}" and return
+          redirect_to "/patients/patient_not_found/#{params[:id]}" and return
         else
           @results = []
           @results << local_patient.to_json
@@ -395,6 +396,7 @@ class PatientsController < ApplicationController
   end
 
   def process_result
+
     json = JSON.parse(params["person"]) rescue {}
 
     if (json["patient"]["identifiers"].class.to_s.downcase == "hash" rescue false)
@@ -411,9 +413,9 @@ class PatientsController < ApplicationController
 
     end
 
-    patient_id = DDE.search_and_or_create(json.to_json) # rescue nil
+    patient_id = DDE.search_and_or_create(json.to_json, current_location) # rescue nil
 
-    # raise patient_id.inspect
+
 
     json = JSON.parse(params["person"]) rescue {}
 
@@ -633,5 +635,18 @@ class PatientsController < ApplicationController
   def secure?
     @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env]
     secure = @settings["secure_connection"] rescue false
+  end
+
+  def patient_not_found
+    if request.post?
+      if params[:create] == "true"
+        redirect_to "/patients/new?identifier=#{params[:id]}" and return
+      else
+        redirect_to "/" and return
+      end
+    else
+      @id = params[:id]
+      render :layout => 'touch'
+    end
   end
 end

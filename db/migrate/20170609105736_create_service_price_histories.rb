@@ -5,7 +5,7 @@ class CreateServicePriceHistories < ActiveRecord::Migration
       t.float :price, null: false, default: 0.0
       t.string :price_type, null: false
       t.date :active_from, null: false
-      t.date :active_to, null: false
+      t.date :active_to
       t.integer :creator, null: false
       t.timestamps null: false
     end

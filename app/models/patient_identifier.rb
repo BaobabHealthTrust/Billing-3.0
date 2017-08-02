@@ -4,6 +4,11 @@ class PatientIdentifier < ActiveRecord::Base
   include Openmrs
 
   belongs_to :patient, -> { where "voided = 0" }
+
+  before_create :before_create
+  before_update :before_save
+  before_save :before_save
+
   def self.calculate_checkdigit(number)
     # This is Luhn's algorithm for checksums
     # http://en.wikipedia.org/wiki/Luhn_algorithm

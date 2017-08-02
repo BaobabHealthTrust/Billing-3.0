@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 creator = User.first
-service_types = %w[Radiology Pharmacy Laboratory Surgery Mortuary Maternity Admission Consultation Documentation Dental Ophthalmology Other\ Procedures]
+service_types = %w[Consultation Radiology Pharmacy Laboratory Admission Documentation Surgery Mortuary Maternity Dental Ophthalmology Other\ Procedures]
 puts 'Loading Service types'
 (service_types || []).each do |type|
   service_type = ServiceType.where(name: type).first_or_initialize
@@ -15,11 +15,26 @@ puts 'Loading Service types'
   service_type.save
 end
 
-puts 'Loading services and their prices'
+puts 'Loading private services and their prices'
+CSV.foreach("#{Rails.root}/db/private_prices_seed.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
+  type = ServiceType.where(name: row[4]).first.id
+  service = Service.where({name: row[0], unit: row[1], service_type_id: type}).first_or_initialize
+  service.rank = (row[5].blank? ? 999 : row[5])
+  service.creator = creator.id
+  service.save
+
+  service_price = ServicePrice.where(service_id: service.id,price_type: row[3]).first_or_initialize
+  service_price.price = row[2].to_f
+  service_price.creator = creator.id
+  service_price.updated_by = creator.id
+  service_price.save
+end
+
+puts 'Loading general services and their prices'
 CSV.foreach("#{Rails.root}/db/prices_seed.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
   type = ServiceType.where(name: row[4]).first.id
   service = Service.where({name: row[0], unit: row[1], service_type_id: type}).first_or_initialize
-  service.rank = row[5]
+  service.rank = (row[5].blank? ? 999 : row[5])
   service.creator = creator.id
   service.save
 

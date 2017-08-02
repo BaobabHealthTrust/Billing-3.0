@@ -1,9 +1,12 @@
 Notes on features, issues, wishes
-
 * country, nationality, region, district, traditional_authority models currently are linked to dde tables. This will
   need to be de-linked in the future.
-* Fix birthdate estimated variations in patients helper
-* Fix confirmation when adding new patient
-* Foreign resident causes bug
-* prescription has 6 clicks maximum
-* add cancellation of receipts 
+* Add reason for voiding receipt
+* Add deposits
+* Add receipt reprinting
+* Add flash notification for the application layout
+* Add keyboard for filtering lists
+
+
+
+

@@ -4,6 +4,10 @@ class Person < ActiveRecord::Base
   self.primary_key = "person_id"
   include Openmrs
 
+  before_create :before_create
+  before_update :before_save
+  before_save :before_save
+
   has_one :patient,-> {where voided: 0}, :foreign_key => :patient_id, :dependent => :destroy
   has_many :names, :class_name => 'PersonName', :foreign_key => :person_id, :dependent => :destroy
   has_many :addresses, :class_name => 'PersonAddress', :foreign_key => :person_id, :dependent => :destroy

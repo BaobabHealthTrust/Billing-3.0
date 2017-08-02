@@ -540,3 +540,8 @@ div.collapsible-content {
     background-image: linear-gradient(to bottom, #a7cfdf, #23538a);
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#a7cfdf, endColorstr=#23538a);
 }
+.custom-checkbox, .custom-radio{
+    vertical-align: middle;
+    height:5vh;
+    width:5vw;
+}

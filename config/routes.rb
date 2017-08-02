@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   root 'main#index'
 
   get "login" => "sessions#login"
@@ -6,6 +7,13 @@ Rails.application.routes.draw do
   post "location" => "sessions#add_location"
   post "login" => "sessions#create_session"
   get "/logout" => "sessions#destroy"
+
+  get "/main/report_select"
+  post "/main/income_summary"
+  post "/main/cashier_summary"
+  post "/main/daily_cash_summary"
+  get "/main/daily_cash_summary"
+  get "/main/print_daily_cash_summary"
 
   resources :patients do
     collection do
@@ -24,19 +32,25 @@ Rails.application.routes.draw do
       post 'ajax_process_result'
       post 'confirm_demographics'
       post 'ajax_process_data'
-      get 'patient_not_found'
+      get 'patient_not_found(/:id)', action: :patient_not_found
+      post 'patient_not_found(/:id)', action: :patient_not_found
       get 'print_national_id'
       get 'patient_by_id(/:id)', action: :patient_by_id
     end
     resources :order_entries
+    resources :patient_accounts
   end
 
-  resources :users
   resources :user_properties
-  resources :service_prices
   resources :service_types
   resources :medical_scheme
+  resources :medical_scheme_providers
   resources :sessions
+  resources :users do
+    collection do
+      get 'roles'
+    end
+  end
   resources :order_entries do
     collection do
       get 'void'
@@ -46,6 +60,7 @@ Rails.application.routes.draw do
     collection do
       get 'suggestions'
     end
+    resources :service_prices
   end
   resources :order_payments do
     collection do

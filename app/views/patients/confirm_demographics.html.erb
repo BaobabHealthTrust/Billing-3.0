@@ -3,6 +3,41 @@
     right: 25px !important;
     top: 15px !important;
   }
+
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    cursor: pointer;
+    border-bottom: 30px solid #3465a4;
+  }
+
+  .arrow-up:hover {
+    border-bottom: 30px solid #5ca6c4;
+  }
+
+  .arrow-up:active {
+    border-bottom: 30px solid #ef8544;
+  }
+
+  .arrow-down {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    cursor: pointer;
+    border-top: 30px solid #3465a4;
+  }
+
+  .arrow-down:hover {
+    border-top: 30px solid #5ca6c4;
+  }
+
+  .arrow-down:active {
+    border-top: 30px solid #ef8544;
+  }
+
 </style>
 
 <% @results = [] if @results.blank? %>
@@ -322,7 +357,7 @@
     Cancel
   </button>
 
-  <% if @results.length > 0 %>
+  <% if @results.length > 0 && @results != '[]'%>
 
       <button id="btnSelect" class='button_green' style='float: right; margin-right: 20px;'>
         Select Person
@@ -363,11 +398,8 @@
 
 </div>
 
-<% form_tag("/patients/process_result", "method" => 'post', "enctype" => 'multipart/form-data',
-            "id" => 'form', "class" => "form-horizontal", "autocomplete" => "off", "role" => "form", "novalidate" => "novalidate") do %>
-
-    <textarea id="json" name="person"></textarea>
-
+<% form_for :patients, :method => "POST", :url => "/patients/process_result","id" => 'form', "class" => "form-horizontal", "autocomplete" => "off", "role" => "form", "novalidate" => "novalidate" do |f|%>
+    <input hidden id="json" name="person"></input>
 <% end %>
 
 <%#= form_tag("#{(!@json.nil? and !@json['return_path'].nil? ? @json['return_path'] : '/lost')}", method: 'post', enctype: 'multipart/form-data', id: 'form') do %>
@@ -377,7 +409,7 @@
 <script type="text/javascript">
     <!--
 
-    var json = <%= raw @json.to_json %>;
+    var json = JSON.stringify(<%= raw @json.to_json %>);
     var people = [];
 
     function ajaxProcessRequest(target) {
@@ -390,12 +422,13 @@
         try {
             httpRequest.open("POST", url, true);
             httpRequest.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-            httpRequest.send(JSON.stringify({"person": json, "target": target}));
+            httpRequest.send(JSON.stringify({"person": json, "target": target, authenticity_token: '<%= form_authenticity_token %>'}));
         } catch (e) {
         }
     }
 
     function handleAjaxProcessRequest(aXMLHttpRequest) {
+
         if (!aXMLHttpRequest) return;
 
         if (aXMLHttpRequest.readyState == 4 && (aXMLHttpRequest.status == 200 ||
@@ -403,18 +436,31 @@
 
             var result = aXMLHttpRequest.responseText;
 
-            if (__$("json")) {
-                __$("json").innerHTML = result;
-            }
+            submitForm = document.createElement("FORM");
+            submitForm.setAttribute("type","hidden");
+            document.body.appendChild(submitForm);
+            submitForm.method = "POST";
+            submitForm.action= "/patients/process_result";
 
-            if (__$("form")) {
-                __$("form").submit();
-            }
+            newElement = document.createElement("input")
+            newElement.setAttribute("name", "person" )
+            newElement.setAttribute("type","hidden");
+            newElement.value = result;
+            submitForm.appendChild(newElement);
+
+            newElement = document.createElement("input")
+            newElement.setAttribute("name", "authenticity_token" )
+            newElement.setAttribute("type","hidden");
+            newElement.value = '<%= form_authenticity_token %>';
+            submitForm.appendChild(newElement);
+
+            submitForm.submit();
+
         }
     }
 
     function ajaxRequest(page) {
-        console.log("testing")
+
         var url = "/patients/ajax_process_data";
 
         var httpRequest = new XMLHttpRequest();
@@ -540,7 +586,7 @@
 
                 __$("btnSelect").onclick = function () {
 
-                    showSpinner();
+                   // showSpinner();
 
                     if (__$("json")) {
                         __$("json").innerHTML = people[parseInt(this.getAttribute("pos"))];
@@ -563,7 +609,7 @@
 
                     __$("btnUpdate").onclick = function () {
 
-                        showSpinner();
+                     //   showSpinner();
 
                         var obj = JSON.parse(people[parseInt(this.getAttribute("pos"))]);
 
