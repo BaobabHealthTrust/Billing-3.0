@@ -88,6 +88,7 @@ module PatientsHelper
     return records
   end
 
+
   def unpaid_records(orders)
 
     @unpaid_orders = {}
