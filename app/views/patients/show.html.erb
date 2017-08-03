@@ -245,9 +245,21 @@
                       </div>
                     </div>
                     <% if order[1].blank? %>
-                        <div style="display: table-cell;width:44vw;float: right;">
-                          <div class = "link-button" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
-                            Print Receipt
+                        <div style="display: table-cell;width:44vw;float: left;background-color: #CCCCCC;" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
+                          <div style="border: 1px solid gray; padding: 3px;margin: 3px;">
+                            <div style="display: table;width: 100%;">
+                              <div style="display: table-row;">
+                                <div style="display: table-cell;padding: 5px;">
+                                  <div style="margin-left: auto;margin-right: auto;text-align: center;font-weight: bold;">Re-print Receipt(s)</div>
+                                  <b>Day Total Bill:</b><%= local_currency @history[day]["summary"]["bill"]%><br/>
+                                  <b>Day Amount Paid:</b><%= local_currency @history[day]["summary"]["paid"]%><br/>
+                                  <b>Day Balance:</b> <%= local_currency((@history[day]["summary"]["bill"] - @history[day]["summary"]["paid"])) %><br/>
+                                </div>
+                                <div style="display: table-cell;vertical-align: middle;padding: 5px;">
+                                  <img style="float: right;" src="/assets/print.png" title="Void Item">
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                     <% else %>
@@ -275,9 +287,21 @@
 
                         <% if records.last == order %>
                             <div style="display: table-row;">
-                              <div style="display: table-cell;width:44vw;float: left;">
-                                <div class = "link-button" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
-                                  Print Receipt
+                              <div style="display: table-cell;width:44vw;float: left;background-color: #CCCCCC;" onmousedown="window.location='/order_payments/print_receipt?ids=<%= @history[day]["receipts"].uniq.join(',')%>'">
+                                <div style="border: 1px solid gray; padding: 3px;margin: 3px;">
+                                  <div style="display: table;width: 100%;">
+                                    <div style="display: table-row;">
+                                      <div style="display: table-cell;padding: 5px;">
+                                        <div style="margin-left: auto;margin-right: auto;text-align: center;font-weight: bold;">Re-print Receipt(s)</div>
+                                        <b>Day Total Bill:</b><%= local_currency @history[day]["summary"]["bill"]%><br/>
+                                        <b>Day Amount Paid:</b><%= local_currency @history[day]["summary"]["paid"]%><br/>
+                                        <b>Day Balance:</b> <%= local_currency((@history[day]["summary"]["bill"] - @history[day]["summary"]["paid"])) %><br/>
+                                      </div>
+                                      <div style="display: table-cell;vertical-align: middle;padding: 5px;">
+                                        <img style="float: right;" src="/assets/print.png" title="Void Item">
+                                      </div>
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </div>
