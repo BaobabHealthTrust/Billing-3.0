@@ -27,6 +27,7 @@ Rails.application.routes.draw do
       get 'nationality'
       get 'landmark'
       get 'country'
+      get 'patient_demographics(/:id)', action: :patient_demographics
       post 'process_result'
       post 'process_confirmation'
       post 'ajax_process_result'

@@ -294,12 +294,12 @@
           <div class = "link-button" onmousedown="window.location='/'">
             Add Medical Scheme
           </div>
-        </div>
+        </div>-->
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/patients/patient_demographics/<%= @patient.id%>'">
             Edit Demographics
           </div>
-        </div> -->
+        </div>
         <div style="display: table-cell">
           <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
             Print National ID

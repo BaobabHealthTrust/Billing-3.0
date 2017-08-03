@@ -3,6 +3,7 @@ class PatientIdentifier < ActiveRecord::Base
   self.table_name= "patient_identifier"
   include Openmrs
 
+  belongs_to :type,-> { where "retired = 0" }, :class_name => "PatientIdentifierType", :foreign_key => :identifier_type
   belongs_to :patient, -> { where "voided = 0" }
 
   before_create :before_create
