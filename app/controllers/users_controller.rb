@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     person = Person.create()
     person.names.create(given_name: params[:user][:given_name], family_name: params[:user][:family_name])
 
-    @user = User.create(username: params[:user][:username], plain_password: params[:user][:password],
+    @user = User.create(username: params[:user][:username], plain_password: params[:password],
                      creator: params[:creator], person_id: person.id)
 
     @user.user_roles.create(role: Role.find_by_role( params[:user_role][:role_id]).role)
