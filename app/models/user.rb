@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
     self.primary_key = "user_id"
     include Openmrs
 
-    before_save :set_password, :before_create
+    before_save :before_create
 
     attr :plain_password
     cattr_accessor :current_user
