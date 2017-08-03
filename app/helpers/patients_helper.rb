@@ -88,6 +88,22 @@ module PatientsHelper
     return records
   end
 
+  def today_records(receipts)
+    records = {}
+    (receipts || []).each do |receipt|
+
+      records[receipt.receipt_number] = {"details" => []} if records[receipt.receipt_number].blank?
+      (receipt.order_payments || []).each do |payment|
+        entry = payment.order_entry
+        records[receipt.receipt_number]["details"] << {service: entry.description, quantity: entry.quantity,
+                                            price: entry.full_price, id: entry.id,
+                                            amount_paid: payment.amount}
+      end
+
+    end
+
+    return records
+  end
 
   def unpaid_records(orders)
 

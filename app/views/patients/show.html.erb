@@ -180,21 +180,29 @@
         <th style="width: 5vw;">&nbsp;</th>
         <th style="text-align: left;;padding-left: 5px;">Item</th>
         <th style="text-align:center;">Quantity</th>
-        <th>Price</th>
-        <th>Status</th>
+        <th style="text-align: right;padding-right: 10px;">Price</th>
+        <th style="text-align: right;padding-right: 10px;">Paid</th>
+        <th>Action</th>
       </tr>
       </thead>
       <tbody>
-      <% (@today_orders.keys || []).each do |date| %>
-          <% (@today_orders[date]["details"] || []).each do |order| %>
+      <% (@today_payments.keys || []).each do |receipt_number| %>
+          <% entries =  @today_payments[receipt_number]["details"].length%>
+          <% (@today_payments[receipt_number]["details"] || []).each do |order| %>
               <tr>
                 <th style="padding: 0px;">
-                  <input type="checkbox" class="custom-checkbox delete" data-id=<%= order[:id]%> data-qty=<%= order[:amount]%>>
+                  <input type="checkbox" class="custom-checkbox delete" data-id=<%= order[:id]%> >
                 </th>
                 <th><%= order[:service] %></th>
                 <th style="text-align: center"><%= order[:quantity] %></th>
-                <td style=""><%= local_currency(order[:price]) %></td>
-                <td style=""><%= order[:status] %></td>
+                <td style="text-align: right;padding-right: 5px;"><%= local_currency(order[:price]) %></td>
+                <td style="text-align: right;padding-right: 5px;"><%= local_currency(order[:amount_paid]) %></td>
+                <% if order == @today_payments[receipt_number]["details"].first %>
+                    <td rowspan="<%= entries%>" style="border: 1px solid #000000; background-color: #fefefe">
+                      <img src="/assets/print.png" title="Void Item"
+                           onmousedown="window.location='/order_payments/print_receipt?ids=<%= receipt_number%>'">
+                    </td>
+                <% end %>
               </tr>
           <% end %>
       <% end %>
