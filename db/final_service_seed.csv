@@ -682,8 +682,8 @@ GGT –,,Laboratory,3000,Private,
 GGT –,,Laboratory,2500,General,
 Globulin,,Laboratory,1000,General,
 Globulin,,Laboratory,2000,Private,
-glucose,,Laboratory,1500,General,
-glucose,,Laboratory,1500,Private,
+glucose,,Laboratory,1500,General,9
+glucose,,Laboratory,1500,Private,9
 glucose tolerance test,,Laboratory,1000,General,
 glucose tolerance test,,Laboratory,3000,Private,
 glucossuria,,Laboratory,1000,General,
@@ -740,8 +740,8 @@ lithium,,Laboratory,2000,Private,
 lupus,,Laboratory,800,General,
 lupus,,Laboratory,1500,Private,
 malaria parasite smear,,Laboratory,500,General,4
-mRDT,,Laboratory,500,General,
-malaria parasite smear,,Laboratory,1000,Private,3
+mRDT,,Laboratory,500,General,3
+malaria parasite smear,,Laboratory,1000,Private,
 mRDT,,Laboratory,500,Private,
 midnight blood smear for filariasis,,Laboratory,1000,General,
 midnight blood smear for filariasis,,Laboratory,1500,Private,
@@ -847,8 +847,8 @@ wet prep – T. vag,,Laboratory,1000,General,
 wet prep – T. vag,,Laboratory,3000,Private,
 white cell count,,Laboratory,1000,General,
 white cell count,,Laboratory,1500,Private,
-widal,,Laboratory,1000,General,9
-widal,,Laboratory,2000,Private,9
+widal,,Laboratory,1000,General,
+widal,,Laboratory,2000,Private,
 Abdomen (Erect & Spine),,Radiology,3000,General,2
 Abdomen (Erect & Spine),,Radiology,9000,Private,2
 Abdomen (KUB),,Radiology,3000,General,3
