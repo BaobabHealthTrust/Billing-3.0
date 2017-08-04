@@ -60,7 +60,7 @@ Rails.application.routes.draw do
   end
   resources :order_entries do
     collection do
-      get 'void'
+      post 'void'
     end
   end
   resources :services do

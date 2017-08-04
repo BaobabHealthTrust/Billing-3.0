@@ -443,7 +443,9 @@
         }
         if(choices.length > 0)
         {
-            window.location='/order_entries/void?id='+ choices.join(',') ;
+            document.getElementById("void_ids").value = choices.join(',');
+            confirmAction('/order_entries/void', 'FORM')
+
         }
 
         return choices;
@@ -461,7 +463,8 @@
         }
         if(choices.length > 0)
         {
-            window.location='/order_payments/void?id='+ choices.join(',') ;
+            confirmAction('/order_payments/void', 'FORM')
+            document.getElementById("void_ids").value = choices.join(',');
         }
 
         return choices;

@@ -71,19 +71,19 @@ class OrderPaymentsController < ApplicationController
 
   def void
     #This function cancels payments and reprints the receipt
-    entries = OrderEntry.where(order_entry_id: params[:id].split(','))
+    entries = OrderEntry.where(order_entry_id: params[:void_ids].split(','))
 
     if entries.blank?
-      redirect_to "/"
+      redirect_to "/patients/#{params[:patient_id]}"
     else
       receipt = []
       #voiding selected entries
       (entries || []).each do |entry|
         (entry.order_payments || []).each do |payment|
-          payment.void("Wrong entry", current_user)
+          payment.void(params[:void_reason], current_user)
           receipt << payment.receipt_number
         end
-        entry.void("Wrong entry", current_user.id)
+        entry.void(params[:void_reason], current_user.id)
       end
 
       if receipt.blank?

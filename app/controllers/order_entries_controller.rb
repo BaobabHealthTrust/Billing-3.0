@@ -85,11 +85,10 @@ class OrderEntriesController < ApplicationController
   end
 
   def void
-
-    entries = OrderEntry.where(order_entry_id: params[:id].split(','))
+    entries = OrderEntry.where(order_entry_id: params[:void_ids].split(','))
     (entries || []).each do |entry|
-      entry.void("Wrong entry", current_user.id)
+      entry.void(params[:void_reason], current_user.id)
     end
-    redirect_to entries.first.patient
+    redirect_to "/patients/#{params[:patient_id]}"
   end
 end

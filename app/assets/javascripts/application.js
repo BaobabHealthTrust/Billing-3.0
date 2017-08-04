@@ -206,10 +206,17 @@ function hideLayer(background,main) {
     question = null;
 }
 
-function confirmAction(actionUrl, message)
+function confirmAction(actionUrl, type)
 {
     showLayer('shadow', 'question')
-    document.getElementById("bttnYes").setAttribute("onmousedown", "window.location='"+actionUrl + "'")
-    document.getElementById("message").innerHTML = message;
+    if (type == 'FORM')
+    {
+        document.getElementById("bttnYes").setAttribute("onmousedown", "document.confirmingForm.submit()");
+    }
+    else
+    {
+        document.getElementById("bttnYes").setAttribute("onmousedown", "window.location='"+actionUrl + "'")
+    }
+    // document.getElementById("message").innerHTML = message;
 }
 
