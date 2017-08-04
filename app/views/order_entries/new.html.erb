@@ -182,17 +182,31 @@
                    :multiple =>  true %>
 
     <%= select_tag 'order_entry[radiology][]',
-                   options_for_select(entry_options('radiology'), nil),
+                   options_for_select(@categories['Radiology'], nil),
                    :id => "radiology",
                    :helpText => "Select radiological test(s) to be performed" ,
                    :condition => "getSelected('order_categories').match(/RADIOLOGY/i)",
                    :multiple =>  true %>
 
+    <%= select_tag 'order_entry[radiology][]',
+                   options_for_select((entry_options('radiology')-@categories['Radiology']), nil),
+                   :id => "other_radiology_orders",
+                   :helpText => "Select other radiological test(s) to be performed" ,
+                   :condition => "getSelected('radiology').match(/OTHER/i)",
+                   :multiple =>  true %>
+
     <%= select_tag 'order_entry[surgery][]',
-                   options_for_select(entry_options('surgery'), nil),
+                   options_for_select(@categories['Surgery'], nil),
                    :id => "surgery",
                    :helpText => "Select surgical procedures" ,
                    :condition => "getSelected('order_categories').match(/SURGERY/i)",
+                   :multiple =>  true %>
+
+    <%= select_tag 'order_entry[surgery][]',
+                   options_for_select((entry_options('surgery') - @categories['Surgery']), nil),
+                   :id => "other_surgery",
+                   :helpText => "Select other surgical procedures" ,
+                   :condition => "getSelected('surgery').match(/OTHER/i)",
                    :multiple =>  true %>
 
     <%= select_tag 'order_entry[mortuary][]',
