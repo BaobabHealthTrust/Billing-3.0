@@ -25,12 +25,46 @@
         </div>
         <div style="display: table-row">
           <div style="display: table-cell; text-align: center;">
-            <button onMouseDown="hideLayer('shadowLayer', 'messageLayer')"><span><%= t('forms.buttons.ok_button') %></span></button>
+            <button onMouseDown="hideLayer('shadowLayer', 'messageLayer')"><span>Okay</span></button>
           </div>
         </div>
       </div>
     </div>
 <% end %>
+<div id="shadow" class="opaqueLayer"> </div>
+<div id="question" class="questionLayer" style="font-size: 0.9em;">
+  <div class="dialogBox">
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: left;padding-left: 20px;">
+        <h2 id="message">Select the reason for voiding this transaction?</h2>
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+        <input type="radio" class="custom-radio" name="paymentMode"
+               onmousedown="setPayMode('CASH')" checked> Wrongly entered
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+        <input type="radio" class="custom-radio" name="paymentMode"
+               onmousedown="setPayMode('CASH')" checked> Out of stock
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+        <input type="radio" class="custom-radio" name="paymentMode"
+               onmousedown="setPayMode('CASH')" checked>
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: center;">
+        <button id="bttnYes"><span>Confirm</span></button>
+        <button onMouseDown="hideLayer('shadow', 'question')"><span>Cancel</span></button>
+      </div>
+    </div>
+  </div>
+</div>
 <%= yield %>
 <% if !flash[:errors].blank? || !flash[:success].blank? %>
     <script type="text/javascript">
