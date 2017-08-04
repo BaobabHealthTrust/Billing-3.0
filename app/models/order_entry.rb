@@ -19,7 +19,13 @@ class OrderEntry < ActiveRecord::Base
   def complete_record
     service = (self.service_id.blank? ? Service.find_by_name(self.service_offered) : self.service)
     self.service_id = service.id
+    #Force all records for suspensions to be one
+    if %w[Bottle 1litre Pack Gallon tube].include?service.unit
+      self.quantity = 1
+    end
+
     self.full_price= (service.service_prices.select(:price).where(price_type: self.service_point).first.price * self.quantity) rescue 0
+
   end
 
   def receipts

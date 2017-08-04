@@ -13,6 +13,7 @@ module Billing
 
     config.autoload_paths += %W(#{config.root}/lib)
 
+    config.time_zone = 'Africa/Harare'
     config.active_record.default_timezone = :local
 
 

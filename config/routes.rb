@@ -42,6 +42,12 @@ Rails.application.routes.draw do
     resources :patient_accounts
   end
 
+  resources :locations do
+    collection do
+      get 'search'
+      get 'print_label'
+    end
+  end
   resources :user_properties
   resources :service_types
   resources :medical_scheme

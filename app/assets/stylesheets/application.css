@@ -545,3 +545,32 @@ div.collapsible-content {
     height:5vh;
     width:5vw;
 }
+.opaqueLayer
+ {
+     display:none;
+     position:absolute;
+     top:0px;
+     left:0px;
+     opacity:0.6;
+     filter:alpha(opacity=60);
+     background-color: #000000;
+     z-Index:1000;
+ }
+
+.questionLayer
+{
+    position:absolute;
+    display:none;
+    z-Index:1001;
+}
+.dialogBox{
+    display: table;
+    background-color: #F9F6F4;
+    height: 30vh;
+    width: 50vw;
+    margin-top: 20vh;
+    margin-left: 30vw;
+    border: 5px outset #003366;
+    border-radius: 15px;
+    padding: 1%;
+}
