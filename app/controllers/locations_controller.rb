@@ -8,10 +8,43 @@ class LocationsController < ApplicationController
   end
 
   def new
-
+    render :layout => 'touch'
   end
 
   def create
+
+    if Location.find_by_name(params[:location]).blank?
+      location = Location.new
+      location.name = params[:location]
+      location.creator  = current_user.id.to_s
+      location.date_created  = Time.current.strftime("%Y-%m-%d %H:%M:%S")
+      location.save rescue (result = false)
+
+      location_tag_map = LocationTagMap.new
+      location_tag_map.location_id = location.id
+      location_tag_map.location_tag_id = LocationTag.find_by_name("Workstation location").id
+      result = location_tag_map.save
+
+      if result == true then
+        flash[:success] = "location #{params[:location]} added successfully"
+      else
+        flash[:error] = "location #{params[:location]} addition failed"
+      end
+    else
+      location_id = Location.find_by_name(params[:location]).id
+      location_tag_id = LocationTag.find_by_name("Workstation location").id
+      location_tag_map = LocationTagMap.where(location_id: location_id, location_tag_id: location_tag_id).first_or_initialize
+
+      result = location_tag_map.save
+
+      if result == true then
+        flash[:notice] = "location #{params[:location]} added successfully"
+      else
+        flash[:notice] = "<span style='color:red; display:block; background-color:#DDDDDD;'>location #{params[:location]} addition failed</span>"
+      end
+    end
+
+    redirect_to "/" and return
 
   end
 

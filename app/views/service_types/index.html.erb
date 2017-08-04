@@ -53,7 +53,23 @@ input{
             "bDestroy": true,
             "pageLength":7
         });
-
+        search_box = $('#serviceTypes').dataTable()
+        search = document.getElementsByTagName("input")[0];
+        search.setAttribute("id","search");
+        document.getElementById('search').setAttribute("onMouseDown","showKeyboard();");
+        keyboard = document.getElementsByClassName("keypad")[0]
+        showAlphaKeypad();
 
     } );
+
+    function showKeyboard(){
+        console.log("show keyboard")
+        key = document.getElementById("keypad")
+        if(key.style.display == 'none' || key.style.display == ""){
+            key.style.display = "inline";
+            return
+        }
+
+        key.style.display = "none";
+    }
 </script>

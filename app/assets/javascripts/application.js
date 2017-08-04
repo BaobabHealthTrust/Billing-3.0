@@ -105,6 +105,7 @@ function showAlphaKeypad(){
 }
 
 function showKeyboard(){
+    console.log("show keyboard")
     key = document.getElementById("keypad")
     if(key.style.display == 'none' || key.style.display == ""){
         key.style.display = "inline";
