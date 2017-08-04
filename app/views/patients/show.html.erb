@@ -10,7 +10,7 @@
           <td class="close"><span onmousedown="hideModal();">&times;</span></td>
         </tr>
       </table>
-      <%= form_for :order_payments, :method => "POST", :url => order_payments_url do |f|%>
+      <%= form_for :order_payments, :method => "POST", :url => order_payments_url,:html => {:id =>'payingForm', :name =>'payingForm'} do |f|%>
           <%= hidden_field_tag "creator", current_user.id %>
           <%= hidden_field_tag "order_payment[mode]", "CASH" %>
           <%= hidden_field_tag "order_payment[amount]", 0 %>
@@ -428,7 +428,7 @@
     }
 
     function submitPayment(){
-        document.forms[0].submit();
+        document.payingForm.submit();
     }
 
     function voidEntries()
