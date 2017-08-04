@@ -322,7 +322,7 @@ Hydralazine hydrocloride 25mg,Tablet,Pharmacy,40,General,
 Hydrochlorothiazide 25mg,Tablet,Pharmacy,10,Private,
 Hydrochlorothiazide 25mg,Tablet,Pharmacy,15,General,
 Hydrocortisone ointment 1%,Each,Pharmacy,750,Private,
-Hydrocortisone ointment 1%,Each,Pharmacy,ERNMT'U,General,
+Hydrocortisone ointment 1%,Each,Pharmacy,750,General,
 Hydrocortisone sod succinate iv 100mg/2ml,Ampoule,Pharmacy,750,Private,
 "Hydrogen peroxide, 20 vol.",Bottle,Pharmacy,1100,Private,
 "Hydrogen peroxide, 20 vol.",Bottle,Pharmacy,700,General,
@@ -851,18 +851,18 @@ widal,,Laboratory,1000,General,
 widal,,Laboratory,2000,Private,
 Abdomen (Erect & Spine),,Radiology,3000,General,2
 Abdomen (Erect & Spine),,Radiology,9000,Private,2
-Abdomen (KUB),,Radiology,3000,General,3
-Abdomen (KUB),,Radiology,7500,Private,3
-Abdomn,,Radiology,2500,General,2
-Abdomn,,Radiology,7500,Private,2
+Abdomen (KUB),,Radiology,3000,General,6
+Abdomen (KUB),,Radiology,7500,Private,6
+Abdomen Ultrasound,,Radiology,2500,General,5
+Abdomen Ultrasound,,Radiology,7500,Private,5
 Barium Enema,,Radiology,20000,General,
 Barium Enema,,Radiology,60000,Private,
 BARIUM FOLLOW THROUGH,,Radiology,10000,General,
 BARIUM FOLLOW THROUGH,,Radiology,30000,Private,
 BARIUM MEAL,,Radiology,8000,General,
 BARIUM MEAL,,Radiology,18000,Private,
-BARIUM SWALLOW,,Radiology,8000,General,4
-BARIUM SWALLOW,,Radiology,18000,Private,4
+BARIUM SWALLOW,,Radiology,8000,General,7
+BARIUM SWALLOW,,Radiology,18000,Private,7
 Breast,,Radiology,2500,General,
 Breast,,Radiology,7500,Private,
 C-ARM EXAMINATIONS,,Radiology,30000,Private,
@@ -872,41 +872,41 @@ Cervical Spine (AP & LAT View),,Radiology,3000,General,
 Cervical Spine (AP & LAT View),,Radiology,9000,Private,
 Chest (Lateral views),,Radiology,3000,General,
 Chest (Lateral views),,Radiology,9000,Private,
-Chest (PA & PA Views),,Radiology,3000,General,1
-Chest (PA & PA Views),,Radiology,9000,Private,
+Chest (PA & AP Views),,Radiology,3000,General,1
+Chest (PA & AP Views),,Radiology,9000,Private,1
 Chest (Portable),,Radiology,3000,General,
 Chest (Portable),,Radiology,9000,Private,
 COMPACT DISC FOR XRAY REPORT,,Radiology,,Private,
-CT ABDO + IV & ORAL CONTRAST,,Radiology,"K115, 000.00",Private,
-CT ABDO + IV & ORAL CONTRAST,,Radiology,"K115,000.00",Private,
-CT ABDOMEN,,Radiology,"K90, 000.00",Private,
-CT ABDOMEN,,Radiology,"K90,000.00",Private,
+CT ABDO + IV & ORAL CONTRAST,,Radiology,115000,Private,
+CT ABDO + IV & ORAL CONTRAST,,Radiology,115000,Private,
+CT ABDOMEN,,Radiology,90000,Private,
+CT ABDOMEN,,Radiology,90000,Private,
 CT Abdomen (Plain),,Radiology,18000,General,
 CT Abdomen (Plain),,Radiology,30000,General,
 CT Abdomen + Oral +IV Contrast,,Radiology,25200,General,
 CT Abdomen + Oral +IV Contrast,,Radiology,42000,General,
 CT Abdomen + Oral/IV Contrast,,Radiology,0,General,
 CT Abdomen + Oral/IV Contrast,,Radiology,23400,General,
-CT ABDOMEN +IV CONTRAST,,Radiology,"K100, 000.00",Private,
-CT ABDOMEN +IV CONTRAST,,Radiology,"K100,000.00",Private,
-CT BRAIN + CONTRAST,,Radiology,"K100, 000.00",Private,
-CT BRAIN + CONTRAST,,Radiology,"K100, 000.00",Private,
+CT ABDOMEN +IV CONTRAST,,Radiology,100000,Private,
+CT ABDOMEN +IV CONTRAST,,Radiology,100000,Private,
+CT BRAIN + CONTRAST,,Radiology,100000,Private,
+CT BRAIN + CONTRAST,,Radiology,100000,Private,
 CT Brain + IV Contrast,,Radiology,0,General,
 CT Brain + IV Contrast,,Radiology,19800,General,
-CT BRAIN/ SKULL,,Radiology,"K80, 000.00",Private,
-CT BRAIN/ SKULL,,Radiology,"K80, 000.00",Private,
+CT BRAIN/ SKULL,,Radiology,80000,Private,
+CT BRAIN/ SKULL,,Radiology,80000,Private,
 CT Brain/Skull/Head,,Radiology,14400,General,
 CT Brain/Skull/Head,,Radiology,24000,General,
 CT C- Spine,,Radiology,0,General,
 CT C- Spine,,Radiology,19800,General,
-CT C-SPINE ,,Radiology,"K90, 000.00",Private,
-CT C-SPINE ,,Radiology,"K90,000.00",Private,
+CT C-SPINE ,,Radiology,90000,Private,
+CT C-SPINE ,,Radiology,90000,Private,
 CT Chest,,Radiology,18000,General,
 CT Chest,,Radiology,30000,General,
-CT CHEST,,Radiology,"K100, 000.00",Private,
-CT CHEST,,Radiology,"K100,000.00",Private,
-CT CHEST + CONTRAST,,Radiology,"K120, 000.00",Private,
-CT CHEST + CONTRAST,,Radiology,"K120,000.00",Private,
+CT CHEST,,Radiology,100000,Private,
+CT CHEST,,Radiology,100000,Private,
+CT CHEST + CONTRAST,,Radiology,120000,Private,
+CT CHEST + CONTRAST,,Radiology,120000,Private,
 CT Chest + IV Contrast,,Radiology,0,General,
 CT Chest + IV Contrast,,Radiology,23400,General,
 CT L/S - Spine,,Radiology,0,General,
@@ -917,39 +917,39 @@ CT Lower Extremity + IV Contrast,,Radiology,0,General,
 CT Lower Extremity + IV Contrast,,Radiology,19800,General,
 CT Lumbar Myeologram,,Radiology,0,General,
 CT Lumbar Myeologram,,Radiology,23400,General,
-CT LUMBER ,,Radiology,"K90, 000.00",Private,
-CT LUMBER ,,Radiology,"K90,000.00",Private,
-CT MYEROGRAM ,,Radiology,"K120,000.00",Private,
-CT NECK ( TISSUE),,Radiology,"K80, 000.00",Private,
+CT LUMBER ,,Radiology,90000,Private,
+CT LUMBER ,,Radiology,90000,Private,
+CT MYEROGRAM ,,Radiology,120000,Private,
+CT NECK ( TISSUE),,Radiology,80000,Private,
 CT Neck (Soft tissue),,Radiology,18000,General,
 CT Neck (Soft tissue),,Radiology,30000,General,
-CT NECK (SOFT TISSUE),,Radiology,"K80, 000.00",Private,
+CT NECK (SOFT TISSUE),,Radiology,80000,Private,
 CT Neck + IV Contrast,,Radiology,0,General,
 CT Neck + IV Contrast,,Radiology,18600,General,
-CT NECK +IV CONTRAST,,Radiology,"K100, 000.00",Private,
-CT NECK +IV CONTRAST,,Radiology,"K100,000.00",Private,
+CT NECK +IV CONTRAST,,Radiology,100000,Private,
+CT NECK +IV CONTRAST,,Radiology,100000,Private,
 CT Orbits,,Radiology,0,General,
 CT Orbits,,Radiology,14400,General,
-CT ORBITS,,Radiology,"K60, 000.00",Private,
-CT ORBITS,,Radiology,"K60, 000.00",Private,
+CT ORBITS,,Radiology,60000,Private,
+CT ORBITS,,Radiology,60000,Private,
 CT Pelvis,,Radiology,18000,General,
 CT Pelvis,,Radiology,30000,General,
-CT PELVIS,,Radiology,"K70,000.00",Private,
-CT PELVIS,,Radiology,"K70,000.00",Private,
-CT PELVIS + CONTRAST,,Radiology,"K80,000.00",Private,
-CT PELVIS + CONTRAST,,Radiology,"K80,000.00",Private,
+CT PELVIS,,Radiology,70000,Private,
+CT PELVIS,,Radiology,70000,Private,
+CT PELVIS + CONTRAST,,Radiology,80000,Private,
+CT PELVIS + CONTRAST,,Radiology,80000,Private,
 CT Pelvis +Contrast,,Radiology,0,General,
 CT Pelvis +Contrast,,Radiology,23400,General,
 CT Sinuses,,Radiology,14400,General,
 CT Sinuses,,Radiology,24000,General,
-CT SINUSES,,Radiology,"K60, 000.00",Private,
-CT SINUSES,,Radiology,"K60, 000.00",Private,
+CT SINUSES,,Radiology,60000,Private,
+CT SINUSES,,Radiology,60000,Private,
 CT T- Spine,,Radiology,0,General,
 CT T- Spine,,Radiology,19800,General,
-CT T-SPINE,,Radiology,"K90, 000.00",Private,
-CT T-SPINE,,Radiology,"K90,000.00",Private,
-CT UPPER AND LOWER EXTRIMITIES,,Radiology,"K80,000.00",Private,
-CT UPPER AND LOWER EXTRIMITIES,,Radiology,"K80,000.00",Private,
+CT T-SPINE,,Radiology,90000,Private,
+CT T-SPINE,,Radiology,90000,Private,
+CT UPPER AND LOWER EXTRIMITIES,,Radiology,80000,Private,
+CT UPPER AND LOWER EXTRIMITIES,,Radiology,80000,Private,
 CT Upper Extremity & Joints,,Radiology,0,General,
 CT Upper Extremity & Joints,,Radiology,18000,General,
 CT Upper Extremity + IV Contrast,,Radiology,0,General,
@@ -958,15 +958,15 @@ Elbow (AP & LAT View),,Radiology,3000,General,
 Elbow (AP & LAT View),,Radiology,9000,Private,
 Facial Bones,,Radiology,3000,General,
 Facial Bones,,Radiology,9000,Private,
-Femur (AP & LAT Views),,Radiology,3000,General,10
-Femur (AP & LAT Views),,Radiology,9000,Private,10
+Femur (AP & LAT Views),,Radiology,3000,General,12
+Femur (AP & LAT Views),,Radiology,9000,Private,12
 Forearm (AP & LAT Views),,Radiology,3000,General,
 Forearm (AP & LAT Views),,Radiology,9000,Private,
 GASTROGRAPHIC SWALLOW,,Radiology,30000,Private,
 Hand (AP & LAT Views),,Radiology,3000,General,
 Hand (AP & LAT Views),,Radiology,9000,Private,
-HYSTEROSALPINGOGRAM(HSG),,Radiology,37500,Private,7
-INTRAVENOUS URUGRAPHY (IVP/IUP),,Radiology,52500,Private,5
+HYSTEROSALPINGOGRAM(HSG),,Radiology,37500,Private,9
+INTRAVENOUS URUGRAPHY (IVP/IUP),,Radiology,52500,Private,8
 Knee (AP & LAT Views),,Radiology,3000,General,
 Knee (AP & LAT Views),,Radiology,9000,Private,
 KUB,,Radiology,2500,General,
@@ -974,24 +974,24 @@ Lumbar Spine (AP & LAT Views),,Radiology,3000,General,3
 Lumbar Spine (AP & LAT Views),,Radiology,9000,Private,3
 Mandible (AP & Oblique Views),,Radiology,3000,General,
 Mandible (AP & Oblique Views),,Radiology,9000,Private,
-MICTURATING URETHROGRAM,,Radiology,37500,Private,6
+MICTURATING URETHROGRAM,,Radiology,37500,Private,
 MYELOGRAM,,Radiology,45000,Private,
-Obstetrics,,Radiology,2500,General,4
-Obstetrics,,Radiology,7500,Private,4
+Gestational Ultrasound (Obstetrics),,Radiology,2500,General,10
+Gestational Ultrasound (Obstetrics),,Radiology,7500,Private,10
 Orbits,,Radiology,3000,General,
 Orbits,,Radiology,9000,Private,
 Others,,Radiology,2500,General,
 Others,,Radiology,7500,Private,
-Pelvic,,Radiology,2500,General,
-Pelvic/PELVIS,,Radiology,7500,Private,
+Pelvic,,Radiology,2500,General,4
+Pelvic/PELVIS,,Radiology,7500,Private,4
 Pelvis,,Radiology,3000,General,
 Pelvis,,Radiology,9000,Private,
 Renal,,Radiology,7500,Private,
 RETROGRADE CYSTO-URETHROGRAM,,Radiology,37500,Private,
 Scapula,,Radiology,3000,General,
 Scapula,,Radiology,9000,Private,
-Shoulder,,Radiology,3000,General,8
-Shoulder,,Radiology,9000,Private,8
+Shoulder,,Radiology,3000,General,11
+Shoulder,,Radiology,9000,Private,11
 SINOGRAM,,Radiology,30000,Private,
 Skull (AP + LAT Views),,Radiology,3000,General,
 Skull (AP + LAT Views),,Radiology,9000,Private,
@@ -1640,9 +1640,9 @@ YAG IRIDIOTOMY,,Ophthalmology,20000,Private,
 PRP,,Ophthalmology,30000,Private,
 LOCAL ANAESTHESIA,,Ophthalmology,50000,Private,
 STRABISMUS OPERATION UNDER GENERAL ANAESTHESIA,,Ophthalmology,80000,Private,
-Acetazolamide,,Ophthalmology,100/tab,Private,
-DIAMOX,,Ophthalmology,200 per tablet,Private,
-KOREAN PHARMACETICAL CO,,Ophthalmology,250 per tablet,Private,
+Acetazolamide,tablet,Ophthalmology,100,Private,
+DIAMOX,tablet,Ophthalmology,200,Private,
+KOREAN PHARMACETICAL CO,tablet,Ophthalmology,250,Private,
 Consultation Adult,,Ophthalmology,1000,General,
 Consultation Child,,Ophthalmology,500,General,
 Call out at night for specialist,,Consultation,10000,Private,
@@ -1725,8 +1725,8 @@ Scaling and Polishing,,Dental,10000,Private,5
 Simple extraction :Children,,Dental,1000,General,1
 Simple extraction :Children,,Dental,3000,Private,1
 Simple extraction: Adult,,Dental,1300,General,1
-Simple extraction: Adult,,Dental,"4, 000",Private,1
-Surgical Extraction,,Dental,,General,1
+Simple extraction: Adult,,Dental,4000,Private,1
+Surgical Extraction,,Dental,5000,General,1
 Surgical Extraction,,Dental,5000,Private,1
 Temporary Filling,,Dental,2500,General,2
 Temporary Filling,,Dental,3000,Private,2
