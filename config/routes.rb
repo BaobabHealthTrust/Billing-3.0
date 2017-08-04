@@ -72,7 +72,7 @@ Rails.application.routes.draw do
   resources :order_payments do
     collection do
       get 'print_receipt'
-      get 'void'
+      post 'void'
     end
   end
 

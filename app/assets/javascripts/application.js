@@ -211,6 +211,7 @@ function confirmAction(actionUrl, type)
     showLayer('shadow', 'question')
     if (type == 'FORM')
     {
+        document.confirmingForm.action = actionUrl;
         document.getElementById("bttnYes").setAttribute("onmousedown", "document.confirmingForm.submit()");
     }
     else

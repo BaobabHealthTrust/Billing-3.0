@@ -95,6 +95,7 @@ module PatientsHelper
       records[receipt.receipt_number] = {"details" => []} if records[receipt.receipt_number].blank?
       (receipt.order_payments || []).each do |payment|
         entry = payment.order_entry
+        next if entry.blank?
         records[receipt.receipt_number]["details"] << {service: entry.description, quantity: entry.quantity,
                                             price: entry.full_price, id: entry.id,
                                             amount_paid: payment.amount}
