@@ -23,8 +23,8 @@ class OrderEntry < ActiveRecord::Base
     if %w[Bottle 1litre Pack Gallon tube].include?service.unit
       self.quantity = 1
     end
-
-    self.full_price= (service.service_prices.select(:price).where(price_type: self.service_point).first.price * self.quantity) rescue 0
+    type = (self.service_point.match(/PRIVATE/i).blank? ? "GENERAL" : "PRIVATE")
+    self.full_price= (service.service_prices.select(:price).where(price_type: type).first.price * self.quantity) rescue 0
 
   end
 
