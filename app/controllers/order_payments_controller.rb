@@ -72,37 +72,37 @@ class OrderPaymentsController < ApplicationController
   def void
     #This function cancels payments and reprints the receipt
     entries = OrderEntry.where(order_entry_id: params[:void_ids].split(','))
-
+    receipts = []
     if entries.blank?
       redirect_to "/patients/#{params[:patient_id]}"
     else
-      receipt = []
+
       #voiding selected entries
       (entries || []).each do |entry|
         (entry.order_payments || []).each do |payment|
           payment.void(params[:void_reason], current_user)
-          receipt << payment.receipt_number
+          receipts << payment.receipt_number
         end
         entry.void(params[:void_reason], current_user.id)
       end
 
-      if receipt.blank?
-        redirect_to entries.first.patient
+      if receipts.blank?
+        redirect_to "/patients/#{params[:patient_id]}"
       else
-        other_payments = OrderPayment.where(receipt_number: receipt)
-        old_receipt = Receipt.where(receipt_number: receipt)
-        old_receipt.update_all(voided: true, voided_by: current_user)
+        other_payments = OrderPayment.where(receipt_number: receipts)
+        old_receipt = Receipt.where(receipt_number: receipts).first
+        Receipt.where(receipt_number: receipts).update_all(voided: true, voided_by: current_user)
 
         if other_payments.blank?
           redirect_to entries.first.patient and return
         else
           Receipt.transaction do
-            new_receipt = Receipt.create(payment_mode: old_receipt.first.payment_mode,
+            new_receipt = Receipt.create(payment_mode: old_receipt.payment_mode,
                                          patient_id: other_payments.first.order_entry.patient_id, cashier: current_user)
-            OrderPayment.where(receipt_number: receipt).update_all(receipt_number: new_receipt.receipt_number)
+            OrderPayment.where(receipt_number: receipts).update_all(receipt_number: new_receipt.receipt_number)
 
             print_and_redirect("/order_payments/print_receipt?ids=#{new_receipt.receipt_number}",
-                               "/patients/#{entries.first.patient_id}")
+                               "/patients/#{params[:patient_id]}")
           end
         end
       end

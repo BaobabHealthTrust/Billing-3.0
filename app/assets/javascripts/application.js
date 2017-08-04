@@ -212,7 +212,7 @@ function confirmAction(actionUrl, type)
     if (type == 'FORM')
     {
         document.confirmingForm.action = actionUrl;
-        document.getElementById("bttnYes").setAttribute("onmousedown", "document.confirmingForm.submit()");
+        document.getElementById("bttnYes").setAttribute("onmousedown", "document.confirmingForm.submit();hideLayer('shadow', 'question')");
     }
     else
     {

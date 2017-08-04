@@ -16,10 +16,6 @@ class OrderPayment < ActiveRecord::Base
 
   def void(reason,user)
     OrderPayment.transaction do
-      order_entry =  self.order_entry
-      order_entry.amount_paid -= self.amount
-      order_entry.save
-
       self.voided = true
       self.voided_by= user
       self.voided_reason= reason
