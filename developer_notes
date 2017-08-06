@@ -2,6 +2,7 @@ Notes on features, issues, wishes
 * country, nationality, region, district, traditional_authority models currently are linked to dde tables. This will
   need to be de-linked in the future.
 * Add deposits
+* Add patient medical scheme
 * Need to fix demographics
 * fix edit demographics nationality
 
