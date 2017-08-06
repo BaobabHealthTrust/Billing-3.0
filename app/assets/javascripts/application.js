@@ -101,7 +101,7 @@ function showAlphaKeypad(){
     keyboard.innerHTML+= getButtonString('backspace','<span>Bksp</span>')
     keyboard.innerHTML+= getButtonString('Space','<span>Space</span>')
     keyboard.innerHTML+= getButtonString('clear','<span>Clear</span>')
-    keyboard.innerHTML+= getButtonString('cancel','<span>Cancel</span>')
+//     keyboard.innerHTML+= getButtonString('cancel','<span>Cancel</span>')
 }
 
 function showKeyboard(){

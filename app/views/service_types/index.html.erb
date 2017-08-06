@@ -10,6 +10,35 @@ input{
   font-size: 1.5em;
 }
 </style>
+
+<%= javascript_include_tag 'jquery.dataTables.min.js' %>
+<script type="text/javascript">
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#serviceTypes').DataTable({"bLengthChange": false,
+            "bDestroy": true,
+            "pageLength":7
+        });
+        search_box = $('#serviceTypes').dataTable()
+        search = document.getElementById('serviceTypes_filter').children[0].children[0];
+        document.getElementById('serviceTypes_filter').setAttribute("onmousedown","showKeyboard();");
+        keyboard = document.getElementsByClassName("keypad")[0]
+        showAlphaKeypad();
+
+    } );
+
+    function showKeyboard(){
+        console.log("show keyboard")
+        key = document.getElementById("keypad")
+        if(key.style.display == 'none' || key.style.display == ""){
+            key.style.display = "inline";
+            return
+        }
+
+        key.style.display = "none";
+    }
+</script>
+
 <div class="section-header">
   Service Categories
 </div>
@@ -45,31 +74,3 @@ input{
   <!--<button class="button blue" style="float: right;" onmousedown="window.location='/service_types/new'">Add Category</button> //-->
 </div>
 
-<%= javascript_include_tag 'jquery.dataTables.min.js' %>
-<script type="text/javascript">
-    // Styling the table with datatables library
-    $(document).ready(function() {
-        $('#serviceTypes').DataTable({"bLengthChange": false,
-            "bDestroy": true,
-            "pageLength":7
-        });
-        search_box = $('#serviceTypes').dataTable()
-        search = document.getElementsByTagName("input")[0];
-        search.setAttribute("id","search");
-        document.getElementById('search').setAttribute("onMouseDown","showKeyboard();");
-        keyboard = document.getElementsByClassName("keypad")[0]
-        showAlphaKeypad();
-
-    } );
-
-    function showKeyboard(){
-        console.log("show keyboard")
-        key = document.getElementById("keypad")
-        if(key.style.display == 'none' || key.style.display == ""){
-            key.style.display = "inline";
-            return
-        }
-
-        key.style.display = "none";
-    }
-</script>

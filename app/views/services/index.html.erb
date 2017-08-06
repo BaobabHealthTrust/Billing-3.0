@@ -10,8 +10,37 @@
     font-size: 1.5em;
   }
 </style>
+
+<%= javascript_include_tag 'jquery.dataTables.min.js' %>
+<script type="text/javascript">
+    // Styling the table with datatables library
+    $(document).ready(function() {
+        $('#serviceTypes').DataTable({"bLengthChange": false,
+            "bDestroy": true,
+            "pageLength":7
+        });
+        search_box = $('#serviceTypes').dataTable()
+        search = document.getElementById('serviceTypes_filter').children[0].children[0];
+        document.getElementById('serviceTypes_filter').setAttribute("onmousedown","showKeyboard();");
+        keyboard = document.getElementsByClassName("keypad")[0]
+        showAlphaKeypad();
+
+    } );
+
+    function showKeyboard(){
+        console.log("show keyboard")
+        key = document.getElementById("keypad")
+        if(key.style.display == 'none' || key.style.display == ""){
+            key.style.display = "inline";
+            return
+        }
+
+        key.style.display = "none";
+    }
+</script>
+
 <div class="section-header">
-  Services
+  Service
 </div>
 
 <div style="height: 70vh; width: 100vw;">
@@ -42,15 +71,3 @@
   <button class="button blue" style="float: right;" onmousedown="window.location='/services/new'">Add Service</button>
 </div>
 
-<%= javascript_include_tag 'jquery.dataTables.min.js' %>
-<script type="text/javascript">
-    // Styling the table with datatables library
-    $(document).ready(function() {
-        $('#serviceTypes').DataTable({"bLengthChange": false,
-            "bDestroy": true,
-            "pageLength":7
-        });
-
-
-    } );
-</script>
