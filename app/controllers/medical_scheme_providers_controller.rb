@@ -4,6 +4,7 @@ class MedicalSchemeProvidersController < ApplicationController
   end
   def show
     @insurer = MedicalSchemeProvider.find(params[:id])
+    @schemes = @insurer.medical_schemes
   end
   def new
     render :layout => 'touch'

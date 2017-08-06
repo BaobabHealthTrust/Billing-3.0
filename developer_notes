@@ -1,7 +1,6 @@
 Notes on features, issues, wishes
 * country, nationality, region, district, traditional_authority models currently are linked to dde tables. This will
   need to be de-linked in the future.
-* Add keyboard for filtering lists
 * Add deposits
 * Need to fix demographics
 * fix edit demographics nationality

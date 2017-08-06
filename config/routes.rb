@@ -50,8 +50,9 @@ Rails.application.routes.draw do
   end
   resources :user_properties
   resources :service_types
-  resources :medical_scheme
-  resources :medical_scheme_providers
+  resources :medical_scheme_providers do
+    resources :medical_scheme
+  end
   resources :sessions
   resources :users do
     collection do
