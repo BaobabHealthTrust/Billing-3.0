@@ -7,16 +7,15 @@ class PatientsController < ApplicationController
   def confirm_demographics
 
     @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] rescue {}
+    @use_dde = YAML.load_file("#{Rails.root}/config/application.yml")['create_from_dde'] rescue false
 
-    if @settings.blank?
-      #No dde setting therefore create locally
+    json_params = view_context.patient_json(params[:person],params["CURRENT AREA OR T/A"],params["identifier"],true)
 
-    else
+    @json = JSON.parse(json_params)
+
+    if !@settings.blank? && @use_dde
       #DDE available
 
-      json_params = view_context.patient_json(params[:person],params["CURRENT AREA OR T/A"],params["identifier"],true)
-
-      @json = JSON.parse(json_params)
       @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] # rescue {}
 
       if secure?
@@ -27,8 +26,11 @@ class PatientsController < ApplicationController
 
       @results = RestClient.post(url, {"person" => json_params})
 
-      render :layout => 'touch'
+    else
+      #No dde setting therefore create locally
+
     end
+    render :layout => 'touch'
   end
 
   def new
@@ -106,60 +108,64 @@ class PatientsController < ApplicationController
     filter = {}
 
     settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] # rescue {}
+    use_dde = YAML.load_file("#{Rails.root}/config/application.yml")['create_from_dde'] rescue false
+    if !settings.blank? && use_dde
+      search_hash = {
+          "names" => {
+              "given_name" => (params["given_name"] rescue nil),
+              "family_name" => (params["family_name"] rescue nil)
+          },
+          "gender" => params["gender"]
+      }
 
-    search_hash = {
-        "names" => {
-            "given_name" => (params["given_name"] rescue nil),
-            "family_name" => (params["family_name"] rescue nil)
-        },
-        "gender" => params["gender"]
-    }
+      if !search_hash["names"]["given_name"].blank? and !search_hash["names"]["family_name"].blank? and !search_hash["gender"].blank? # and result.length < pagesize
 
-    if !search_hash["names"]["given_name"].blank? and !search_hash["names"]["family_name"].blank? and !search_hash["gender"].blank? # and result.length < pagesize
+        pagesize += pagesize - result.length
+        if secure?
+          url = "https://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/ajax_process_data"
+        else
+          url = "http://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/ajax_process_data"
+        end
+        remote = RestClient.post(url, {:person => search_hash, :page => page, :pagesize => pagesize}, {:accept => :json})
 
-      pagesize += pagesize - result.length
-      if secure?
-        url = "https://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/ajax_process_data"
-      else
-        url = "http://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/ajax_process_data"
+        json = JSON.parse(remote)
+
+        json.each do |person|
+
+          entry = JSON.parse(person)
+
+          entry["application"] = "#{name_of_app}"
+          entry["site_code"] = "#{facility_code}"
+
+          entry["national_id"] = entry["_id"] if entry["national_id"].blank? and !entry["_id"].blank?
+
+          filter[entry["national_id"]] = true
+          (entry["patient"]["identifiers"] || []).each do |identifiers|
+            filter[identifiers["Old Identification Number"]] = true if !identifiers["Old Identification Number"].blank?
+          end
+
+          entry["age"] = (((Date.today - entry["birthdate"].to_date).to_i / 365) rescue nil)
+
+          entry.delete("created_at") rescue nil
+          entry.delete("patient_assigned") rescue nil
+          entry.delete("assigned_site") rescue nil
+          entry["names"].delete("family_name_code") rescue nil
+          entry["names"].delete("given_name_code") rescue nil
+          entry.delete("_id") rescue nil
+          entry.delete("updated_at") rescue nil
+          entry.delete("old_identification_number") rescue nil
+          entry.delete("type") rescue nil
+          entry.delete("_rev") rescue nil
+
+          result << entry
+
+        end
       end
-      remote = RestClient.post(url, {:person => search_hash, :page => page, :pagesize => pagesize}, {:accept => :json})
-
-      json = JSON.parse(remote)
-
-      json.each do |person|
-
-        entry = JSON.parse(person)
-
-        entry["application"] = "#{name_of_app}"
-        entry["site_code"] = "#{facility_code}"
-
-        entry["national_id"] = entry["_id"] if entry["national_id"].blank? and !entry["_id"].blank?
-
-        filter[entry["national_id"]] = true
-
-        entry["age"] = (((Date.today - entry["birthdate"].to_date).to_i / 365) rescue nil)
-
-        entry.delete("created_at") rescue nil
-        entry.delete("patient_assigned") rescue nil
-        entry.delete("assigned_site") rescue nil
-        entry["names"].delete("family_name_code") rescue nil
-        entry["names"].delete("given_name_code") rescue nil
-        entry.delete("_id") rescue nil
-        entry.delete("updated_at") rescue nil
-        entry.delete("old_identification_number") rescue nil
-        entry.delete("type") rescue nil
-        entry.delete("_rev") rescue nil
-
-        result << entry
-
-      end
-
     end
 
     # pagesize = ((pagesize) * 2) - result.length
 
-    Person.all.joins(:names).where("given_name = ? AND family_name = ? AND gender = ?", params["given_name"], params["family_name"], params["gender"]).limit(pagesize).offset(offset ).each do |person|
+    Person.all.joins(:names).where("given_name = ? AND family_name = ? AND gender = ?", params["given_name"], params["family_name"], params["gender"]).limit(pagesize).offset(offset).each do |person|
 
       patient = person.patient # rescue nil
 
@@ -433,16 +439,19 @@ class PatientsController < ApplicationController
   def patient_by_id
 
     @settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] rescue {}
+    @use_dde = YAML.load_file("#{Rails.root}/config/application.yml")['create_from_dde'] rescue false
 
     params[:id] = params[:id].strip.gsub(/\s/, "").gsub(/\-/, "") rescue params[:id]
 
     local_patient = Patient.search_locally(params[:id])
 
     #if dde settings don't exist
-    if @settings.blank?
+    if @settings.blank? || !@use_dde
       if local_patient.blank? || local_patient["patient_id"].blank?
         #if dde doesn't exist and patient is not available locally
         redirect_to "/patients/patient_not_found/#{params[:id]}" and return
+      else
+        @dontstop = true
       end
 
     else
@@ -691,19 +700,25 @@ class PatientsController < ApplicationController
     @results = []
 
     settings = YAML.load_file("#{Rails.root}/config/dde_connection.yml")[Rails.env] rescue {}
+    use_dde = YAML.load_file("#{Rails.root}/config/application.yml")['create_from_dde'] rescue false
 
-    target = params[:target]
+    if (!settings.blank? && use_dde)
+      target = params[:target]
 
-    target = "update" if target.blank?
+      target = "update" if target.blank?
 
-    if !@json.blank?
-      if secure?
-        url = "https://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/process_confirmation"
-      else
-        url = "http://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/process_confirmation"
+      if !@json.blank?
+        if secure?
+          url = "https://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/process_confirmation"
+        else
+          url = "http://#{settings["dde_username"]}:#{settings["dde_password"]}@#{settings["dde_server"]}/process_confirmation"
+        end
+        @results = RestClient.post(url, {:person => @json, :target => target}, {:accept => :json})
       end
-      @results = RestClient.post(url, {:person => @json, :target => target}, {:accept => :json})
+    else
+      @results = @json
     end
+
 
     render :text => @results
   end

@@ -307,7 +307,7 @@
     </div>
     <div class="cell" style="width: 50%; border-radius: 1px; border: 1px solid #666; overflow: hidden;">
 
-      <% if !@results.nil? and @results.length == 0 %>
+      <% if !@results.blank? and @results.length == 0 %>
 
           <div id="selections" style="width: 100%; border: none; padding: 10px; ">
             <div style="width: 100%; height: 100%; font-size: 36px; text-align: center; padding-top: 60px;">
@@ -460,7 +460,7 @@
     }
 
     function ajaxRequest(page) {
-
+        console.log('loading')
         var url = "/patients/ajax_process_data";
 
         var httpRequest = new XMLHttpRequest();
