@@ -13,6 +13,7 @@ class Person < ActiveRecord::Base
   has_many :addresses, :class_name => 'PersonAddress', :foreign_key => :person_id, :dependent => :destroy
   has_many :person_attributes, :class_name => 'PersonAttribute', :foreign_key => :person_id
 
+
   def display_age
     age_in_days = (Date.current - self.birthdate).to_i
 

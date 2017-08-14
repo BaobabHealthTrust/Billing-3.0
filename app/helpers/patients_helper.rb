@@ -127,4 +127,50 @@ module PatientsHelper
 
     return [@unpaid_orders, @total, @amount_due]
   end
+
+  def patient_list(data)
+    results = []
+
+    (data || []).each do |record|
+      name = record.names.first
+      address = record.addresses.last
+      results << {
+          "_id" => record.patient.national_id,
+          "patient_id" => (record.person_id rescue nil),
+          "names" =>
+              {
+                  "family_name" => (name.family_name rescue nil),
+                  "given_name" => (name.given_name rescue nil),
+                  "middle_name" => (name.middle_name rescue nil),
+                  "maiden_name" => (name.family_name2 rescue nil)
+              },
+          "gender" => (record.gender rescue nil),
+          "person_attributes" => {
+              "occupation" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Occupation").id).value rescue nil),
+              "cell_phone_number" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Cell Phone Number").id).value rescue nil),
+              "home_phone_number" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Home Phone Number").id).value rescue nil),
+              "office_phone_number" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Office Phone Number").id).value rescue nil),
+              "race" => (patient.person.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Race").id).value rescue nil),
+              "country_of_residence" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Country of Residence").id).value rescue nil),
+              "citizenship" => (record.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Citizenship").id).value rescue nil)
+          },
+          "birthdate" => (record.birthdate rescue nil),
+          "patient" => {
+              "identifiers" => (record.patient.patient_identifiers.collect { |id| {id.type.name => id.identifier} if id.type.name.downcase != "national id" }.delete_if { |x| x.nil? } rescue [])
+          },
+          "birthdate_estimated" => ((record.birthdate_estimated rescue 0).to_s.strip == '1' ? true : false),
+          "addresses" => {
+              "current_residence" => (address.address1 rescue nil),
+              "current_village" => (address.city_village rescue nil),
+              "current_ta" => (address.township_division rescue nil),
+              "current_district" => (address.state_province rescue nil),
+              "home_village" => (address.neighborhood_cell rescue nil),
+              "home_ta" => (address.county_district rescue nil),
+              "home_district" => (address.address2 rescue nil)
+          }
+      }.to_json
+
+    end
+    return results
+  end
 end

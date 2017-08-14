@@ -460,7 +460,6 @@
     }
 
     function ajaxRequest(page) {
-        console.log('loading')
         var url = "/patients/ajax_process_data";
 
         var httpRequest = new XMLHttpRequest();
@@ -588,13 +587,7 @@
 
                    // showSpinner();
 
-                    if (__$("json")) {
-                        __$("json").innerHTML = people[parseInt(this.getAttribute("pos"))];
-                    }
-
-                    if (__$("form")) {
-                        __$("form").submit();
-                    }
+                    window.location = "/patients/" + JSON.parse(people[parseInt(this.getAttribute("pos"))])['patient_id'];
                 }
             }
 

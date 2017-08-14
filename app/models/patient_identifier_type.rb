@@ -9,7 +9,7 @@ class PatientIdentifierType < ActiveRecord::Base
     case self.name
       when "National id"
         unless use_moh_national_id
-          health_center_id = Location.current_location.site_id
+          health_center_id = Location.current_health_center.location_id
           national_id_version = "1"
           national_id_prefix = "P#{national_id_version}#{health_center_id.rjust(3,"0")}"
 

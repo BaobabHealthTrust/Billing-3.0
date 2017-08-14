@@ -123,4 +123,23 @@ class Patient < ActiveRecord::Base
     return person
   end
 
+  def create_national_id
+    health_center_id = Location.current_health_center.location_id
+    national_id_version = "1"
+    national_id_prefix = "P#{national_id_version}#{health_center_id.to_s.rjust(3,"0")}"
+
+    identifier_type = PatientIdentifierType.find_by_name("National ID")
+    last_national_id = PatientIdentifier.where("identifier_type = ? AND left(identifier,5)= ?", identifier_type.id, national_id_prefix).order("identifier desc").first
+    last_national_id_number = last_national_id.identifier rescue "0"
+
+    next_number = (last_national_id_number[5..-2].to_i+1).to_s.rjust(7,"0")
+    new_national_id_no_check_digit = "#{national_id_prefix}#{next_number}"
+    check_digit = PatientIdentifier.calculate_checkdigit(new_national_id_no_check_digit[1..-1])
+    new_national_id = "#{new_national_id_no_check_digit}#{check_digit}"
+    patient_identifier = PatientIdentifier.new
+    patient_identifier.type = identifier_type
+    patient_identifier.identifier = new_national_id
+    patient_identifier.patient = self
+    patient_identifier.save
+  end
 end
