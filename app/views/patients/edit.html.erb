@@ -356,7 +356,7 @@
                                                      :ajaxURL => '',
                                                      :allowFreeText => true,
                                                      :tt_onLoad => "$('nextButton').style.display = 'none'; " +
-                                                         "set_ajaxURL_for_suggestions('/patients/district/District?filter_value='," +
+                                                         "set_ajaxURL_for_suggestions('/patients/district?filter_value='," +
                                                          "document.getElementById('region_region_name').value);"
                            } %>
 
@@ -367,7 +367,7 @@
                             :allowFreeText => false,
                             :condition => "__$('nationality').value == 'Malawian'",
                             :tt_requireNextClick => false,
-                            :tt_onLoad => "$('nextButton').style.display = 'none'; set_ajaxURL_for_suggestions('/patients/traditional_authority/TraditionalAuthority?filter_value=' ,document.getElementById('address2').value);"
+                            :tt_onLoad => "$('nextButton').style.display = 'none'; set_ajaxURL_for_suggestions('/patients/traditional_authority?filter_value=' ,document.getElementById('address2').value);"
                            } %>
 
         <%= text_field_tag "person[addresses][neighborhood_cell]", params[:city_village],
@@ -379,8 +379,7 @@
                                :condition => "__$('nationality').value == 'Malawian'",
                                :ajaxURL => '/patients/village?search_string=',
                                :allowFreeText => false,
-                               :tt_onLoad => "$('nextButton').style.display = 'block'; set_ajaxURL_for_suggestions('/patients/village/Village?filter_value=' ,document.getElementById('person_addresses_county_district').value);"} %>
-
+                               :tt_onLoad => "$('nextButton').style.display = 'block'; set_ajaxURL_for_suggestions('/patients/village?filter_value=' ,document.getElementById('person_addresses_county_district').value);"} %>
 
     <% when 'cell_phone_number' %>
         <%= text_field_tag "person[attributes][cell_phone_number]", nil, :field_type => 'number', :helpText => 'Cell Phone Number', :allowFreeText => "true", :validationRule => "^0\\d{9}$|Unknown|Not Available", :validationMessage => "Not a valid phone number" %>
@@ -393,16 +392,17 @@
 
     <% when 'citizenship' %>
 
-
-        <%= select_tag("person[attributes][citizenship]", options_for_select([" ", "Malawian", "Other"], params[:citizenship]),
-                       :id => "nationality",
-                       :helpText => "Nationality",
-                       :field_type => 'text') %>
+        <%= text_field_tag "person[attributes][citizenship]", nil,
+                           {:id => "nationality",
+                            :ajaxURL => "",
+                            :tt_requireNextClick => false,
+                            :tt_onLoad => "$('nextButton').style.display = 'none'; set_ajaxURL_for_suggestions('/patients/nationality?filter_value=', __$('nationality').value);",
+                            :helptext => "Nationality"} %>
 
         <%= text_field_tag "person[attributes][race]", nil,
                            :field_type => 'text',
                            :helpText => "Specify Nationality",
-                           :condition => '($("nationality").value != "Malawian")'
+                           :condition => '(__$("nationality").value == "Other")'
         %>
 
     <% when 'occupation' %>

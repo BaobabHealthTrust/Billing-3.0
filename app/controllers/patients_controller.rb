@@ -500,33 +500,35 @@ class PatientsController < ApplicationController
 
         when 'cell_phone_number'
           attrib_type = PersonAttributeType.find_by_name("Cell Phone Number").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
+          person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
           person_attrib.value = params[:person][:attributes][:cell_phone_number]
           person_attrib.save
         when 'home_phone_number'
           attrib_type = PersonAttributeType.find_by_name("Home Phone Number").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
+          person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
           person_attrib.value = params[:person][:attributes][:home_phone_number]
           person_attrib.save
         when 'office_phone_number'
           attrib_type = PersonAttributeType.find_by_name("Office Phone Number").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
+          person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
           person_attrib.value = params[:person][:attributes][:office_phone_number]
           person_attrib.save
         when 'citizenship'
           attrib_type = PersonAttributeType.find_by_name("Citizenship").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
+          person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
           person_attrib.value = params[:person][:attributes][:citizenship]
           person_attrib.save
 
-          attrib_type = PersonAttributeType.find_by_name("Race").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
-          person_attrib.value = params[:person][:attributes][:race]
-          person_attrib.save
+          unless params[:person][:attributes][:race].blank?
+            attrib_type = PersonAttributeType.find_by_name("Race").id
+            person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
+            person_attrib.value = params[:person][:attributes][:race]
+            person_attrib.save
+          end
 
         when 'occupation'
           attrib_type = PersonAttributeType.find_by_name("Occupation").id
-          person_attrib = PersonAttribute.where(person_id: person.person_id, attribute_type_id: attrib_type).first_or_initialize
+          person_attrib = PersonAttribute.where(person_id: person.person_id, person_attribute_type_id: attrib_type).first_or_initialize
           person_attrib.value = params[:person][:attributes][:occupation]
           person_attrib.save
 

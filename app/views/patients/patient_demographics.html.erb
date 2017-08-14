@@ -318,7 +318,7 @@
             ,
             {
                 "label": "N<span class='therest'>ATIONALITY</span>",
-                "field": "address2",
+                "field": "citizenship",
                 "value": "<%= @person.person_attributes.find_by_person_attribute_type_id(PersonAttributeType.find_by_name("Citizenship").id).value rescue "&nbsp;" %>"
             },
             {
