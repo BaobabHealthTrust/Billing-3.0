@@ -51,7 +51,12 @@ module Openmrs
 
   def before_create
 
-    self.location_id = Location.current_health_center.id if self.attributes.has_key?("location_id") and (self.location_id.blank? || self.location_id == 0) and Location.current_health_center != nil
+    if self.attributes.has_key?("location_id")
+      unless %w[Location LocationTagMap ].include?(self.model_name.name)
+        self.location_id = Location.current_health_center.id if (self.location_id.blank? || self.location_id == 0) and Location.current_health_center != nil
+      end
+    end
+
     self.creator = User.current.id if self.attributes.has_key?("creator") and (self.creator.blank? ||
         self.creator == 0)and User.current != nil
 
