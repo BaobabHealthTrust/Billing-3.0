@@ -19,6 +19,8 @@ class MainController < ApplicationController
         @cashier_options = User.all.collect{ |x| [x.id, x.name]}
       when 'daily_cash_summary'
         @report_path = "/main/daily_cash_summary"
+      when 'census'
+        @report_path = "/main/census_report"
     end
     render :layout => 'touch'
   end
@@ -95,5 +97,34 @@ class MainController < ApplicationController
     data,totals = view_context.cash_summary(data)
     print_string = Misc.print_summary(data,totals,date, current_user.name)
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{params[:patient_id]}#{rand(10000)}.lbs", :disposition => "inline")
+  end
+
+  def census_report
+
+    case params[:report_duration]
+      when 'Daily'
+        @title = "Daily Census Report for #{params[:start_date].to_date.strftime('%d %B, %Y')}"
+        range = params[:start_date].to_date.beginning_of_day..params[:start_date].to_date.end_of_day
+      when 'Weekly'
+        @title = "Weekly Census Report from #{params[:start_date].to_date.beginning_of_week.strftime('%d %B, %Y')} to
+                  #{params[:start_date].to_date.end_of_week.strftime('%d %B, %Y')}"
+        range = params[:start_date].to_date.beginning_of_week.beginning_of_day..params[:start_date].to_date.end_of_week.end_of_day
+      when 'Monthly'
+        @title = "Monthly Census Report for #{params[:start_date].to_date.strftime('%B %Y')}"
+        range = params[:start_date].to_date.beginning_of_month.beginning_of_day..params[:start_date].to_date.end_of_month.end_of_day
+      when 'Range'
+        @title = "Census Report from #{params[:start_date].to_date.strftime('%d %B, %Y')} to
+                 #{params[:end_date].to_date.strftime('%d %B, %Y')}"
+        range = params[:start_date].to_date.beginning_of_day..params[:end_date].to_date.end_of_day
+    end
+
+    new_registrations = Patient.select(:patient_id).where(date_created: range)
+    new_ids = new_registrations.collect{|x| x.patient_id}
+    returning_patients = Receipt.select(:receipt_number, :patient_id).where(payment_stamp: range).where.not(patient_id: new_ids).collect{|x| x.patient}
+    @new_patients = view_context.census(new_registrations)
+    @old_patients = view_context.census(returning_patients)
+    @summary = {}
+    @summary['M'] = @new_patients[:paediatric][:M] + @new_patients[:adult][:M] + @old_patients[:paediatric][:M] + @old_patients[:adult][:M]
+    @summary['F'] = @new_patients[:paediatric][:F] + @new_patients[:adult][:F] + @old_patients[:paediatric][:F] + @old_patients[:adult][:F]
   end
 end

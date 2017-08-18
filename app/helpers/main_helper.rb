@@ -27,4 +27,20 @@ module MainHelper
     end
     return records,totals
   end
+
+  def census(patients)
+
+    result = {paediatric: {M: 0, F: 0}, adult: {M: 0, F: 0}}
+
+    (patients || []).each do |patient|
+      next if patient.blank?
+      person = patient.person
+      if person.is_child?
+        result[:paediatric][person.gender.to_sym] += 1
+      else
+        result[:adult][person.gender.to_sym] += 1
+      end
+    end
+    return result
+  end
 end
