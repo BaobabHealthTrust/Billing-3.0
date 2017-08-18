@@ -113,8 +113,8 @@
             <div style="display: table-row; ">
               <div class="header-content-cell"><b>Residence</b></div>
               <div class="header-content-cell"><%= @patient.current_address %></div>
-              <div class="header-content-cell">&nbsp;</div>
-              <div class="header-content-cell">&nbsp;</div>
+              <div class="header-content-cell"><b>Scheme Number</b></div>
+              <div class="header-content-cell"><%= @patient.scheme_num %></div>
             </div>
           </div>
         </div>
@@ -321,12 +321,11 @@
   <div id="othersTab" class="tab-content invisible">
     <div style="display: table;margin: 3vh auto">
       <div style="display: table-row;">
-        <!--
         <div style="display: table-cell">
-          <div class = "link-button" onmousedown="window.location='/'">
+          <div class = "link-button" onmousedown="window.location='/patients/<%= @patient.id%>/patient_accounts/new'">
             Add Medical Scheme
           </div>
-        </div>-->
+        </div>
         <div style="display: table-cell">
           <div class = "link-button" onmousedown="window.location='/patients/patient_demographics/<%= @patient.id%>'">
             Edit Demographics

@@ -1647,8 +1647,17 @@ Consultation Adult,,Ophthalmology,1000,General,
 Consultation Child,,Ophthalmology,500,General,
 Call out at night for specialist,,Consultation,10000,Private,
 Consultation Adult,,Consultation,500,General,1
-Consultation ART,,Consultation,200,General,3
+Consultation ART Other,,Consultation,500,General,4
+Consultation ART Catchment,,Consultation,200,General,3
+Consultation Child Night,,Consultation,500,General,6
+Consultation Adult Night,,Consultation,700,General,5
 Consultation Child,,Consultation,300,General,2
+Consultation VIA catchment,,Consultation,200,General,7
+Consultation VIA non-catchment,,Consultation,500,General,8
+Consultation ANC Catchment first,,Consultation,200,General,9
+Consultation ANC Catchment subs,,Consultation,200,General,10
+Consultation ANC non-catchment first,,Consultation,2500,General,11
+Consultation non catchment subs,,Consultation,1500,General,12
 general practioner first visit,,Consultation,6000,Private,
 general practioner subsequent visit,,Consultation,4000,Private,
 Specialist consultation first visit,,Consultation,8000,Private,

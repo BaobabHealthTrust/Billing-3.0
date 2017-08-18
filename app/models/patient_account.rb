@@ -5,13 +5,19 @@ class PatientAccount < ActiveRecord::Base
   has_one :medical_scheme_provider, through: :medical_scheme
   has_one :user, :foreign_key => :creator
 
-
   #accessor methods
   def scheme_description
-    return "#{self.medical_scheme_provider.company_name} (#{self.name})"
+    return "#{self.medical_scheme_provider.company_name} (#{scheme_name})"
   end
 
-  #functional methods
+  def scheme_name
+    scheme = self.medical_scheme
+    if scheme.blank?
+      return 'General'
+    else
+      return scheme.name
+    end
+  end
 
 
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724121032) do
+ActiveRecord::Schema.define(version: 20170818025039) do
 
   create_table "medical_scheme_providers", primary_key: "scheme_provider_id", force: :cascade do |t|
     t.string   "company_name",    limit: 255
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20170724121032) do
     t.string   "retired_reason",          limit: 255
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.string   "scheme_number",           limit: 255
   end
 
   create_table "order_entries", primary_key: "order_entry_id", force: :cascade do |t|
@@ -67,13 +68,14 @@ ActiveRecord::Schema.define(version: 20170724121032) do
   end
 
   create_table "patient_accounts", primary_key: "account_id", force: :cascade do |t|
-    t.integer  "patient_id",        limit: 4,                null: false
-    t.integer  "medical_scheme_id", limit: 4,                null: false
+    t.integer  "patient_id",        limit: 4,                  null: false
+    t.integer  "medical_scheme_id", limit: 4,                  null: false
     t.date     "active_from"
-    t.boolean  "active",                      default: true
-    t.integer  "creator",           limit: 4,                null: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.boolean  "active",                        default: true
+    t.integer  "creator",           limit: 4,                  null: false
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
+    t.string   "scheme_number",     limit: 255
   end
 
   create_table "receipts", force: :cascade do |t|

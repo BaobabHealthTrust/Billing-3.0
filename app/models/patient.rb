@@ -55,12 +55,16 @@ class Patient < ActiveRecord::Base
   end
 
   def health_insurance
-    account = self.patient_account.first rescue nil
+    account = self.patient_accounts.first rescue nil
     if account.blank?
       return "None"
     else
-
+      account.scheme_description
     end
+  end
+
+  def scheme_num
+    return self.patient_accounts.first.scheme_number rescue ''
   end
 
   #Model functional methods. These functions are used to process various things related to the patient

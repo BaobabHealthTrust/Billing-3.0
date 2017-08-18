@@ -53,6 +53,9 @@ Rails.application.routes.draw do
   resources :service_types
   resources :medical_scheme_providers do
     resources :medical_scheme
+    collection do
+      get 'suggestions'
+    end
   end
   resources :sessions
   resources :users do

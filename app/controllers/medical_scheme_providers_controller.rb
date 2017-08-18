@@ -24,6 +24,16 @@ class MedicalSchemeProvidersController < ApplicationController
 
   end
 
+  def suggestions
+    company = MedicalSchemeProvider.find_by_company_name(params[:name]).id
+    schemes = MedicalScheme.where("medical_scheme_provider = ? AND name like (?)",
+                                  company, "%#{params[:search_string]}%").map do |v|
+      "<li value=\"#{v.medical_scheme_id}\">#{v.name}</li>"
+    end
+
+    render :text => schemes.join('') and return
+  end
+
   private
 
   def medical_scheme_provider_params
