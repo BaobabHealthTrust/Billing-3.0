@@ -33,7 +33,7 @@ module Misc
     end
   end
 
-  def self.print_receipt(ids, change = 0)
+  def self.print_receipt(ids,deposit = 0, change = 0)
     receipt = Receipt.where(receipt_number: ids).first
 
     payments = receipt.order_payments
@@ -67,6 +67,9 @@ module Misc
     label.draw_line(label.x,label.y,566,2)
     label.y+=10
     label.draw_table([['Total: ',local_currency(total)]], [[370, "left"], [200, "right"]])
+    if (deposit > 0 )
+      label.draw_table([['Deposit: ',local_currency((-1 * deposit))]], [[370, "left"], [200, "right"]])
+    end
     label.draw_table([['Cash: ',local_currency((total+change))]], [[370, "left"], [200, "right"]])
     label.draw_table([['Change: ',local_currency(change)]], [[370, "left"], [200, "right"]])
     label.draw_line(label.x,label.y,566,7,1)
@@ -128,6 +131,41 @@ module Misc
     label.y+=20
     label.draw_table([['Total',local_currency(totals[:private])]], [[370, "left"], [200, "right"]])
 
+    label.print(1)
+  end
+
+  def self.print_deposit_receipt(id)
+    receipt = Deposit.find_by_deposit_id(id)
+
+    patient_name = receipt.patient.full_name
+    cashier = receipt.creator.name
+    receipt_number = receipt.receipt_number
+
+    heading = ""
+    heading += "#{get_config('facility_name').titleize}\n"
+    heading += "#{get_config('facility_address')}\n"
+    heading += "Date: #{Date.current.strftime('%d %b %Y')}\n"
+    heading += "Patient: #{patient_name.titleize}\n"
+    heading += "Issued By: #{cashier.titleize}\n"
+
+    text = [['Amount Deposited', local_currency(receipt.amount_received)]]
+
+
+    label = ZebraPrinter::Label.new(616,203,'056',true)
+    label.font_size = 3
+    label.font_horizontal_multiplier = 1
+    label.font_vertical_multiplier = 1
+    label.draw_text("Deposit Receipt",250,0,0,2,1,2,false)
+    label.draw_text(receipt_number,450,0,0,3,1,1,false)
+    label.y+=10
+    label.draw_multi_text(heading)
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table(text, [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table([['Total: ',local_currency(receipt.amount_received)]], [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,7,1)
     label.print(1)
   end
 end

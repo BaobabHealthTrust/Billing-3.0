@@ -14,7 +14,7 @@ class OrderPaymentsController < ApplicationController
                                                                                   order_entry_id: params[:order_entries].split(','))
     end
 
-    amount = params[:order_payment][:amount].to_f
+    amount = params[:order_payment][:amount].to_f + params[:order_payment][:deposits].to_f
     if amount > 0
       Receipt.transaction do
         new_receipt = Receipt.create(payment_mode: params[:order_payment][:mode],
@@ -40,8 +40,12 @@ class OrderPaymentsController < ApplicationController
 
           end
         end
+
+        #Update deposits
+        Deposit.where(patient_id: params[:order_payment][:patient_id]).update_all(amount_available: 0.0, updated_by: params[:creator])
+
         #Print receipt of transaction
-        print_and_redirect("/order_payments/print_receipt?change=#{amount}&ids=#{new_receipt.receipt_number}",
+        print_and_redirect("/order_payments/print_receipt?deposit=#{params[:order_payment][:deposits]}&change=#{amount}&ids=#{new_receipt.receipt_number}",
                            "/patients/#{params[:order_payment][:patient_id]}")
       end
 
@@ -54,13 +58,14 @@ class OrderPaymentsController < ApplicationController
   def print_receipt
     ids = params[:ids].split(',') rescue params[:id]
     change = (params[:change].to_f || 0)
+    deposit = (params[:deposit].to_f || 0)
     if ids.length > 1
       print_string = ""
       (ids || []).each do |receipt|
-        print_string += "#{Misc.print_receipt(receipt, change)}\n"
+        print_string += "#{Misc.print_receipt(receipt, deposit, change)}\n"
       end
     else
-      print_string = Misc.print_receipt(ids, change)
+      print_string = Misc.print_receipt(ids, deposit, change)
     end
 
 
@@ -109,4 +114,5 @@ class OrderPaymentsController < ApplicationController
 
     end
   end
+
 end

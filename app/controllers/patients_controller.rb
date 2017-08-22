@@ -561,9 +561,11 @@ class PatientsController < ApplicationController
     today_payments = Receipt.select(:receipt_number).where("patient_id = ? AND payment_stamp BETWEEN ? AND ?",
                                                        @patient.id,range.first, range.last)
 
+
     @unpaid_orders, @total, @amount_due = view_context.unpaid_records(unpaid_orders)
     @history = view_context.past_records(past_orders)
     @today_payments = view_context.today_records(today_payments)
+    @deposits = @patient.amount_deposited
 
   end
 

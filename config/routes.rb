@@ -41,6 +41,7 @@ Rails.application.routes.draw do
     end
     resources :order_entries
     resources :patient_accounts
+    resources :deposits
   end
 
   resources :locations do

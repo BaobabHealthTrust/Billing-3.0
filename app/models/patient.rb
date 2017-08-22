@@ -13,6 +13,7 @@ class Patient < ActiveRecord::Base
   has_many :addresses,-> { where "voided = false" }, :class_name => 'PersonAddress', :foreign_key => :person_id, :dependent => :destroy
   has_many :person_attributes,-> { where "voided = 0" }, :class_name => 'PersonAttribute', :foreign_key => :person_id
   has_many :patient_accounts,-> { where "active = true" }, :foreign_key => :patient_id
+  has_many :deposits,-> { where "voided = false" }, :foreign_key => :patient_id
 
   #Accessor methods. These methods are used to access values of various attributes
   def full_name
@@ -65,6 +66,10 @@ class Patient < ActiveRecord::Base
 
   def scheme_num
     return self.patient_accounts.first.scheme_number rescue ''
+  end
+
+  def amount_deposited
+    Deposit.select("SUM(amount_available) as amount_available").where(patient_id: self.id).first.amount_available rescue 0
   end
 
   #Model functional methods. These functions are used to process various things related to the patient

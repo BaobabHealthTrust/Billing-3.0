@@ -14,6 +14,7 @@
           <%= hidden_field_tag "creator", current_user.id %>
           <%= hidden_field_tag "order_payment[mode]", "CASH" %>
           <%= hidden_field_tag "order_payment[amount]", 0 %>
+          <%= hidden_field_tag "order_payment[deposits]", @deposits %>
           <%= hidden_field_tag "order_entries", nil %>
           <%= hidden_field_tag "order_payment[patient_id]", @patient.id %>
           <%= hidden_field_tag "order_payment[location]", current_location.name %>
@@ -29,11 +30,11 @@
             </tr>
             <tr>
               <td>Amount Due</td>
-              <th  style="text-align: left;color: darkred; " id="due"><%= local_currency(@amount_due)%></th>
+              <th  style="text-align: left;color: darkred; " id="due"><%= local_currency(@amount_due -@deposits) %></th>
             </tr>
             <tr>
               <td>Change</td>
-              <th id="change" style="text-align: left;color: darkgreen;">MWK 0.00</th>
+              <th id="change" style="text-align: left;color: darkgreen;"><%= (@amount_due -@deposits) > 0 ? 'MWK 0.00' : local_currency((@amount_due -@deposits).abs) %></th>
             </tr>
             <tr>
               <td>&nbsp;</td>
@@ -160,15 +161,17 @@
         <th style="text-align: right;">Total</th>
         <th style="text-align: right;padding-right: 10px;"><%= local_currency(@total) %></th>
       </tr>
-      <!--      <tr>
-        <th>&nbsp;</th>
-        <th style="color: green">Amount Paid</th>
-        <th style="color: green"><%= local_currency(@today_payments) %></th>
-      </tr> -->
+      <% if @deposits > 0 %>
+      <tr>
+        <th colspan="2">&nbsp;</th>
+        <th style="color: green;text-align: right;">Amount Deposited</th>
+        <th style="color: green;text-align: right;padding-right: 10px;"><%= local_currency(@deposits) %></th>
+      </tr>
+      <% end %>
       <tr>
         <th colspan="2">&nbsp;</th>
         <th style="color: darkred;text-align: right;">Amount Due</th>
-        <th style="color: darkred; text-align: right;padding-right: 10px;"><%= local_currency(@amount_due) %></th>
+        <th style="color: darkred; text-align: right;padding-right: 10px;"><%= local_currency(@amount_due -@deposits) %></th>
       </tr>
       </tfoot>
     </table>
@@ -335,6 +338,21 @@
           <div class = "link-button" onmousedown="window.location='/patients/print_national_id?patient_id=<%= @patient.id%>'">
             Print National ID
           </div>
+        </div>
+      </div>
+      <div style="display: table-row;">
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/patients/<%= @patient.id%>/deposits/new'">
+            Add Deposit
+          </div>
+        </div>
+        <div style="display: table-cell">
+          <div class = "link-button" onmousedown="window.location='/patients/<%= @patient.id%>/deposits'">
+            Manage Patient Deposits
+          </div>
+        </div>
+        <div style="display: table-cell">
+          &nbsp;
         </div>
       </div>
     </div>

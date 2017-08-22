@@ -16,7 +16,7 @@ puts 'Loading Service types'
 end
 
 puts 'Loading services and their prices'
-CSV.foreach("#{Rails.root}/db/final_service_seed.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
+CSV.foreach("#{Rails.root}/db/final_service_seed_new.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
   type = ServiceType.where(name: row[2]).first.id
   service = Service.where({name: row[0], unit: row[1], service_type_id: type}).first_or_initialize
   service.rank = (row[5].blank? ? 999 : row[5])

@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818025039) do
+ActiveRecord::Schema.define(version: 20170821153231) do
+
+  create_table "deposits", primary_key: "deposit_id", force: :cascade do |t|
+    t.integer  "patient_id",       limit: 4,                  null: false
+    t.float    "amount_received",  limit: 24, default: 0.0
+    t.float    "amount_available", limit: 24, default: 0.0
+    t.integer  "creator",          limit: 4,                  null: false
+    t.integer  "updated_by",       limit: 4
+    t.boolean  "voided",                      default: false
+    t.integer  "voided_by",        limit: 4
+    t.datetime "date_voided"
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+  end
 
   create_table "medical_scheme_providers", primary_key: "scheme_provider_id", force: :cascade do |t|
     t.string   "company_name",    limit: 255
@@ -36,7 +49,6 @@ ActiveRecord::Schema.define(version: 20170818025039) do
     t.string   "retired_reason",          limit: 255
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
-    t.string   "scheme_number",           limit: 255
   end
 
   create_table "order_entries", primary_key: "order_entry_id", force: :cascade do |t|
