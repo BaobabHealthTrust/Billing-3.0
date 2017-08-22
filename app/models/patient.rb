@@ -69,7 +69,8 @@ class Patient < ActiveRecord::Base
   end
 
   def amount_deposited
-    Deposit.select("SUM(amount_available) as amount_available").where(patient_id: self.id).first.amount_available rescue 0
+    amount = Deposit.select("SUM(amount_available) as amount_available").where(patient_id: self.id).first.amount_available rescue 0
+    return (amount.blank? ? 0 : amount)
   end
 
   #Model functional methods. These functions are used to process various things related to the patient
