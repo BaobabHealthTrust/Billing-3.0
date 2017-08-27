@@ -43,4 +43,8 @@ module MainHelper
     end
     return result
   end
+
+  def work_shifts
+    return {"Day" => ['08:00:00', '16:29:59'], "Night" => ['16:30:00','07:59:59']}
+  end
 end

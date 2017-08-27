@@ -38,4 +38,13 @@
                         :minDate => (Date.today - 20.year).strftime("%Y-%m-%d"),
                         :condition => "$('reportDuration') && $('reportDuration').value == 'Range'",
                         :tt_pageStyleClass => "Date DatesOnly"} %>
+
+    <% if params[:report_type] == 'daily_cash_summary' %>
+        <select id="shift" name="report_shift" helpText="Select work shift for report">
+          <option></option>
+          <% (work_shifts.keys).each do |w| %>
+              <option value="<%= w %>"><%= w%></option>
+          <% end %>
+        </select>
+    <% end %>
 <% end %>

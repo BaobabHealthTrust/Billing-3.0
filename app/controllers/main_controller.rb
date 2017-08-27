@@ -79,12 +79,21 @@ class MainController < ApplicationController
                 %w[Radiology 0011 0071], %w[Book 0012 0072],%w[Consultation 0011 0071], %w[Book 0012 0072],
                 %w[Consultation 0011 0071], %w[Book 0012 0072],%w[Consultation 0011 0071], %w[Book 0012 0072]]
 
-    range = params[:start_date].to_date.beginning_of_day..params[:start_date].to_date.end_of_day rescue ''
-    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{range.first.strftime('%Y-%m-%d 00:00:00')}'
-                                         and '#{range.last.strftime('%Y-%m-%d 23:59:59')}' ") rescue []
+    shifts = view_context.work_shifts
+    if params[:report_shift] == "Day"
+      start_time = params[:start_date].to_date.strftime('%Y-%m-%d '+ shifts[params[:report_shift]].first)
+      end_time = params[:start_date].to_date.strftime('%Y-%m-%d '+ shifts[params[:report_shift]].last)
+    else
+      start_time = params[:start_date].to_date.strftime('%Y-%m-%d '+ shifts[params[:report_shift]].first)
+      end_time = (params[:start_date].to_date + 1.day).strftime('%Y-%m-%d '+ shifts[params[:report_shift]].last)
+    end
 
-    @start_date = range.first.to_date
-    @end_date = range.last.to_date
+    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{start_time}'
+                                         and '#{end_time}' ") rescue []
+
+    @shift = params[:report_shift]
+    @start_date = start_time
+    @end_date = end_time
     @records,@totals = view_context.cash_summary(data)
   end
 
