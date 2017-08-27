@@ -96,10 +96,10 @@ module Misc
     label.print(1)
   end
 
-  def self.print_summary(data,totals,date,cashier)
+  def self.print_summary(data,totals,date,cashier,hour)
     heading = ""
     heading += "Date: #{date}\n"
-    heading += "Working Hour: \n"
+    heading += "Working Hour: #{hour}\n"
     heading += "Total:#{local_currency(totals[:general] + totals[:private])}\n"
     heading += "Cashier Name:#{cashier.titleize}\n"
     heading += "Checked By: \n Banked By:\n Dept Head: \n Account G.M: \n"

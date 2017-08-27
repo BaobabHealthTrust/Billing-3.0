@@ -99,12 +99,12 @@ class MainController < ApplicationController
 
   def print_daily_cash_summary
 
-    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{params[:start_date].to_date.strftime('%Y-%m-%d 00:00:00')}'
-                                         and '#{params[:end_date].to_date.strftime('%Y-%m-%d 23:59:59')}' ") rescue []
+    data = OrderPayment.find_by_sql("Select * from order_payments where created_at between '#{params[:start_date]}'
+                                         and '#{params[:end_date]}' ") rescue []
 
     date = params[:start_date].to_date.strftime('%d %B, %Y')
     data,totals = view_context.cash_summary(data)
-    print_string = Misc.print_summary(data,totals,date, current_user.name)
+    print_string = Misc.print_summary(data,totals,date, current_user.name, params[:shift])
     send_data(print_string,:type=>"application/label; charset=utf-8", :stream=> false, :filename=>"#{params[:patient_id]}#{rand(10000)}.lbs", :disposition => "inline")
   end
 
