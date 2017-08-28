@@ -1,3 +1,26 @@
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="dialogMsg">
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: center;">
+        &nbsp;
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: center;">
+        <h2 id="message">Are you sure you want to reclaim the deposit?</h2>
+      </div>
+    </div>
+    <div style="display: table-row">
+      <div style="display: table-cell; text-align: center;">
+        <button onMouseDown="window.location='/patients/<%=@patient.id%>/deposits/reclaim_deposit'"><span>Yes</span></button>
+        <button onMouseDown="hideModal()"><span>Cancel</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="header" style="height: 15vh; width:98vw;margin-top:1vh; margin-left: auto;margin-right: auto;">
   <div style="display: table-row">
     <div class="header-cell" style="display: table-cell; width:98vw;vertical-align: middle;height: 15vh;">
@@ -72,4 +95,18 @@
 
 <div class="footer">
   <button class="green" style="float: right;" onmousedown="window.location='/patients/<%= params[:patient_id] %>'">Finish</button>
+  <% if @amount > 0%>
+      <button style="float: right;" onmousedown="showModal()">Reclaim Deposit</button>
+  <% end %>
 </div>
+
+<script type="text/javascript">
+  var modal = document.getElementById('myModal');
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>

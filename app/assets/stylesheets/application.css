@@ -574,3 +574,13 @@ div.collapsible-content {
     border-radius: 15px;
     padding: 1%;
 }
+.dialogMsg{
+    display: table;
+    background-color: #F9F6F4;
+    height: 30vh;
+    width: 50vw;
+    margin-left: 30vw;
+    border: 5px outset #003366;
+    border-radius: 15px;
+    padding: 1%;
+}

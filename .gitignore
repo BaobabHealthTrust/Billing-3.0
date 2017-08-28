@@ -15,6 +15,7 @@
 .idea/*
 *.log
 *.lock
+*.pid
 
 *.rbc
 capybara-*.html

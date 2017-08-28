@@ -168,4 +168,36 @@ module Misc
     label.draw_line(label.x,label.y,566,7,1)
     label.print(1)
   end
+
+  def self.print_refund_receipt(data)
+    patient_name = data['patient_name']
+    cashier = data['cashier_name']
+
+    heading = ""
+    heading += "#{get_config('facility_name').titleize}\n"
+    heading += "#{get_config('facility_address')}\n"
+    heading += "Date: #{Date.current.strftime('%d %b %Y')}\n"
+    heading += "Patient: #{patient_name.titleize}\n"
+    heading += "Issued By: #{cashier.titleize}\n"
+
+    text = [['Amount Deposited', local_currency(data['amount_received'])],
+            ['Amount Used', local_currency(data['amount_used'])]]
+
+
+    label = ZebraPrinter::Label.new(616,203,'056',true)
+    label.font_size = 3
+    label.font_horizontal_multiplier = 1
+    label.font_vertical_multiplier = 1
+    label.draw_text("Deposit Refund",250,0,0,2,1,2,false)
+    label.y+=10
+    label.draw_multi_text(heading)
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table(text, [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,2)
+    label.y+=10
+    label.draw_table([['Refund Amount: ',local_currency(data['balance'])]], [[370, "left"], [200, "right"]])
+    label.draw_line(label.x,label.y,566,7,1)
+    label.print(1)
+  end
 end

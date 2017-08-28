@@ -41,11 +41,28 @@ class OrderPaymentsController < ApplicationController
           end
         end
 
-        #Update deposits
-        Deposit.where(patient_id: params[:order_payment][:patient_id]).update_all(amount_available: 0.0, updated_by: params[:creator])
+        if amount >= params[:order_payment][:deposits].to_f
+          amount =  amount - params[:order_payment][:deposits].to_f
+          deposit_used = 0
+        else
+          #Update deposits
+
+          deposit_used = params[:order_payment][:deposits].to_f - amount
+
+          deposits = Deposit.where("patient_id = ? AND amount_available > ?", params[:order_payment][:patient_id],0.00)
+          (deposits || []).each do |deposit|
+            break if deposit_used == 0
+            used_amount = (deposit.amount_available >= deposit_used ? deposit_used : deposit.amount_available)
+            deposit.amount_available -= used_amount
+            deposit.updated_by = params[:creator]
+            deposit.save
+            deposit_used -= used_amount
+          end
+          amount = 0
+        end
 
         #Print receipt of transaction
-        print_and_redirect("/order_payments/print_receipt?deposit=#{params[:order_payment][:deposits]}&change=#{amount}&ids=#{new_receipt.receipt_number}",
+        print_and_redirect("/order_payments/print_receipt?deposit=#{deposit_used}&change=#{amount}&ids=#{new_receipt.receipt_number}",
                            "/patients/#{params[:order_payment][:patient_id]}")
       end
 

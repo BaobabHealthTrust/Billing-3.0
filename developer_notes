@@ -1,10 +1,10 @@
 Notes on features, issues, wishes
 * country, nationality, region, district, traditional_authority models currently are linked to dde tables. This will
   need to be de-linked in the future.
-* Change deposits to have a reclaim function
 * change reports to include paeds
-* fix redirection issue for services
-* add shifts for reports
+* fix user edits and deletes
+* Add voiding of deposits
+
 
 
 

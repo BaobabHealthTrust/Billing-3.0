@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   get "/main/daily_cash_summary"
   get "/main/print_daily_cash_summary"
   post "/main/census_report"
+  get 'print_refund' => "deposits#print_refund"
 
   resources :patients do
     collection do
@@ -41,7 +42,11 @@ Rails.application.routes.draw do
     end
     resources :order_entries
     resources :patient_accounts
-    resources :deposits
+    resources :deposits do
+      collection do
+        get 'reclaim_deposit'
+      end
+    end
   end
 
   resources :locations do
