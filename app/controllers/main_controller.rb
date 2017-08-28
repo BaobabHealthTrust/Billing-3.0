@@ -133,7 +133,9 @@ class MainController < ApplicationController
     @new_patients = view_context.census(new_registrations)
     @old_patients = view_context.census(returning_patients)
     @summary = {}
-    @summary['M'] = @new_patients[:paediatric][:M] + @new_patients[:adult][:M] + @old_patients[:paediatric][:M] + @old_patients[:adult][:M]
-    @summary['F'] = @new_patients[:paediatric][:F] + @new_patients[:adult][:F] + @old_patients[:paediatric][:F] + @old_patients[:adult][:F]
+    @summary['M'] = @new_patients[:under_five][:M] + @new_patients[:under_twelve][:M] + @new_patients[:adult][:M]
+    @summary['M'] += (@old_patients[:under_five][:M] + @old_patients[:under_twelve][:M] + @old_patients[:adult][:M])
+    @summary['F'] = @new_patients[:under_five][:F] + @new_patients[:under_twelve][:F] + @new_patients[:adult][:F]
+    @summary['F'] += (@old_patients[:under_five][:F] + @old_patients[:under_twelve][:F] + @old_patients[:adult][:F])
   end
 end

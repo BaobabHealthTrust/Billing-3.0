@@ -30,13 +30,19 @@ module MainHelper
 
   def census(patients)
 
-    result = {paediatric: {M: 0, F: 0}, adult: {M: 0, F: 0}}
+    result = {under_five: {M: 0, F: 0},under_twelve: {M: 0, F: 0}, adult: {M: 0, F: 0}}
 
     (patients || []).each do |patient|
       next if patient.blank?
       person = patient.person
       if person.is_child?
-        result[:paediatric][person.gender.to_sym] += 1
+        age_in_days = (Date.current - person.birthdate).to_i rescue 0
+        if age_in_days < 1825
+          result[:under_five][person.gender.to_sym] += 1
+        else
+          result[:under_twleve][person.gender.to_sym] += 1
+        end
+
       else
         result[:adult][person.gender.to_sym] += 1
       end

@@ -66,10 +66,21 @@ class UsersController < ApplicationController
     redirect_to @user
   end
   def show
-
+    @user = User.find_by_user_id(params[:id])
   end
-  def destroy
 
+  def destroy
+    result = User.where(user_id: params[:user][:user_id]).update_all(retired: true, retire_reason: params[:user][:reason],
+                                                            date_retired: DateTime.current,
+                                                            retired_by: params[:user][:creator])
+
+    if result
+      flash[:notice] = 'User account successfully deactivated'
+    else
+      flash[:error] = 'User details could not be deactivated'
+    end
+
+    redirect_to "/users"
   end
 
   def roles
