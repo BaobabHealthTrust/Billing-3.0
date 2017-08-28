@@ -31,50 +31,6 @@
       </div>
     </div>
 <% end %>
-<div id="shadow" class="opaqueLayer"> </div>
-<div id="question" class="questionLayer" style="font-size: 0.9em;">
-  <%= form_for :order_entry, :method => 'POST', url: '/order_entries/void',:html => {:id =>'voidingForm', :name =>'confirmingForm'}  do |f| %>
-  <div class="dialogBox">
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: left;padding-left: 20px;">
-        <h2 id="message">Select the reason for voiding this transaction?</h2>
-      </div>
-    </div>
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
-        <input type="radio" class="custom-radio" name="void_reason" value="Wrongly Entered"
-                required> Wrongly entered
-      </div>
-    </div>
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
-        <input type="radio" class="custom-radio" name="void_reason" value="Out of stock"
-               required> Out of stock
-      </div>
-    </div>
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
-        <input type="radio" class="custom-radio" name="void_reason" value="Switched to other clinic"
-               required > Switched to other clinic
-      </div>
-    </div>
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
-        <input type="radio" class="custom-radio" name="void_reason" value="Rescheduled service"
-               required > Rescheduled service
-      </div>
-    </div>
-    <div style="display: table-row">
-      <div style="display: table-cell; text-align: center;">
-        <button id="bttnYes"><span>Confirm</span></button>
-        <button onMouseDown="hideLayer('shadow', 'question')"><span>Cancel</span></button>
-      </div>
-    </div>
-  </div>
-      <%= hidden_field_tag "void_ids", nil %>
-      <%= hidden_field_tag "patient_id", params[:id] %>
-  <% end %>
-</div>
 <%= yield %>
 <% if !flash[:errors].blank? || !flash[:success].blank? %>
     <script type="text/javascript">

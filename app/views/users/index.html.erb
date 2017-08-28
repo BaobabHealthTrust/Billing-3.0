@@ -37,6 +37,44 @@
         key.style.display = "none";
     }
 </script>
+<div id="shadow" class="opaqueLayer"> </div>
+<div id="question" class="questionLayer" style="font-size: 0.9em;">
+  <%= form_for :user, :method => 'DELETE', url: '/user/destroy',:html => {:id =>'voidingForm', :name =>'confirmingForm'}  do |f| %>
+      <div class="dialogBox">
+        <div style="display: table-row">
+          <div style="display: table-cell; text-align: left;padding-left: 20px;">
+            <h2 id="message">Select the reason for voiding this user?</h2>
+          </div>
+        </div>
+        <div style="display: table-row">
+          <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+            <input type="radio" class="custom-radio" name="user[void_reason]" value="Wrongly Entered"
+                   required> Wrongly entered
+          </div>
+        </div>
+        <div style="display: table-row">
+          <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+            <input type="radio" class="custom-radio" name="user[void_reason]" value="Left job"
+                   required > User no longer works here
+          </div>
+        </div>
+        <div style="display: table-row">
+          <div style="display: table-cell; text-align: left;padding-left: 20px;font-size: 1.7em;">
+            <input type="radio" class="custom-radio" name="user[void_reason]" value="other"
+                   required> Other reason
+          </div>
+        </div>
+        <div style="display: table-row">
+          <div style="display: table-cell; text-align: center;">
+            <button id="bttnYes"><span>Confirm</span></button>
+            <button onMouseDown="hideLayer('shadow', 'question')"><span>Cancel</span></button>
+          </div>
+        </div>
+      </div>
+      <%= hidden_field_tag "user[creator]", current_user.id %>
+
+  <% end %>
+</div>
 <div class="section-header" >
   User Management
 </div>
@@ -56,7 +94,7 @@
           <td><%= user.role %></td>
           <td>
             <%= link_to 'View', "/users/#{user.id}" %>
-            <%= link_to 'Delete', "/users/#{user.id}" %>
+            <%= link_to 'Delete', '#',:onMouseDown => "confirmAction('/users/#{user.id}', 'FORM')" %>
           </td>
         </tr>
     <% end %>

@@ -70,7 +70,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    result = User.where(user_id: params[:user][:user_id]).update_all(retired: true, retire_reason: params[:user][:reason],
+
+    result = User.where(user_id: params[:id]).update_all(retired: true, retire_reason: params[:user][:void_reason],
                                                             date_retired: DateTime.current,
                                                             retired_by: params[:user][:creator])
 
