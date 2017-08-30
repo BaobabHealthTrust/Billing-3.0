@@ -737,68 +737,77 @@ class PatientsController < ApplicationController
 
     else
 
-      json["names"]["family_name2"] = json["names"]["maiden_name"]
-      names_params = json["names"].reject{|key,value| key.match(/gender/) }
-      names_params = names_params.reject{|key,value| key.match(/maiden_name/) }
-      address_params = {
-          :state_province => json['addresses']['current_district'],
-          :township_division => (json['addresses']['current_residence'].blank? ? json['addresses']['current_ta'] : json['addresses']['current_residence']),
-          :city_village => json['addresses']['current_village'],
-          :address1 => json['addresses']['landmark'],
-          :address2 =>json['addresses']['home_district'],
-          :county_district => json['addresses']['home_ta'],
-          :neighborhood_cell => json['addresses']['home_village']
-      }
+      if !json["patient_id"].blank?
+        patient = Patient.find_by_patient_id(json['patient_id'])
+      elsif !json["national_id"].blank?
+        identifier = PatientIdentifier.find_by_identifier(json["national_id"])
+        patient = identifier.patient
+      else
+
+        json["names"]["family_name2"] = json["names"]["maiden_name"]
+        names_params = json["names"].reject{|key,value| key.match(/gender/) }
+        names_params = names_params.reject{|key,value| key.match(/maiden_name/) }
+        address_params = {
+            :state_province => json['addresses']['current_district'],
+            :township_division => (json['addresses']['current_residence'].blank? ? json['addresses']['current_ta'] : json['addresses']['current_residence']),
+            :city_village => json['addresses']['current_village'],
+            :address1 => json['addresses']['landmark'],
+            :address2 =>json['addresses']['home_district'],
+            :county_district => json['addresses']['home_ta'],
+            :neighborhood_cell => json['addresses']['home_village']
+        }
 
 
-      new_person = Person.new
-      new_person.gender = json['gender']
-      new_person.birthdate = json['birthdate']
-      new_person.birthdate_estimated = json['birthdate_estimated']
-      new_person.save
+        new_person = Person.new
+        new_person.gender = json['gender']
+        new_person.birthdate = json['birthdate']
+        new_person.birthdate_estimated = json['birthdate_estimated']
+        new_person.save
 
-      new_person.names.create(names_params)
-      new_person.addresses.create(address_params) unless address_params.empty?
+        new_person.names.create(names_params)
+        new_person.addresses.create(address_params) unless address_params.empty?
 
-      (json["person_attributes"] || []).each do |attribute, value|
+        (json["person_attributes"] || []).each do |attribute, value|
 
-        next if value.blank?
+          next if value.blank?
 
-        new_person.person_attributes.create(:person_attribute_type_id => PersonAttributeType.find_by_name(attribute).person_attribute_type_id,
-            :value => value)
+          new_person.person_attributes.create(:person_attribute_type_id => PersonAttributeType.find_by_name(attribute).person_attribute_type_id,
+                                              :value => value)
 
+        end
+
+        patient = Patient.new
+        patient.patient_id = new_person.person_id
+        patient.save
+
+        (json["patient"]["identifiers"] || []).each{|identifier|
+          identifier_type = PatientIdentifierType.find_by_name("National ID")
+          patient.patient_identifiers.create("identifier" => identifier, "identifier_type" => identifier_type.patient_identifier_type_id)
+        }
+
+        if patient.patient_identifiers.blank?
+          health_center_id = Location.current_health_center.location_id
+          national_id_version = "1"
+          national_id_prefix = "P#{national_id_version}#{health_center_id.to_s.rjust(3,"0")}"
+
+          identifier_type = PatientIdentifierType.find_by_name("National ID")
+          last_national_id = PatientIdentifier.where("identifier_type = ? AND left(identifier,5)= ?", identifier_type.id, national_id_prefix).order("identifier desc").first
+          last_national_id_number = last_national_id.identifier rescue "0"
+
+          next_number = (last_national_id_number[5..-2].to_i+1).to_s.rjust(7,"0")
+          new_national_id_no_check_digit = "#{national_id_prefix}#{next_number}"
+          check_digit = PatientIdentifier.calculate_checkdigit(new_national_id_no_check_digit[1..-1])
+          new_national_id = "#{new_national_id_no_check_digit}#{check_digit}"
+          patient_identifier = PatientIdentifier.new
+          patient_identifier.type = identifier_type
+          patient_identifier.identifier = new_national_id
+          patient_identifier.patient = patient
+          patient_identifier.save
+        end
+
+        patient_id = patient.patient_id
       end
 
-      patient = Patient.new
-      patient.patient_id = new_person.person_id
-      patient.save
-
-      (json["patient"]["identifiers"] || []).each{|identifier|
-        identifier_type = PatientIdentifierType.find_by_name("National ID")
-        patient.patient_identifiers.create("identifier" => identifier, "identifier_type" => identifier_type.patient_identifier_type_id)
-      }
-
-      if patient.patient_identifiers.blank?
-        health_center_id = Location.current_health_center.location_id
-        national_id_version = "1"
-        national_id_prefix = "P#{national_id_version}#{health_center_id.to_s.rjust(3,"0")}"
-
-        identifier_type = PatientIdentifierType.find_by_name("National ID")
-        last_national_id = PatientIdentifier.where("identifier_type = ? AND left(identifier,5)= ?", identifier_type.id, national_id_prefix).order("identifier desc").first
-        last_national_id_number = last_national_id.identifier rescue "0"
-
-        next_number = (last_national_id_number[5..-2].to_i+1).to_s.rjust(7,"0")
-        new_national_id_no_check_digit = "#{national_id_prefix}#{next_number}"
-        check_digit = PatientIdentifier.calculate_checkdigit(new_national_id_no_check_digit[1..-1])
-        new_national_id = "#{new_national_id_no_check_digit}#{check_digit}"
-        patient_identifier = PatientIdentifier.new
-        patient_identifier.type = identifier_type
-        patient_identifier.identifier = new_national_id
-        patient_identifier.patient = patient
-        patient_identifier.save
-      end
-
-      patient_id = patient.patient_id
     end
 
     #if print barcode
