@@ -1,7 +1,16 @@
 creator = User.first
 
+
+puts 'Renaming services'
+CSV.foreach("#{Rails.root}/db/renamed_services.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
+  service = Service.where(name: row[0]).first
+  next if service.blank?
+  service.name = row[1]
+  service.save
+end
+
 puts 'Loading services and their prices'
-CSV.foreach("#{Rails.root}/db/updated_list.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
+CSV.foreach("#{Rails.root}/db/updated_list_final.csv",{:headers=>:first_row, :col_sep => ","}) do |row|
   type = ServiceType.where(name: row[1]).first.id rescue nil
   next if type.blank?
   service = Service.where({name: row[0], service_type_id: type}).first_or_initialize
