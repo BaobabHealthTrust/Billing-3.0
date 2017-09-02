@@ -17,7 +17,7 @@
                    options_for_select((entry_options('consultation') - @categories['Consultation']), nil),
                    :id => "other_consultations",
                    :helpText => "Select consultation type" ,
-                   :condition => "getSelected('consultation').match(/OTHER/i)",
+                   :condition => "getSelected('consultation').match(/OTHERS/i)",
                    :multiple =>  true %>
 
     <%= select_tag 'order_entry[radiology][]',
@@ -33,7 +33,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('radiology').match(/OTHER/i)",
+                        :condition => "getSelected('radiology').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'radiology'); ",
                         :helptext => "Additional radiology test"}  %>
 
@@ -57,7 +57,7 @@
                        {:id => "additional_prescription_0",
                         :ajaxURL => "",
                         :allowFreeText => false,
-                        :condition => "getSelected('pharmacy_panels').match(/OTHER/i)",
+                        :condition => "getSelected('pharmacy_panels').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'pharmacy'); ",
                         :helptext => "Additional prescription"}  %>
 
@@ -133,7 +133,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('lab_orders').match(/OTHER/i)",
+                        :condition => "getSelected('lab_orders').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'laboratory'); ",
                         :helptext => "Additional lab test"}  %>
 
@@ -181,7 +181,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('dental_procedures').match(/OTHER/i)",
+                        :condition => "getSelected('dental_procedures').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'dental'); ",
                         :helptext => "Additional dental procedure"}  %>
 
@@ -206,7 +206,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('surgery').match(/OTHER/i)",
+                        :condition => "getSelected('surgery').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'surgery'); ",
                         :helptext => "Additional surgical procedure"}  %>
 
@@ -238,7 +238,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('maternity').match(/OTHER/i)",
+                        :condition => "getSelected('maternity').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'maternity'); ",
                         :helptext => "Additional maternity service"}  %>
 
@@ -263,7 +263,7 @@
                         :ajaxURL => "",
                         :optional => true,
                         :allowFreeText => false,
-                        :condition => "getSelected('ophthalmology').match(/OTHER/i)",
+                        :condition => "getSelected('ophthalmology').match(/OTHERS/i)",
                         :tt_onLoad => "set_ajaxURL_for_suggestions('/services/suggestions?category=', 'ophthalmology'); ",
                         :helptext => "Additional ophthalmology service"}  %>
 
