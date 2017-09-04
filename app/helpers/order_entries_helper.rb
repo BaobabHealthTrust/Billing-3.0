@@ -3,7 +3,7 @@ module OrderEntriesHelper
     return ServiceType.find_by_name(category).services.collect{|x| x.name}
   end
   def panel_options(category)
-    return ServiceType.find_by_name(category).service_panels.collect{|x| x.name} + ["Other"]
+    return ServiceType.find_by_name(category).service_panels.collect{|x| x.name} + ["Others"]
   end
   def sig
     return [[]]+ [["Twice a day", "BID"], ["Every other day", "EOD"], ["Once daily", "OD"],
