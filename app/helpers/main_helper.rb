@@ -40,7 +40,7 @@ module MainHelper
         if age_in_days < 1825
           result[:under_five][person.gender.to_sym] += 1
         else
-          result[:under_twleve][person.gender.to_sym] += 1
+          result[:under_twelve][person.gender.to_sym] += 1
         end
 
       else
