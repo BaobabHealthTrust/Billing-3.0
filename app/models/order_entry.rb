@@ -20,9 +20,9 @@ class OrderEntry < ActiveRecord::Base
     service = (self.service_id.blank? ? Service.find_by_name(self.service_offered) : self.service)
     self.service_id = service.id
     #Force all records for suspensions to be one
-    if %w[Bottle 1litre Pack Gallon tube].include?service.unit
-      self.quantity = 1
-    end
+    #if %w[Bottle 1litre Pack Gallon tube].include?service.unit
+    #  self.quantity = 1
+    #end
     type = (self.service_point.match(/PRIVATE/i).blank? ? "GENERAL" : "PRIVATE")
     self.full_price= (service.service_prices.select(:price).where(price_type: type).first.price * self.quantity) rescue 0
 
