@@ -302,7 +302,7 @@ Whitfield ointment compound,Pharmacy,750,1000,Each,999,FALSE
 Zinc tablets 20mg,Pharmacy,30,40,Tablet,999,FALSE
 24 hr VMA assay,Laboratory,1000,4000,Each,999,FALSE
 ABO Anti-D,Laboratory,1000,0,Each,999,FALSE
-"ABO,Anti A & B",Laboratory,1000,0,Each,999,FALSE
+"ABO,Anti A + B",Laboratory,1000,0,Each,999,FALSE
 acid alcohol fast bacilli,Laboratory,1000,3000,Each,999,FALSE
 acid phosphates,Laboratory,1000,2000,Each,999,FALSE
 AFI,Laboratory,1000,4500,Each,999,FALSE
@@ -437,23 +437,23 @@ Barium Swallow,Radiology,8000,18000,Each,999,FALSE
 Breast Ultrasound,Radiology,2500,7500,Each,999,FALSE
 C- Arm Examination,Radiology,1500,30000,Each,999,FALSE
 Cardiac Ultrasound,Radiology,2500,7500,Each,999,FALSE
-Xray Neck – Cervical Spine (AP & LAT),Radiology,3000,9000,Each,999,FALSE
+Xray Neck – Cervical Spine (AP + LAT),Radiology,3000,9000,Each,999,FALSE
 Chest Xray (Lateral views),Radiology,3000,9000,Each,999,FALSE
-Chest Xray (AP & PA Views),Radiology,3000,9000,Each,1,FALSE
+Chest Xray (AP + PA Views),Radiology,3000,9000,Each,1,FALSE
 Chest Xray (Portable),Radiology,3000,9000,Each,999,FALSE
 Compact Disc Xray Report,Radiology,1500,2000,Each,999,FALSE
-Elbow Xray (AP & LAT View),Radiology,3000,9000,Each,999,FALSE
+Elbow Xray (AP + LAT View),Radiology,3000,9000,Each,999,FALSE
 Facial Bones Xray,Radiology,3000,9000,Each,999,FALSE
-Femur Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
-Forearm Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
+Femur Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
+Forearm Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
 Gastrographic Swallow ,Radiology,20000,30000,Each,999,FALSE
-Hand Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
+Hand Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
 HSG – Hysterosalpingogram,Radiology,20000,37500,Each,999,FALSE
 Intravenous Urography (IVP/IUP),Radiology,35000,52500,Each,999,FALSE
-Knee Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
+Knee Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
 KUB,Radiology,2500,7500,Each,999,FALSE
-Lumbar Spine Xray (AP & LAT Views),Radiology,3000,9000,Each,4,FALSE
-Mandible Xray (AP & Oblique Views),Radiology,3000,9000,Each,999,FALSE
+Lumbar Spine Xray (AP + LAT Views),Radiology,3000,9000,Each,4,FALSE
+Mandible Xray (AP + Oblique Views),Radiology,3000,9000,Each,999,FALSE
 Micturating Urethrogram,Radiology,37500,37500,Each,999,FALSE
 Myelogram,Radiology,45000,45000,Each,999,FALSE
 Obstetrics Ultrasound Scan,Radiology,2500,7500,Each,6,FALSE
@@ -469,9 +469,9 @@ SINOGRAM,Radiology,20000,30000,Each,999,FALSE
 Skull Xray (AP + LAT Views),Radiology,3000,9000,Each,5,FALSE
 Skull Xray (LAT Views),Radiology,3000,9000,Each,999,FALSE
 Skull Xray (Townes Views),Radiology,3000,9000,Each,999,FALSE
-Thoracic Spine Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
-Tibia/Fibula Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
-Upper Arm Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
+Thoracic Spine Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
+Tibia/Fibula Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
+Upper Arm Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
 URETHROGRAM(HCG),Radiology,37500,37500,Each,10,FALSE
 Lumbar puncture,Other Procedures,1500,1500,Each,999,FALSE
 O/items: catheters,Other Procedures,2000,0,Each,999,FALSE
@@ -978,7 +978,7 @@ Iodine dressing,Surgery,600,2500,each,999,FALSE
 knee aspiration,Surgery,2400,NULL,each,999,FALSE
 Lumbar puncture,Surgery,1500,1500,each,999,FALSE
 Other minor procedures,Surgery,2400,NULL,each,999,FALSE
-Incision drainage (I & D),Surgery,2400,6000,each,999,FALSE
+Incision drainage (I + D),Surgery,2400,6000,each,999,FALSE
 "P-POP.3"" (PER ROLL",Surgery,2400,5000,each,999,FALSE
 "P-POP.4""(PER ROLL)",Surgery,2400,NULL,each,999,FALSE
 "P-POP.6""(PER ROLL)",Surgery,2400,NULL,each,999,FALSE
@@ -1024,7 +1024,7 @@ Acyclovir ointment,Pharmacy,NULL,5000,tube,999,FALSE
 Sodium Chloride 5%,Pharmacy,NULL,5000,Bottle,999,FALSE
 FOCAL LASER,Ophthalmology,5000,10000,each,999,FALSE
 YAG CAPSULOTOMY,Ophthalmology,5000,18000,each,999,FALSE
-EXCISION & BIOPSY,Ophthalmology,5000,NULL,each,999,FALSE
+EXCISION + BIOPSY,Ophthalmology,5000,NULL,each,999,FALSE
 EVISCERATION WITH SPHERE,Ophthalmology,5000,NULL,each,999,FALSE
 YAG IRIDOTOMY,Ophthalmology,10000,20000,each,999,FALSE
 PRP,Ophthalmology,10000,30000,each,999,FALSE
@@ -1142,21 +1142,21 @@ Naproxen 500mg,Pharmacy,60,100,Tablet,999,FALSE
 Oral rehydration sachet for 1L solution,Pharmacy,150,200,Pack,999,FALSE
 PCM – Paracetamol syrup 120mg/5ml,Pharmacy,400,500,Bottle,999,FALSE
 Vicryl 3/0 V 393-H absorbable,Pharmacy,0,13000,Each,999,FALSE
-Bilirubin T&D,Laboratory,2000,2000,Each,999,FALSE
+Bilirubin T+D,Laboratory,2000,2000,Each,999,FALSE
 blood urea nitrogen,Laboratory,2500,2000,Each,7,FALSE
 Sugar test – (glucose),Laboratory,2000,2500,Each,4,FALSE
 PT – pregnancy test,Laboratory,1000,2000,Each,6,FALSE
-Abdomen Xray (Erect & Spine),Radiology,3000,9000,Each,2,FALSE
+Abdomen Xray (Erect + Spine),Radiology,3000,9000,Each,2,FALSE
 Abdominal Ultrasound,Radiology,2500,7500,Each,3,FALSE
-Cervical Spine (AP & LAT View),Radiology,3000,9000,Each,9,FALSE
-Elbow (AP & LAT View),Radiology,3000,9000,Each,999,FALSE
+Cervical Spine (AP + LAT View),Radiology,3000,9000,Each,9,FALSE
+Elbow (AP + LAT View),Radiology,3000,9000,Each,999,FALSE
 Facial Bones,Radiology,3000,9000,Each,999,FALSE
-Knee (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
-Mandible Xray (AP & Oblique Views),Radiology,3000,9000,Each,999,FALSE
+Knee (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
+Mandible Xray (AP + Oblique Views),Radiology,3000,9000,Each,999,FALSE
 Pelvic Ultrasound,Radiology,2500,7500,Each,4,FALSE
 Pelvis Xray,Radiology,3000,9000,Each,999,FALSE
 Skull (Townes Views),Radiology,3000,9000,Each,999,FALSE
-Upper Arm Xray (AP & LAT Views),Radiology,3000,9000,Each,999,FALSE
+Upper Arm Xray (AP + LAT Views),Radiology,3000,9000,Each,999,FALSE
 URETHROGRAM (HCG),Radiology,37500,37500,Each,10,FALSE
 MVA,Other Procedures,13000,NULL,Each,999,FALSE
 surgical toilet and suturing of < cm superficial,Other Procedures,0,15500,Each,999,FALSE
@@ -1186,14 +1186,14 @@ Brimonide drops,Pharmacy,0,2500,Bottle,999,FALSE
 cosopt drops,Pharmacy,0,2500,Bottle,999,FALSE
 Xalatin drops,Pharmacy,0,2500,Bottle,999,FALSE
 Sodium Chromogycate,Pharmacy,0,2500,Each,999,FALSE
-"I & D, I & C.",Ophthalmology,2500,0,Each,999,FALSE
+"I and D, I and C.",Ophthalmology,2500,0,Each,999,FALSE
 LID REPAIR,Ophthalmology,2500,0,Each,999,FALSE
 ENUCREATION,Ophthalmology,2500,0,Each,999,FALSE
 Timolol drops,Pharmacy,0,3000,Bottle,999,FALSE
 Dorzolamide drops,Pharmacy,0,3500,Bottle,999,FALSE
 Triamcinolone,Pharmacy,4000,0,Vial,999,FALSE
 Natamycin drops,Pharmacy,0,5000,Bottle,999,FALSE
-EXCISION & BIOPSY,Ophthalmology,5000,0,Each,999,FALSE
+EXCISION + BIOPSY,Ophthalmology,5000,0,Each,999,FALSE
 EVISCERATION WITH SPHERE,Ophthalmology,5000,0,Each,999,FALSE
 YAG IRIDOTOMY,Ophthalmology,10000,0,Each,999,FALSE
 ECCE + IOL,Ophthalmology,15000,0,Each,999,FALSE

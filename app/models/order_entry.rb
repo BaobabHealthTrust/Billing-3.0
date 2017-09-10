@@ -17,7 +17,7 @@ class OrderEntry < ActiveRecord::Base
   end
 
   def complete_record
-    service = (self.service_id.blank? ? Service.find_by_name(self.service_offered.gsub('&amp;','&')) : self.service)
+    service = (self.service_id.blank? ? Service.find_by_name(self.service_offered) : self.service)
     self.service_id = service.id
     #Force all records for suspensions to be one
     #if %w[Bottle 1litre Pack Gallon tube].include?service.unit
